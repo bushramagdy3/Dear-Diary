@@ -1,7 +1,7 @@
 .shelf-page {
   display: flex;
-  height: 100vh;
-  overflow: hidden;
+  min-height: 100vh;
+  overflow-x: hidden;
   flex-direction: column;
   background-color: #f4eee6;
   background-image:
@@ -28,8 +28,7 @@
 
 .shelf-main {
   display: flex;
-  flex: 1;
-  min-height: 0;
+  flex: 1 0 auto;
   flex-direction: column;
   padding: 22px 7% 0;
 }
@@ -59,8 +58,8 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 36px;
-  margin-top: 20px;
+  gap: 26px;
+  margin-top: 12px;
 }
 
 .shelf-create,
@@ -70,17 +69,17 @@
 
 .shelf-create {
   display: inline-flex;
-  min-width: 208px;
-  min-height: 46px;
+  min-width: 176px;
+  min-height: 38px;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 8px;
   border: 1px solid #1f1e1b;
   border-radius: 2px;
   background: #1f1e1b;
   color: #fffaf2;
   cursor: pointer;
-  font-size: 18px;
+  font-size: 16px;
   line-height: 1;
   transition:
     transform 160ms ease,
@@ -92,8 +91,8 @@
 }
 
 .shelf-create__icon {
-  width: 18px;
-  height: 18px;
+  width: 16px;
+  height: 16px;
 }
 
 .shelf-export {
@@ -103,7 +102,7 @@
   background: transparent;
   color: #24221e;
   cursor: pointer;
-  font-size: 18px;
+  font-size: 16px;
   line-height: 1.2;
 }
 
@@ -113,12 +112,11 @@
 
 .shelf-gallery {
   display: flex;
-  flex: 1;
-  min-height: 0;
+  flex: 1 0 auto;
   align-items: center;
   justify-content: center;
   gap: 3vh;
-  margin-top: 4vh;
+  margin-top: 0;
   padding-bottom: 2vh;
 }
 
@@ -154,8 +152,8 @@
 .shelf-grid-stack {
   display: grid;
   width: 100%;
-  max-width: 1320px;
-  height: 60vh;
+  max-width: 1420px;
+  height: 66vh;
 }
 
 .shelf-diary-grid,
@@ -183,14 +181,14 @@
 
 .shelf-diary-title {
   display: flex;
-  width: 35vh;
+  width: 38vh;
   height: 100%;
   align-items: center;
   justify-content: center;
   margin: 0;
   color: #171613;
   font-family: "Bodoni 72", "Didot", "Cormorant Garamond", Georgia, serif;
-  font-size: 30px;
+  font-size: 32px;
   line-height: 1.08;
   text-align: center;
   transition: transform 180ms ease;
@@ -209,7 +207,7 @@
 
 .shelf-diary {
   display: flex;
-  width: 35vh;
+  width: 38vh;
   height: 100%;
   align-items: flex-end;
   justify-content: center;

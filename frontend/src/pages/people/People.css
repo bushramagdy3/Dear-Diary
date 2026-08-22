@@ -2,10 +2,8 @@
   position: relative;
   isolation: isolate;
   display: flex;
-  height: 100vh;
-  max-height: 100vh;
   min-height: 100vh;
-  overflow: hidden;
+  overflow-x: hidden;
   flex-direction: column;
   background: #f4eee6;
   color: #24221e;
@@ -41,10 +39,9 @@
   position: relative;
   z-index: 1;
   display: flex;
-  flex: 1;
-  min-height: 0;
+  flex: 1 0 auto;
   flex-direction: column;
-  padding: clamp(1rem, 2.7vh, 2rem) clamp(1.5rem, 12vw, 12.8rem) 0.7rem;
+  padding: 30px 80px;
 }
 
 .people-page .site-header {
@@ -78,19 +75,19 @@
 
 .people-add-button {
   display: inline-flex;
-  min-width: 13rem;
-  min-height: 2.9rem;
+  min-width: 170px;
+  min-height: 38px;
   align-items: center;
   justify-content: center;
-  gap: 0.65rem;
-  margin-top: 1rem;
+  gap: 8px;
+  margin-top: 10px;
   border: 1px solid #1f1e1b;
   border-radius: 2px;
   background: #1f1e1b;
   color: #fffaf2;
   cursor: pointer;
   font: inherit;
-  font-size: clamp(1rem, 1.2vw, 1.14rem);
+  font-size: 16px;
   line-height: 1;
   transition: transform 160ms ease;
 }
@@ -100,25 +97,25 @@
 }
 
 .people-add-button__icon {
-  width: 1.1rem;
-  height: 1.1rem;
+  width: 16px;
+  height: 16px;
 }
 
 .people-card-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(17rem, 20rem));
-  gap: clamp(2rem, 5vw, 4.5rem);
+  grid-template-columns: repeat(auto-fit, minmax(20rem, 24rem));
+  gap: 52px;
   align-items: start;
   justify-content: center;
-  margin-top: clamp(0.45rem, 1.25vh, 0.9rem);
+  margin-top: 8px;
 }
 
 .person-card {
   position: relative;
   display: flex;
-  width: min(20rem, 72vw);
+  width: 24rem;
   min-height: 0;
-  height: clamp(23rem, 46vh, 28rem);
+  height: 400px;
   aspect-ratio: 0.72;
   align-items: center;
   justify-content: center;
@@ -142,9 +139,9 @@
 }
 
 .person-card__plus {
-  width: 3rem;
-  height: 3rem;
-  margin-bottom: 1.45rem;
+  width: 54px;
+  height: 54px;
+  margin-bottom: 22px;
   stroke-width: 1.1;
 }
 
@@ -170,7 +167,7 @@
 
 @media (max-width: 900px) {
   .people-page {
-    overflow: hidden;
+    overflow-x: hidden;
   }
 
   .people-page::after {

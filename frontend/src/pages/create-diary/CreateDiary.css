@@ -1,8 +1,7 @@
 .create-page {
   display: flex;
-  height: 100vh;
+  min-height: 100vh;
   overflow-x: hidden;
-  overflow-y: auto;
   flex-direction: column;
   background-color: #f4eee6;
   background-image: url("../../assets/create-diary/create-diary-bg.png");

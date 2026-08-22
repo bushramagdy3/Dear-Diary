@@ -3,7 +3,7 @@
   isolation: isolate;
   display: flex;
   min-height: 100vh;
-  overflow: hidden;
+  overflow-x: hidden;
   flex-direction: column;
   background: #f4eee6;
   color: #24221e;
@@ -38,7 +38,7 @@
 .how-main {
   position: relative;
   z-index: 1;
-  flex: 1;
+  flex: 1 0 auto;
   min-height: 43rem;
   padding: clamp(2.5rem, 5.8vh, 4.8rem) clamp(1.5rem, 5.6vw, 5.6rem) 1.5rem;
 }
@@ -158,7 +158,7 @@
 
 @media (max-width: 1050px) {
   .how-page {
-    overflow: auto;
+    overflow-x: hidden;
   }
 
   .how-page::after {

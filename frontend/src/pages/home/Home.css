@@ -3,7 +3,7 @@
   isolation: isolate;
   display: flex;
   min-height: 100vh;
-  overflow: hidden;
+  overflow-x: hidden;
   flex-direction: column;
   background: #f4eee6;
   color: #24221e;
@@ -39,7 +39,7 @@
   position: relative;
   z-index: 1;
   display: flex;
-  flex: 1;
+  flex: 1 0 auto;
   align-items: center;
   padding: clamp(2.5rem, 7vh, 6rem) clamp(1.5rem, 5.6vw, 5.6rem);
 }
@@ -163,7 +163,7 @@
 @media (max-width: 760px) {
   .home-page {
     min-height: 100dvh;
-    overflow: auto;
+    overflow-x: hidden;
   }
 
   .home-page::before {
