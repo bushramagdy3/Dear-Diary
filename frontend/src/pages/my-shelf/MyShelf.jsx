@@ -29,6 +29,7 @@ const coverImages = {
 function MyShelf({ currentPage, setCurrentPage }) {
   const diariesPerPage = 4
   const [firstDiaryIndex, setFirstDiaryIndex] = useState(0)
+  const [hoveredDiaryId, setHoveredDiaryId] = useState(null)
 
   const lastDiaryIndex = firstDiaryIndex + diariesPerPage
   const visibleDiaries = diaries.slice(firstDiaryIndex, lastDiaryIndex)
@@ -38,6 +39,18 @@ function MyShelf({ currentPage, setCurrentPage }) {
 
   function getCoverImage(coverId) {
     return coverImages[coverId] || coverImages[0]
+  }
+
+  function getDiaryTitle(diary) {
+    return diary.title || 'Untitled diary'
+  }
+
+  function getDiaryTitleClassName(diary) {
+    if (diary.id === hoveredDiaryId) {
+      return 'shelf-diary-title shelf-diary-title--hovered'
+    }
+
+    return 'shelf-diary-title'
   }
 
   function showPreviousDiaries() {
@@ -89,14 +102,38 @@ function MyShelf({ currentPage, setCurrentPage }) {
             )}
           </div>
 
-          <div className="shelf-diary-grid">
-            {shelfIsEmpty && <p>Your shelf is empty. Create your first diary!</p>}
-            {visibleDiaries.map((diary) => (
-              <button className="shelf-diary" key={diary.id} type="button">
-                <img src={getCoverImage(diary.coverId)} alt={`${diary.title} diary cover`} />
-              </button>
-            ))}
-          </div>
+          {shelfIsEmpty && <p className="shelf-is-empty-note">Your shelf is empty. Create your first diary!</p>}
+
+          {!shelfIsEmpty && (
+            <div className="shelf-grid-stack">
+              <div className="shelf-diary-grid">
+                {visibleDiaries.map((diary) => (
+                  <button
+                    className="shelf-diary"
+                    key={diary.id}
+                    onBlur={() => setHoveredDiaryId(null)}
+                    onFocus={() => setHoveredDiaryId(diary.id)}
+                    onMouseEnter={() => setHoveredDiaryId(diary.id)}
+                    onMouseLeave={() => setHoveredDiaryId(null)}
+                    type="button"
+                  >
+                    <img
+                      src={getCoverImage(diary.coverId)}
+                      alt={`${getDiaryTitle(diary)} diary cover`}
+                    />
+                  </button>
+                ))}
+              </div>
+
+              <div className="shelf-diary-title-grid">
+                {visibleDiaries.map((diary) => (
+                  <p className={getDiaryTitleClassName(diary)} key={diary.id}>
+                    {getDiaryTitle(diary)}
+                  </p>
+                ))}
+              </div>
+            </div>
+          )}
 
           <div className="shelf-arrow-space">
             {canGoForward && (
