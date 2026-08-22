@@ -1,51 +1,41 @@
 .shelf-page {
-  position: relative;
-  isolation: isolate;
   display: flex;
-  min-height: 100vh;
+  height: 100vh;
   overflow: hidden;
   flex-direction: column;
-  background: #f4eee6;
-  color: #24221e;
-}
-
-.shelf-page::before {
-  position: absolute;
-  z-index: -2;
-  inset: 0;
-  background-image: url("../../assets/my-shelf/my-shelf-bg.png");
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  content: "";
-}
-
-.shelf-page::after {
-  position: absolute;
-  z-index: -1;
-  inset: 0;
-  background:
+  background-color: #f4eee6;
+  background-image:
     linear-gradient(
       90deg,
       rgba(246, 241, 233, 0.86) 0%,
       rgba(246, 241, 233, 0.42) 42%,
       rgba(246, 241, 233, 0.1) 100%
-    );
-  content: "";
-  pointer-events: none;
+    ),
+    url("../../assets/my-shelf/my-shelf-bg.png");
+  background-position: center, center;
+  background-repeat: no-repeat, no-repeat;
+  background-size: cover, cover;
+  color: #24221e;
+}
+
+.shelf-page .site-header {
+  padding-block: 9px;
+}
+
+.shelf-page .site-footer {
+  padding-block: 12px;
 }
 
 .shelf-main {
-  position: relative;
-  z-index: 1;
   display: flex;
   flex: 1;
+  min-height: 0;
   flex-direction: column;
-  padding: clamp(2.5rem, 5.8vh, 4.8rem) clamp(1.5rem, 10.6vw, 10.8rem) 1.5rem;
+  padding: 22px 7% 0;
 }
 
 .shelf-intro {
-  max-width: 44rem;
+  max-width: 700px;
 }
 
 .shelf-title {
@@ -58,7 +48,7 @@
 }
 
 .shelf-subtitle {
-  margin: 0.55rem 0 0;
+  margin: 8px 0 0;
   color: #4a453d;
   font-size: 20px;
   font-style: italic;
@@ -69,8 +59,8 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: clamp(1.4rem, 2.8vw, 2.4rem);
-  margin-top: 2.2rem;
+  gap: 36px;
+  margin-top: 20px;
 }
 
 .shelf-create,
@@ -80,17 +70,17 @@
 
 .shelf-create {
   display: inline-flex;
-  min-width: 14.4rem;
-  min-height: 3.25rem;
+  min-width: 208px;
+  min-height: 46px;
   align-items: center;
   justify-content: center;
-  gap: 0.65rem;
+  gap: 10px;
   border: 1px solid #1f1e1b;
   border-radius: 2px;
   background: #1f1e1b;
   color: #fffaf2;
   cursor: pointer;
-  font-size: clamp(1rem, 1.2vw, 1.14rem);
+  font-size: 18px;
   line-height: 1;
   transition:
     transform 160ms ease,
@@ -102,8 +92,8 @@
 }
 
 .shelf-create__icon {
-  width: 1.1rem;
-  height: 1.1rem;
+  width: 18px;
+  height: 18px;
 }
 
 .shelf-export {
@@ -113,7 +103,7 @@
   background: transparent;
   color: #24221e;
   cursor: pointer;
-  font-size: clamp(1rem, 1.2vw, 1.14rem);
+  font-size: 18px;
   line-height: 1.2;
 }
 
@@ -121,22 +111,100 @@
   color: #5e574c;
 }
 
-.shelf-empty {
+.shelf-gallery {
+  display: flex;
   flex: 1;
-  min-height: 24rem;
+  min-height: 0;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  margin-top: 36px;
+  padding-bottom: 20px;
+}
+
+.shelf-arrow-space {
+  display: flex;
+  width: 44px;
+  align-items: center;
+  justify-content: center;
+}
+
+.shelf-arrow {
+  display: inline-flex;
+  width: 44px;
+  height: 44px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(36, 34, 30, 0.34);
+  border-radius: 50%;
+  background: rgba(249, 245, 238, 0.76);
+  color: #24221e;
+  cursor: pointer;
+  font-size: 24px;
+  transition:
+    background 160ms ease,
+    transform 160ms ease;
+}
+
+.shelf-arrow:hover {
+  background: rgba(255, 250, 242, 0.95);
+  transform: scale(1.06);
+}
+
+.shelf-diary-grid {
+  display: grid;
+  width: 100%;
+  max-width: 1120px;
+  height: 100%;
+  max-height: 310px;
+  grid-template-columns: repeat(4, 1fr);
+  align-items: end;
+  justify-items: center;
+  gap: 3%;
+}
+
+.shelf-diary {
+  display: flex;
+  width: 20vw;
+  max-width: 250px;
+  height: 100%;
+  max-height: 310px;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  transition:
+    filter 180ms ease,
+    transform 180ms ease;
+}
+
+.shelf-diary:hover {
+  filter: brightness(1.02);
+  transform: scale(1.06);
+}
+
+.shelf-diary img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
 @media (max-width: 900px) {
-  .shelf-page {
-    overflow: auto;
-  }
-
-  .shelf-page::after {
-    background: rgba(246, 241, 233, 0.62);
-  }
-
   .shelf-main {
-    padding-inline: clamp(1.25rem, 6vw, 3.5rem);
+    padding-right: 6%;
+    padding-left: 6%;
+  }
+
+  .shelf-diary-grid {
+    gap: 18px;
+  }
+
+  .shelf-diary {
+    width: 20vw;
+    height: 250px;
   }
 }
 
@@ -147,10 +215,19 @@
   }
 
   .shelf-subtitle {
-    font-size: 1.16rem;
+    font-size: 18px;
   }
 
   .shelf-create {
     width: 100%;
+  }
+
+  .shelf-diary-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .shelf-diary {
+    width: 42vw;
+    height: 220px;
   }
 }

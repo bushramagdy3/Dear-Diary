@@ -1,9 +1,64 @@
-import { FiPlus } from 'react-icons/fi'
+import { useState } from 'react'
+import { FiChevronLeft, FiChevronRight, FiPlus } from 'react-icons/fi'
 import Footer from '../../components/footer/Footer'
 import Header from '../../components/header/Header'
+import cover0 from '../../assets/journal-covers/0.png'
+import cover1 from '../../assets/journal-covers/1.png'
+import cover2 from '../../assets/journal-covers/2.png'
+import cover3 from '../../assets/journal-covers/3.png'
+import cover4 from '../../assets/journal-covers/4.png'
+import cover5 from '../../assets/journal-covers/5.png'
+import cover6 from '../../assets/journal-covers/6.png'
+import cover7 from '../../assets/journal-covers/7.png'
+import cover8 from '../../assets/journal-covers/8.png'
+import { diaries } from '../../static preview/diaries'
 import './MyShelf.css'
 
+const coverImages = {
+  0: cover0,
+  1: cover1,
+  2: cover2,
+  3: cover3,
+  4: cover4,
+  5: cover5,
+  6: cover6,
+  7: cover7,
+  8: cover8,
+}
+
 function MyShelf({ currentPage, setCurrentPage }) {
+  const diariesPerPage = 4
+  const [firstDiaryIndex, setFirstDiaryIndex] = useState(0)
+
+  const lastDiaryIndex = firstDiaryIndex + diariesPerPage
+  const visibleDiaries = diaries.slice(firstDiaryIndex, lastDiaryIndex)
+  const canGoBack = firstDiaryIndex > 0
+  const canGoForward = lastDiaryIndex < diaries.length
+  const shelfIsEmpty = diaries.length === 0
+
+  function getCoverImage(coverId) {
+    return coverImages[coverId] || coverImages[0]
+  }
+
+  function showPreviousDiaries() {
+    const previousIndex = firstDiaryIndex - diariesPerPage
+
+    if (previousIndex < 0) {
+      setFirstDiaryIndex(0)
+      return
+    }
+
+    setFirstDiaryIndex(previousIndex)
+  }
+
+  function showNextDiaries() {
+    const nextIndex = firstDiaryIndex + diariesPerPage
+
+    if (nextIndex < diaries.length) {
+      setFirstDiaryIndex(nextIndex)
+    }
+  }
+
   return (
     <div className="shelf-page" id="my-shelf">
       <Header currentPage={currentPage} setCurrentPage={setCurrentPage} />
@@ -25,7 +80,32 @@ function MyShelf({ currentPage, setCurrentPage }) {
           </div>
         </section>
 
-        <section className="shelf-empty"></section>
+        <section className="shelf-gallery">
+          <div className="shelf-arrow-space">
+            {canGoBack && (
+              <button className="shelf-arrow" onClick={showPreviousDiaries} type="button">
+                <FiChevronLeft />
+              </button>
+            )}
+          </div>
+
+          <div className="shelf-diary-grid">
+            {shelfIsEmpty && <p>Your shelf is empty. Create your first diary!</p>}
+            {visibleDiaries.map((diary) => (
+              <button className="shelf-diary" key={diary.id} type="button">
+                <img src={getCoverImage(diary.coverId)} alt={`${diary.title} diary cover`} />
+              </button>
+            ))}
+          </div>
+
+          <div className="shelf-arrow-space">
+            {canGoForward && (
+              <button className="shelf-arrow" onClick={showNextDiaries} type="button">
+                <FiChevronRight />
+              </button>
+            )}
+          </div>
+        </section>
       </main>
 
       <Footer />
