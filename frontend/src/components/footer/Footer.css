@@ -1,0 +1,37 @@
+.site-footer {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  width: 100%;
+  padding: 1.35rem clamp(1.25rem, 3.8vw, 3.4rem);
+  border-top: 1px solid rgba(39, 36, 31, 0.15);
+  color: #4f4a42;
+  font-size: clamp(0.88rem, 1.05vw, 1.02rem);
+}
+
+.site-footer__credit {
+  margin: 0;
+}
+
+.site-footer__links {
+  display: flex;
+  justify-content: center;
+  gap: clamp(2rem, 4vw, 3.2rem);
+}
+
+.site-footer__link {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 0.22em;
+}
+
+@media (max-width: 700px) {
+  .site-footer {
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    text-align: center;
+  }
+}
