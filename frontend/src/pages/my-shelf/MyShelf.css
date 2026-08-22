@@ -1,0 +1,156 @@
+.shelf-page {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  min-height: 100vh;
+  overflow: hidden;
+  flex-direction: column;
+  background: #f4eee6;
+  color: #24221e;
+}
+
+.shelf-page::before {
+  position: absolute;
+  z-index: -2;
+  inset: 0;
+  background-image: url("../../assets/my-shelf/my-shelf-bg.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  content: "";
+}
+
+.shelf-page::after {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(246, 241, 233, 0.86) 0%,
+      rgba(246, 241, 233, 0.42) 42%,
+      rgba(246, 241, 233, 0.1) 100%
+    );
+  content: "";
+  pointer-events: none;
+}
+
+.shelf-main {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  padding: clamp(2.5rem, 5.8vh, 4.8rem) clamp(1.5rem, 10.6vw, 10.8rem) 1.5rem;
+}
+
+.shelf-intro {
+  max-width: 44rem;
+}
+
+.shelf-title {
+  margin: 0;
+  font-family: "Bodoni 72", "Didot", "Cormorant Garamond", Georgia, serif;
+  font-size: 70px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 0.95;
+}
+
+.shelf-subtitle {
+  margin: 0.55rem 0 0;
+  color: #4a453d;
+  font-size: 20px;
+  font-style: italic;
+  line-height: 1.25;
+}
+
+.shelf-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: clamp(1.4rem, 2.8vw, 2.4rem);
+  margin-top: 2.2rem;
+}
+
+.shelf-create,
+.shelf-export {
+  font: inherit;
+}
+
+.shelf-create {
+  display: inline-flex;
+  min-width: 14.4rem;
+  min-height: 3.25rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  border: 1px solid #1f1e1b;
+  border-radius: 2px;
+  background: #1f1e1b;
+  color: #fffaf2;
+  cursor: pointer;
+  font-size: clamp(1rem, 1.2vw, 1.14rem);
+  line-height: 1;
+  transition:
+    transform 160ms ease,
+    background 160ms ease;
+}
+
+.shelf-create:hover {
+  transform: translateY(-1px);
+}
+
+.shelf-create__icon {
+  width: 1.1rem;
+  height: 1.1rem;
+}
+
+.shelf-export {
+  padding: 0;
+  border: 0;
+  border-bottom: 1px solid currentColor;
+  background: transparent;
+  color: #24221e;
+  cursor: pointer;
+  font-size: clamp(1rem, 1.2vw, 1.14rem);
+  line-height: 1.2;
+}
+
+.shelf-export:hover {
+  color: #5e574c;
+}
+
+.shelf-empty {
+  flex: 1;
+  min-height: 24rem;
+}
+
+@media (max-width: 900px) {
+  .shelf-page {
+    overflow: auto;
+  }
+
+  .shelf-page::after {
+    background: rgba(246, 241, 233, 0.62);
+  }
+
+  .shelf-main {
+    padding-inline: clamp(1.25rem, 6vw, 3.5rem);
+  }
+}
+
+@media (max-width: 520px) {
+  .shelf-title {
+    font-size: 70px;
+    line-height: 0.9;
+  }
+
+  .shelf-subtitle {
+    font-size: 1.16rem;
+  }
+
+  .shelf-create {
+    width: 100%;
+  }
+}

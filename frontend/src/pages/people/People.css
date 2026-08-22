@@ -1,0 +1,215 @@
+.people-page {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  height: 100vh;
+  max-height: 100vh;
+  min-height: 100vh;
+  overflow: hidden;
+  flex-direction: column;
+  background: #f4eee6;
+  color: #24221e;
+}
+
+.people-page::before {
+  position: absolute;
+  z-index: -2;
+  inset: 0;
+  background-image: url("../../assets/people/people-bg.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  content: "";
+}
+
+.people-page::after {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(246, 241, 233, 0.84) 0%,
+      rgba(246, 241, 233, 0.42) 40%,
+      rgba(246, 241, 233, 0.1) 100%
+    );
+  content: "";
+  pointer-events: none;
+}
+
+.people-main {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  flex-direction: column;
+  padding: clamp(1rem, 2.7vh, 2rem) clamp(1.5rem, 12vw, 12.8rem) 0.7rem;
+}
+
+.people-page .site-header {
+  padding-block: 0.55rem;
+}
+
+.people-page .site-footer {
+  padding-block: 0.75rem;
+}
+
+.people-intro {
+  max-width: 56rem;
+}
+
+.people-title {
+  margin: 0;
+  font-family: "Bodoni 72", "Didot", "Cormorant Garamond", Georgia, serif;
+  font-size: 70px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 0.95;
+}
+
+.people-subtitle {
+  margin: 0.55rem 0 0;
+  color: #4a453d;
+  font-size: 20px;
+  font-style: italic;
+  line-height: 1.25;
+}
+
+.people-add-button {
+  display: inline-flex;
+  min-width: 13rem;
+  min-height: 2.9rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  margin-top: 1rem;
+  border: 1px solid #1f1e1b;
+  border-radius: 2px;
+  background: #1f1e1b;
+  color: #fffaf2;
+  cursor: pointer;
+  font: inherit;
+  font-size: clamp(1rem, 1.2vw, 1.14rem);
+  line-height: 1;
+  transition: transform 160ms ease;
+}
+
+.people-add-button:hover {
+  transform: translateY(-1px);
+}
+
+.people-add-button__icon {
+  width: 1.1rem;
+  height: 1.1rem;
+}
+
+.people-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(17rem, 20rem));
+  gap: clamp(2rem, 5vw, 4.5rem);
+  align-items: start;
+  justify-content: center;
+  margin-top: clamp(0.45rem, 1.25vh, 0.9rem);
+}
+
+.person-card {
+  position: relative;
+  display: flex;
+  width: min(20rem, 72vw);
+  min-height: 0;
+  height: clamp(23rem, 46vh, 28rem);
+  aspect-ratio: 0.72;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  border: 0;
+  background:
+    url("../../assets/people/person-card-bg.png") center / contain no-repeat,
+    transparent;
+  color: #24221e;
+  cursor: pointer;
+  font-family: Georgia, "Times New Roman", serif;
+  text-align: center;
+  transition:
+    filter 180ms ease,
+    transform 180ms ease;
+}
+
+.person-card:hover {
+  filter: brightness(1.01);
+  transform: scale(1.06);
+}
+
+.person-card__plus {
+  width: 3rem;
+  height: 3rem;
+  margin-bottom: 1.45rem;
+  stroke-width: 1.1;
+}
+
+.person-card span {
+  font-size: 20px;
+  font-style: italic;
+}
+
+.people-privacy {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.85rem;
+  margin: clamp(0.45rem, 1.1vh, 0.8rem) 0 0;
+  color: #3f3a33;
+  font-size: clamp(0.9rem, 1.08vw, 1.05rem);
+}
+
+.people-privacy__icon {
+  width: 1.1rem;
+  height: 1.1rem;
+}
+
+@media (max-width: 900px) {
+  .people-page {
+    overflow: hidden;
+  }
+
+  .people-page::after {
+    background: rgba(246, 241, 233, 0.64);
+  }
+
+  .people-main {
+    padding-inline: clamp(1.25rem, 6vw, 3.5rem);
+  }
+
+  .people-card-grid {
+    justify-content: center;
+  }
+
+  .people-privacy {
+    margin-top: 1rem;
+  }
+}
+
+@media (max-width: 520px) {
+  .people-title {
+    font-size: 70px;
+    line-height: 0.9;
+  }
+
+  .people-subtitle {
+    font-size: 20px;
+  }
+
+  .people-add-button {
+    width: 100%;
+  }
+
+  .people-card-grid {
+    grid-template-columns: minmax(14rem, 1fr);
+  }
+
+  .person-card {
+    width: min(18rem, 82vw);
+    height: 23rem;
+  }
+}
