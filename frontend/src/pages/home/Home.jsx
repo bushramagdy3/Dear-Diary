@@ -23,9 +23,13 @@ function Home({ currentPage, setCurrentPage }) {
           </p>
 
           <div className="home-hero__actions">
-            <a className="home-button home-button--primary" href="#create-diary">
+            <button
+              className="home-button home-button--primary"
+              onClick={() => setCurrentPage('create-diary')}
+              type="button"
+            >
               Create diary
-            </a>
+            </button>
             <a className="home-button home-button--secondary" href="#import-backup">
               Import backup
             </a>

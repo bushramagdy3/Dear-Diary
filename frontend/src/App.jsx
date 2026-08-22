@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import './App.css'
+import CreateDiary from './pages/create-diary/CreateDiary'
 import Home from './pages/home/Home'
 import HowItWorks from './pages/how-it-works/HowItWorks'
 import MyShelf from './pages/my-shelf/MyShelf'
@@ -12,6 +13,9 @@ function App() {
     <>
       {currentPage === "home" && (
         <Home currentPage={currentPage} setCurrentPage={setCurrentPage} />
+      )}
+      {currentPage === "create-diary" && (
+        <CreateDiary currentPage={currentPage} setCurrentPage={setCurrentPage} />
       )}
       {currentPage === "my-shelf" && (
         <MyShelf currentPage={currentPage} setCurrentPage={setCurrentPage} />

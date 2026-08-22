@@ -90,6 +90,8 @@
   justify-content: center;
   border: 1px solid rgba(36, 34, 30, 0.72);
   border-radius: 2px;
+  cursor: pointer;
+  font: inherit;
   font-size: clamp(0.98rem, 1.15vw, 1.12rem);
   line-height: 1;
   text-decoration: none;

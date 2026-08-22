@@ -46,11 +46,14 @@ function MyShelf({ currentPage, setCurrentPage }) {
   }
 
   function getDiaryTitleClassName(diary) {
+    let cn = ""
     if (diary.id === hoveredDiaryId) {
-      return 'shelf-diary-title shelf-diary-title--hovered'
+      cn += `shelf-diary-title shelf-diary-title--hovered`
     }
-
-    return 'shelf-diary-title'
+    else
+      cn += 'shelf-diary-title'
+    cn += ` title-with-cover${diary.coverId}`
+    return cn
   }
 
   function showPreviousDiaries() {
@@ -72,6 +75,10 @@ function MyShelf({ currentPage, setCurrentPage }) {
     }
   }
 
+  function openCreateDiaryPage() {
+    setCurrentPage('create-diary')
+  }
+
   return (
     <div className="shelf-page" id="my-shelf">
       <Header currentPage={currentPage} setCurrentPage={setCurrentPage} />
@@ -82,7 +89,7 @@ function MyShelf({ currentPage, setCurrentPage }) {
           <p className="shelf-subtitle">Your diaries live only on this device.</p>
 
           <div className="shelf-actions">
-            <button className="shelf-create" type="button">
+            <button className="shelf-create" onClick={openCreateDiaryPage} type="button">
               <FiPlus className="shelf-create__icon" />
               <span>Create new diary</span>
             </button>
@@ -121,6 +128,7 @@ function MyShelf({ currentPage, setCurrentPage }) {
                       src={getCoverImage(diary.coverId)}
                       alt={`${getDiaryTitle(diary)} diary cover`}
                     />
+
                   </button>
                 ))}
               </div>

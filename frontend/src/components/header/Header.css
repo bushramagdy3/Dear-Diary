@@ -97,11 +97,6 @@
     gap: 1.25rem;
     overflow-x: auto;
     padding-bottom: 0.2rem;
-    scrollbar-width: none;
-  }
-
-  .site-header__nav::-webkit-scrollbar {
-    display: none;
   }
 }
 

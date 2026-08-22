@@ -193,8 +193,14 @@
   font-size: 30px;
   line-height: 1.08;
   text-align: center;
-  text-shadow: 0 1px 10px rgba(255, 250, 242, 0.85);
   transition: transform 180ms ease;
+}
+
+.title-with-cover3,
+.title-with-cover6,
+.title-with-cover7,
+.title-with-cover8 {
+  color: rgba(255, 250, 242, 0.85)
 }
 
 .shelf-diary-title--hovered {
