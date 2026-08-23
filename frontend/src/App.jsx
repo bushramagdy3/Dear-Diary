@@ -17,6 +17,7 @@ function App() {
   const [diaryList, setDiaryList] = useState(previewDiaries)
   const [peopleList, setPeopleList] = useState(previewPeople)
   const [editingDiaryId, setEditingDiaryId] = useState(null)
+  const [openedDiaryId, setOpenedDiaryId] = useState(null)
   const [editingPersonId, setEditingPersonId] = useState(null)
 
   function saveDiaryChanges(updatedDiary) {
@@ -76,6 +77,7 @@ function App() {
           diaries={diaryList}
           setCurrentPage={setCurrentPage}
           setEditingDiaryId={setEditingDiaryId}
+          setOpenedDiaryId={setOpenedDiaryId}
         />
       )}
       {currentPage === "people" && (
@@ -90,7 +92,11 @@ function App() {
         <HowItWorks currentPage={currentPage} setCurrentPage={setCurrentPage} />
       )}
       {currentPage === "diary-text-editor" && (
-        <DiaryTextEditor currentPage={currentPage} setCurrentPage={setCurrentPage} />
+        <DiaryTextEditor
+          diaries={diaryList}
+          diaryId={openedDiaryId}
+          setCurrentPage={setCurrentPage}
+        />
       )}
     </>
   )

@@ -25,7 +25,7 @@ const coverImages = {
   8: cover8,
 }
 
-function MyShelf({ currentPage, diaries, setCurrentPage, setEditingDiaryId }) {
+function MyShelf({ currentPage, diaries, setCurrentPage, setEditingDiaryId, setOpenedDiaryId }) {
   const diariesPerPage = 4
   const [firstDiaryIndex, setFirstDiaryIndex] = useState(0)
   const [hoveredDiaryId, setHoveredDiaryId] = useState(null)
@@ -83,6 +83,11 @@ function MyShelf({ currentPage, diaries, setCurrentPage, setEditingDiaryId }) {
     setCurrentPage('edit-diary')
   }
 
+  function openDiaryTextEditor(diaryId) {
+    setOpenedDiaryId(diaryId)
+    setCurrentPage('diary-text-editor')
+  }
+
   return (
     <div className="shelf-page" id="my-shelf">
       <Header currentPage={currentPage} setCurrentPage={setCurrentPage} />
@@ -123,6 +128,7 @@ function MyShelf({ currentPage, diaries, setCurrentPage, setEditingDiaryId }) {
                     className={`shelf-diary ${diary.id === hoveredDiaryId ? 'shelf-diary--hovered' : ''}`}
                     key={diary.id}
                     onBlur={() => setHoveredDiaryId(null)}
+                    onClick={() => openDiaryTextEditor(diary.id)}
                     onFocus={() => setHoveredDiaryId(diary.id)}
                     onMouseEnter={() => setHoveredDiaryId(diary.id)}
                     onMouseLeave={() => setHoveredDiaryId(null)}
@@ -145,20 +151,33 @@ function MyShelf({ currentPage, diaries, setCurrentPage, setEditingDiaryId }) {
                 ))}
               </div>
 
-              <div className="shelf-diary-edit-grid">
+              <div className="shelf-diary-actions-grid">
                 {visibleDiaries.map((diary) => (
-                  <button
-                    className={`shelf-diary-edit ${diary.id === hoveredDiaryId ? 'shelf-diary-edit--hovered' : ''}`}
+                  <div
+                    className={`shelf-diary-actions ${diary.id === hoveredDiaryId ? 'shelf-diary-actions--hovered' : ''}`}
                     key={diary.id}
-                    onBlur={() => setHoveredDiaryId(null)}
-                    onClick={() => openEditDiaryPage(diary.id)}
-                    onFocus={() => setHoveredDiaryId(diary.id)}
                     onMouseEnter={() => setHoveredDiaryId(diary.id)}
                     onMouseLeave={() => setHoveredDiaryId(null)}
-                    type="button"
                   >
-                    Edit
-                  </button>
+                    <button
+                      className="shelf-diary-link"
+                      onBlur={() => setHoveredDiaryId(null)}
+                      onClick={() => openDiaryTextEditor(diary.id)}
+                      onFocus={() => setHoveredDiaryId(diary.id)}
+                      type="button"
+                    >
+                      Open
+                    </button>
+                    <button
+                      className="shelf-diary-link"
+                      onBlur={() => setHoveredDiaryId(null)}
+                      onClick={() => openEditDiaryPage(diary.id)}
+                      onFocus={() => setHoveredDiaryId(diary.id)}
+                      type="button"
+                    >
+                      Edit
+                    </button>
+                  </div>
                 ))}
               </div>
             </div>

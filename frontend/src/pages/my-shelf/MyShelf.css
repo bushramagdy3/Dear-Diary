@@ -159,7 +159,7 @@
 
 .shelf-diary-grid,
 .shelf-diary-title-grid,
-.shelf-diary-edit-grid {
+.shelf-diary-actions-grid {
   display: grid;
   grid-column: 1;
   width: 100%;
@@ -185,7 +185,7 @@
   z-index: 2;
 }
 
-.shelf-diary-edit-grid {
+.shelf-diary-actions-grid {
   grid-row: 2;
   align-items: start;
   z-index: 3;
@@ -245,7 +245,19 @@
   object-fit: contain;
 }
 
-.shelf-diary-edit {
+.shelf-diary-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  transition: transform 180ms ease;
+}
+
+.shelf-diary-actions--hovered {
+  transform: scale(1.06);
+}
+
+.shelf-diary-link {
   padding: 0;
   border: 0;
   border-bottom: 1px solid currentColor;
@@ -256,16 +268,11 @@
   font-size: 16px;
   line-height: 1.2;
   transition:
-    color 160ms ease,
-    transform 180ms ease;
+    color 160ms ease;
 }
 
-.shelf-diary-edit:hover {
+.shelf-diary-link:hover {
   color: #5e574c;
-}
-
-.shelf-diary-edit--hovered {
-  transform: scale(1.06);
 }
 
 @media (max-width: 900px) {
@@ -280,7 +287,7 @@
 
   .shelf-diary-grid,
   .shelf-diary-title-grid,
-  .shelf-diary-edit-grid {
+  .shelf-diary-actions-grid {
     gap: 2vh;
   }
 
@@ -293,7 +300,7 @@
     font-size: 22px;
   }
 
-  .shelf-diary-edit {
+  .shelf-diary-link {
     font-size: 14px;
   }
 }
@@ -314,7 +321,7 @@
 
   .shelf-diary-grid,
   .shelf-diary-title-grid,
-  .shelf-diary-edit-grid {
+  .shelf-diary-actions-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 

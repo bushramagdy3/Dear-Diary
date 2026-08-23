@@ -1,0 +1,209 @@
+.diary-editor-page {
+  min-height: 100vh;
+  overflow-x: hidden;
+  background:
+    radial-gradient(circle at 96% 16%, rgba(224, 204, 186, 0.24), transparent 18%),
+    linear-gradient(90deg, rgba(246, 241, 233, 0.98), rgba(250, 247, 241, 0.94));
+  color: #24221e;
+}
+
+.diary-editor-topbar {
+  display: flex;
+  min-height: 78px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 0 24px;
+  border-bottom: 1px solid rgba(36, 34, 30, 0.18);
+}
+
+.diary-editor-topbar__left,
+.diary-editor-topbar__right {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.diary-editor-back,
+.diary-editor-export,
+.diary-editor-collapse,
+.diary-editor-new-entry {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  background: transparent;
+  color: #24221e;
+  cursor: pointer;
+  font: inherit;
+}
+
+.diary-editor-back {
+  gap: 8px;
+  font-size: 17px;
+  font-style: italic;
+}
+
+.diary-editor-back svg {
+  width: 18px;
+  height: 18px;
+}
+
+.diary-editor-diary-title {
+  margin: 0;
+  font-family: "Bodoni 72", "Didot", "Cormorant Garamond", Georgia, serif;
+  font-size: 32px;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+
+.diary-editor-saved {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin: 0;
+  color: #2f2b25;
+  font-size: 16px;
+  font-style: italic;
+}
+
+.diary-editor-saved svg {
+  width: 18px;
+  height: 18px;
+}
+
+.diary-editor-export {
+  min-width: 118px;
+  min-height: 42px;
+  gap: 8px;
+  border: 1px solid rgba(36, 34, 30, 0.72);
+  border-radius: 4px;
+  background: rgba(255, 250, 242, 0.46);
+  font-size: 18px;
+  transition: transform 160ms ease;
+}
+
+.diary-editor-export:hover {
+  transform: translateY(-1px);
+}
+
+.diary-editor-main {
+  display: grid;
+  min-height: calc(100vh - 78px);
+  grid-template-columns: 348px 1fr;
+}
+
+.diary-editor-sidebar {
+  min-height: 720px;
+  padding: 24px 20px;
+  border-right: 1px solid rgba(36, 34, 30, 0.18);
+  background: rgba(247, 241, 233, 0.62);
+}
+
+.diary-editor-sidebar__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.diary-editor-sidebar__header h2 {
+  margin: 0;
+  font-family: "Bodoni 72", "Didot", "Cormorant Garamond", Georgia, serif;
+  font-size: 26px;
+  font-weight: 400;
+}
+
+.diary-editor-collapse {
+  width: 30px;
+  height: 30px;
+  border: 1px solid rgba(36, 34, 30, 0.2);
+  border-radius: 4px;
+  background: rgba(255, 250, 242, 0.58);
+}
+
+.diary-editor-new-entry {
+  width: 100%;
+  min-height: 46px;
+  gap: 10px;
+  margin-top: 18px;
+  border: 1px solid #1f1e1b;
+  border-radius: 3px;
+  background: #1f1e1b;
+  color: #fffaf2;
+  font-size: 18px;
+  transition: transform 160ms ease;
+}
+
+.diary-editor-new-entry:hover {
+  transform: translateY(-1px);
+}
+
+.diary-editor-entry-list {
+  min-height: 490px;
+  margin-top: 22px;
+  border-top: 1px solid rgba(36, 34, 30, 0.12);
+}
+
+.diary-editor-workspace {
+  min-width: 0;
+  min-height: 720px;
+  padding: 74px 8% 90px;
+}
+
+.diary-editor-blank-sheet {
+  width: 100%;
+  max-width: 880px;
+  min-height: 560px;
+  border-top: 1px solid rgba(36, 34, 30, 0.1);
+}
+
+@media (max-width: 900px) {
+  .diary-editor-topbar {
+    align-items: flex-start;
+    flex-direction: column;
+    padding: 18px 22px;
+  }
+
+  .diary-editor-topbar__left,
+  .diary-editor-topbar__right {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .diary-editor-main {
+    grid-template-columns: 1fr;
+  }
+
+  .diary-editor-sidebar {
+    min-height: auto;
+    border-right: 0;
+    border-bottom: 1px solid rgba(36, 34, 30, 0.18);
+  }
+
+  .diary-editor-entry-list {
+    min-height: 120px;
+  }
+
+  .diary-editor-workspace {
+    min-height: 560px;
+    padding: 48px 6% 70px;
+  }
+}
+
+@media (max-width: 560px) {
+  .diary-editor-topbar__left,
+  .diary-editor-topbar__right {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .diary-editor-diary-title {
+    font-size: 28px;
+  }
+
+  .diary-editor-export {
+    width: 100%;
+  }
+}
