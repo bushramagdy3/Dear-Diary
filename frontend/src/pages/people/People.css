@@ -101,25 +101,63 @@
   height: 16px;
 }
 
+.people-gallery {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 26px;
+  margin-top: 12px;
+}
+
+.people-arrow-space {
+  display: flex;
+  width: 44px;
+  align-items: center;
+  justify-content: center;
+}
+
+.people-arrow {
+  display: inline-flex;
+  width: 44px;
+  height: 44px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(36, 34, 30, 0.34);
+  border-radius: 50%;
+  background: rgba(249, 245, 238, 0.76);
+  color: #24221e;
+  cursor: pointer;
+  font-size: 24px;
+  transition:
+    background 160ms ease,
+    transform 160ms ease;
+}
+
+.people-arrow:hover {
+  background: rgba(255, 250, 242, 0.95);
+  transform: scale(1.06);
+}
+
 .people-card-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(20rem, 24rem));
-  gap: 52px;
+  width: 100%;
+  max-width: 1120px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 44px;
   align-items: start;
-  justify-content: center;
-  margin-top: 8px;
+  justify-items: center;
 }
 
 .person-card {
   position: relative;
   display: flex;
-  width: 24rem;
+  width: 330px;
   min-height: 0;
-  height: 400px;
-  aspect-ratio: 0.72;
+  height: 455px;
   align-items: center;
-  justify-content: center;
   flex-direction: column;
+  justify-content: flex-start;
+  padding: 58px 48px 44px;
   border: 0;
   background:
     url("../../assets/people/person-card-bg.png") center / contain no-repeat,
@@ -136,6 +174,65 @@
 .person-card:hover {
   filter: brightness(1.01);
   transform: scale(1.06);
+}
+
+.person-card__portrait {
+  display: block;
+  width: 190px;
+  height: 180px;
+  object-fit: contain;
+}
+
+.person-card__name,
+.person-card__relationship,
+.person-card__description {
+  margin: 0;
+}
+
+.person-card__name {
+  margin-top: 8px;
+  font-family: "Bodoni 72", "Didot", "Cormorant Garamond", Georgia, serif;
+  font-size: 32px;
+  font-weight: 400;
+  line-height: 1;
+}
+
+.person-card__relationship {
+  margin-top: 2px;
+  color: #4a453d;
+  font-size: 15px;
+  font-style: italic;
+}
+
+.person-card__description {
+  width: 100%;
+  margin-top: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(36, 34, 30, 0.14);
+  color: #2f2b25;
+  font-size: 14px;
+  line-height: 1.25;
+}
+
+.person-card__edit {
+  margin-top: 10px;
+  padding: 0;
+  border: 0;
+  border-bottom: 1px solid currentColor;
+  background: transparent;
+  color: #24221e;
+  cursor: pointer;
+  font: inherit;
+  font-size: 15px;
+  line-height: 1.2;
+}
+
+.person-card__edit:hover {
+  color: #5e574c;
+}
+
+.person-card--add {
+  justify-content: center;
 }
 
 .person-card__plus {
@@ -178,8 +275,35 @@
     padding-inline: clamp(1.25rem, 6vw, 3.5rem);
   }
 
+  .people-gallery {
+    gap: 14px;
+  }
+
   .people-card-grid {
+    grid-template-columns: repeat(3, 1fr);
     justify-content: center;
+    gap: 16px;
+  }
+
+  .person-card {
+    width: 230px;
+    height: 318px;
+    padding: 42px 34px 32px;
+  }
+
+  .person-card__portrait {
+    width: 128px;
+    height: 122px;
+  }
+
+  .person-card__name {
+    font-size: 24px;
+  }
+
+  .person-card__relationship,
+  .person-card__description,
+  .person-card__edit {
+    font-size: 13px;
   }
 
   .people-privacy {
@@ -202,11 +326,11 @@
   }
 
   .people-card-grid {
-    grid-template-columns: minmax(14rem, 1fr);
+    grid-template-columns: 1fr;
   }
 
   .person-card {
-    width: min(18rem, 82vw);
-    height: 23rem;
+    width: 280px;
+    height: 386px;
   }
 }

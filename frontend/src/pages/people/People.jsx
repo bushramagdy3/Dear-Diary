@@ -1,9 +1,58 @@
-import { FiLock, FiPlus } from 'react-icons/fi'
+import { useState } from 'react'
+import { FiChevronLeft, FiChevronRight, FiLock, FiPlus } from 'react-icons/fi'
 import Footer from '../../components/footer/Footer'
 import Header from '../../components/header/Header'
+import person0 from '../../assets/static/0.png'
+import person1 from '../../assets/static/1.png'
+import { people } from '../../static preview/people'
 import './People.css'
 
+const personImages = {
+  0: person0,
+  1: person1,
+}
+
 function People({ currentPage, setCurrentPage }) {
+  const cardsPerPage = 3
+  const [firstCardIndex, setFirstCardIndex] = useState(0)
+
+  const peopleCards = [...people, { id: 'add-person-card', isAddCard: true }]
+  const lastCardIndex = firstCardIndex + cardsPerPage
+  const visibleCards = peopleCards.slice(firstCardIndex, lastCardIndex)
+  const canGoBack = firstCardIndex > 0
+  const canGoForward = lastCardIndex < peopleCards.length
+
+  function getPersonImage(imageId) {
+    return personImages[imageId] || personImages[0]
+  }
+
+  function formatText(text) {
+    if (!text) {
+      return ''
+    }
+
+    return text.charAt(0).toUpperCase() + text.slice(1)
+  }
+
+  function showPreviousCards() {
+    const previousIndex = firstCardIndex - cardsPerPage
+
+    if (previousIndex < 0) {
+      setFirstCardIndex(0)
+      return
+    }
+
+    setFirstCardIndex(previousIndex)
+  }
+
+  function showNextCards() {
+    const nextIndex = firstCardIndex + cardsPerPage
+
+    if (nextIndex < peopleCards.length) {
+      setFirstCardIndex(nextIndex)
+    }
+  }
+
   return (
     <div className="people-page" id="people">
       <Header currentPage={currentPage} setCurrentPage={setCurrentPage} />
@@ -21,11 +70,51 @@ function People({ currentPage, setCurrentPage }) {
           </button>
         </section>
 
-        <section className="people-card-grid">
-          <button className="person-card person-card--add" type="button">
-            <FiPlus className="person-card__plus" />
-            <span>Add someone new</span>
-          </button>
+        <section className="people-gallery">
+          <div className="people-arrow-space">
+            {canGoBack && (
+              <button className="people-arrow" onClick={showPreviousCards} type="button">
+                <FiChevronLeft />
+              </button>
+            )}
+          </div>
+
+          <div className="people-card-grid">
+            {visibleCards.map((card) => {
+              if (card.isAddCard) {
+                return (
+                  <button className="person-card person-card--add" key={card.id} type="button">
+                    <FiPlus className="person-card__plus" />
+                    <span>Add someone new</span>
+                  </button>
+                )
+              }
+
+              return (
+                <article className="person-card" key={card.id}>
+                  <img
+                    className="person-card__portrait"
+                    src={getPersonImage(card.imageId)}
+                    alt={`${formatText(card.name)} portrait`}
+                  />
+                  <h2 className="person-card__name">{formatText(card.name)}</h2>
+                  <p className="person-card__relationship">{formatText(card.relationship)}</p>
+                  <p className="person-card__description">{formatText(card.description)}</p>
+                  <button className="person-card__edit" type="button">
+                    Edit
+                  </button>
+                </article>
+              )
+            })}
+          </div>
+
+          <div className="people-arrow-space">
+            {canGoForward && (
+              <button className="people-arrow" onClick={showNextCards} type="button">
+                <FiChevronRight />
+              </button>
+            )}
+          </div>
         </section>
 
         <p className="people-privacy">
