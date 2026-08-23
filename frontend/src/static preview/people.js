@@ -12,5 +12,19 @@ export const people = [
         relationship: "friend",
         description: "curly hair, casual",
         imageId: 1
+    },
+    {
+        id: 2,
+        name: "layan",
+        relationship: "friend",
+        description: "y2k, wolfcut",
+        imageId: 0
+    },
+    {
+        id: 3,
+        name: "miriam",
+        relationship: "friend",
+        description: "curly hair, casual",
+        imageId: 1
     }
 ]

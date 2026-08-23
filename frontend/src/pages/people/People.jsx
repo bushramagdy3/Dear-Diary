@@ -53,6 +53,10 @@ function People({ currentPage, setCurrentPage }) {
     }
   }
 
+  function openAddPersonPage() {
+    setCurrentPage('add-person')
+  }
+
   return (
     <div className="people-page" id="people">
       <Header currentPage={currentPage} setCurrentPage={setCurrentPage} />
@@ -64,7 +68,7 @@ function People({ currentPage, setCurrentPage }) {
             Keep familiar faces consistent across your illustrated memories.
           </p>
 
-          <button className="people-add-button" type="button">
+          <button className="people-add-button" onClick={openAddPersonPage} type="button">
             <FiPlus className="people-add-button__icon" />
             <span>Add a person</span>
           </button>
@@ -83,7 +87,12 @@ function People({ currentPage, setCurrentPage }) {
             {visibleCards.map((card) => {
               if (card.isAddCard) {
                 return (
-                  <button className="person-card person-card--add" key={card.id} type="button">
+                  <button
+                    className="person-card person-card--add"
+                    key={card.id}
+                    onClick={openAddPersonPage}
+                    type="button"
+                  >
                     <FiPlus className="person-card__plus" />
                     <span>Add someone new</span>
                   </button>

@@ -1,0 +1,383 @@
+.add-person-page {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  min-height: 100vh;
+  overflow-x: hidden;
+  flex-direction: column;
+  background: #f4eee6;
+  color: #24221e;
+}
+
+.add-person-page::before {
+  position: absolute;
+  z-index: -2;
+  inset: 0;
+  background-image: url("../../assets/people/people-bg.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  content: "";
+}
+
+.add-person-page::after {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  background: rgba(246, 241, 233, 0.72);
+  content: "";
+  pointer-events: none;
+}
+
+.add-person-page .site-header {
+  padding-block: 9px;
+}
+
+.add-person-page .site-footer {
+  padding-block: 12px;
+}
+
+.add-person-main {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  flex: 1 0 auto;
+  grid-template-columns: 47% 53%;
+  gap: 34px;
+  padding: 34px 70px 44px;
+}
+
+.add-person-form {
+  padding-right: 34px;
+  border-right: 1px solid rgba(36, 34, 30, 0.24);
+}
+
+.add-person-back {
+  padding: 0;
+  border: 0;
+  border-bottom: 1px solid currentColor;
+  background: transparent;
+  color: #24221e;
+  cursor: pointer;
+  font: inherit;
+  font-size: 17px;
+  font-style: italic;
+}
+
+.add-person-title {
+  margin: 22px 0 0;
+  font-family: "Bodoni 72", "Didot", "Cormorant Garamond", Georgia, serif;
+  font-size: 70px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 0.95;
+}
+
+.add-person-subtitle {
+  margin: 18px 0 26px;
+  color: #2f2b25;
+  font-size: 18px;
+  line-height: 1.4;
+}
+
+.add-person-label {
+  display: block;
+  margin-top: 18px;
+  font-size: 17px;
+}
+
+.add-person-input,
+.add-person-description,
+.portrait-words-box {
+  width: 100%;
+  border: 1px solid rgba(36, 34, 30, 0.58);
+  border-radius: 6px;
+  background: rgba(255, 250, 242, 0.64);
+  color: #24221e;
+  font: inherit;
+  font-size: 17px;
+}
+
+.add-person-input {
+  height: 54px;
+  margin-top: 8px;
+  padding: 0 18px;
+}
+
+.add-person-description {
+  height: 150px;
+  margin-top: 8px;
+  padding: 14px 18px;
+  line-height: 1.45;
+  resize: none;
+}
+
+.add-person-count {
+  margin: -28px 18px 0 0;
+  color: #767066;
+  font-size: 14px;
+  text-align: right;
+}
+
+.add-person-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  margin-top: 24px;
+}
+
+.add-person-cancel,
+.add-person-save,
+.portrait-generate-button,
+.portrait-choose-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+  cursor: pointer;
+  font: inherit;
+  transition: transform 160ms ease;
+}
+
+.add-person-cancel:hover,
+.add-person-save:hover,
+.portrait-generate-button:hover,
+.portrait-choose-button:hover {
+  transform: translateY(-1px);
+}
+
+.add-person-cancel,
+.add-person-save {
+  min-height: 48px;
+  border: 1px solid #1f1e1b;
+  font-size: 18px;
+}
+
+.add-person-cancel {
+  background: rgba(255, 250, 242, 0.4);
+  color: #24221e;
+}
+
+.add-person-save {
+  background: #1f1e1b;
+  color: #fffaf2;
+}
+
+.add-person-portrait {
+  padding-left: 8px;
+}
+
+.portrait-title {
+  margin: 28px 0 26px;
+  font-family: "Bodoni 72", "Didot", "Cormorant Garamond", Georgia, serif;
+  font-size: 36px;
+  font-weight: 400;
+  line-height: 1;
+}
+
+.portrait-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  overflow: hidden;
+  max-width: 640px;
+  border: 1px solid rgba(36, 34, 30, 0.62);
+  border-radius: 5px;
+}
+
+.portrait-tab {
+  min-height: 46px;
+  border: 0;
+  background: rgba(255, 250, 242, 0.5);
+  color: #24221e;
+  cursor: pointer;
+  font: inherit;
+  font-size: 18px;
+}
+
+.portrait-tab + .portrait-tab {
+  border-left: 1px solid rgba(36, 34, 30, 0.62);
+}
+
+.portrait-tab--active {
+  background: #1f1e1b;
+  color: #fffaf2;
+}
+
+.portrait-workspace {
+  display: grid;
+  grid-template-columns: 230px 1fr;
+  gap: 42px;
+  align-items: start;
+  margin-top: 42px;
+}
+
+.portrait-upload-box,
+.portrait-words-box {
+  min-height: 360px;
+}
+
+.portrait-upload-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 24px;
+  border: 1px dashed rgba(36, 34, 30, 0.72);
+  border-radius: 14px;
+  background: rgba(255, 250, 242, 0.22);
+  text-align: center;
+}
+
+.portrait-upload-icon {
+  width: 58px;
+  height: 58px;
+  stroke-width: 1.4;
+}
+
+.portrait-upload-box p {
+  margin: 24px 0 20px;
+  font-size: 20px;
+}
+
+.portrait-upload-box span {
+  margin-top: 18px;
+  color: #686158;
+  font-size: 14px;
+}
+
+.portrait-choose-button {
+  min-height: 48px;
+  gap: 8px;
+  padding: 0 22px;
+  border: 1px solid #1f1e1b;
+  background: rgba(255, 250, 242, 0.54);
+  color: #24221e;
+  font-size: 16px;
+}
+
+.portrait-words-box {
+  padding: 18px;
+  line-height: 1.45;
+  resize: none;
+}
+
+.portrait-preview-area {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.portrait-placeholder-card {
+  position: relative;
+  display: flex;
+  width: 360px;
+  height: 360px;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  color: #3f3a33;
+  text-align: center;
+}
+
+.portrait-empty-card-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+.portrait-card-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 74px 54px 52px;
+}
+
+.portrait-placeholder-figure {
+  width: 185px;
+  height: 155px;
+  object-fit: contain;
+  opacity: 0.24;
+  pointer-events: none;
+}
+
+.portrait-result-image {
+  width: 250px;
+  height: 250px;
+  object-fit: contain;
+}
+
+.portrait-placeholder-card p {
+  max-width: 230px;
+  margin: 10px 0 0;
+  font-size: 18px;
+  line-height: 1.35;
+}
+
+.portrait-generate-button {
+  width: 330px;
+  min-height: 58px;
+  gap: 12px;
+  margin-top: 22px;
+  border: 1px solid #1f1e1b;
+  background: #1f1e1b;
+  color: #fffaf2;
+  font-size: 20px;
+}
+
+@media (max-width: 1050px) {
+  .add-person-main {
+    grid-template-columns: 1fr;
+    padding-right: 6%;
+    padding-left: 6%;
+  }
+
+  .add-person-form {
+    padding-right: 0;
+    border-right: 0;
+  }
+
+  .add-person-portrait {
+    padding-left: 0;
+  }
+}
+
+@media (max-width: 700px) {
+  .add-person-title {
+    font-size: 56px;
+  }
+
+  .add-person-actions,
+  .portrait-workspace {
+    grid-template-columns: 1fr;
+  }
+
+  .portrait-tabs {
+    max-width: none;
+  }
+
+  .portrait-placeholder-card {
+    width: 300px;
+    height: 300px;
+  }
+
+  .portrait-card-content {
+    padding: 62px 42px 42px;
+  }
+
+  .portrait-placeholder-figure {
+    width: 155px;
+    height: 130px;
+  }
+
+  .portrait-generate-button {
+    width: 100%;
+  }
+}
