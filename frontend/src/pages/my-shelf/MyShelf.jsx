@@ -11,7 +11,6 @@ import cover5 from '../../assets/journal-covers/5.png'
 import cover6 from '../../assets/journal-covers/6.png'
 import cover7 from '../../assets/journal-covers/7.png'
 import cover8 from '../../assets/journal-covers/8.png'
-import { diaries } from '../../static preview/diaries'
 import './MyShelf.css'
 
 const coverImages = {
@@ -26,7 +25,7 @@ const coverImages = {
   8: cover8,
 }
 
-function MyShelf({ currentPage, setCurrentPage }) {
+function MyShelf({ currentPage, diaries, setCurrentPage, setEditingDiaryId }) {
   const diariesPerPage = 4
   const [firstDiaryIndex, setFirstDiaryIndex] = useState(0)
   const [hoveredDiaryId, setHoveredDiaryId] = useState(null)
@@ -79,6 +78,11 @@ function MyShelf({ currentPage, setCurrentPage }) {
     setCurrentPage('create-diary')
   }
 
+  function openEditDiaryPage(diaryId) {
+    setEditingDiaryId(diaryId)
+    setCurrentPage('edit-diary')
+  }
+
   return (
     <div className="shelf-page" id="my-shelf">
       <Header currentPage={currentPage} setCurrentPage={setCurrentPage} />
@@ -116,7 +120,7 @@ function MyShelf({ currentPage, setCurrentPage }) {
               <div className="shelf-diary-grid">
                 {visibleDiaries.map((diary) => (
                   <button
-                    className="shelf-diary"
+                    className={`shelf-diary ${diary.id === hoveredDiaryId ? 'shelf-diary--hovered' : ''}`}
                     key={diary.id}
                     onBlur={() => setHoveredDiaryId(null)}
                     onFocus={() => setHoveredDiaryId(diary.id)}
@@ -138,6 +142,23 @@ function MyShelf({ currentPage, setCurrentPage }) {
                   <p className={getDiaryTitleClassName(diary)} key={diary.id}>
                     {getDiaryTitle(diary)}
                   </p>
+                ))}
+              </div>
+
+              <div className="shelf-diary-edit-grid">
+                {visibleDiaries.map((diary) => (
+                  <button
+                    className={`shelf-diary-edit ${diary.id === hoveredDiaryId ? 'shelf-diary-edit--hovered' : ''}`}
+                    key={diary.id}
+                    onBlur={() => setHoveredDiaryId(null)}
+                    onClick={() => openEditDiaryPage(diary.id)}
+                    onFocus={() => setHoveredDiaryId(diary.id)}
+                    onMouseEnter={() => setHoveredDiaryId(diary.id)}
+                    onMouseLeave={() => setHoveredDiaryId(null)}
+                    type="button"
+                  >
+                    Edit
+                  </button>
                 ))}
               </div>
             </div>

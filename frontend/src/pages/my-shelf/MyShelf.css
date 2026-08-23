@@ -154,19 +154,25 @@
   width: 100%;
   max-width: 1420px;
   height: 66vh;
+  grid-template-rows: minmax(0, 1fr) 28px;
+}
+
+.shelf-diary-grid,
+.shelf-diary-title-grid,
+.shelf-diary-edit-grid {
+  display: grid;
+  grid-column: 1;
+  width: 100%;
+  grid-template-columns: repeat(4, 1fr);
+  justify-items: center;
+  gap: 4vh;
 }
 
 .shelf-diary-grid,
 .shelf-diary-title-grid {
-  display: grid;
   grid-row: 1;
-  grid-column: 1;
-  width: 100%;
   height: 100%;
-  grid-template-columns: repeat(4, 1fr);
   align-items: end;
-  justify-items: center;
-  gap: 4vh;
 }
 
 .shelf-diary-grid {
@@ -177,6 +183,12 @@
   align-items: center;
   pointer-events: none;
   z-index: 2;
+}
+
+.shelf-diary-edit-grid {
+  grid-row: 2;
+  align-items: start;
+  z-index: 3;
 }
 
 .shelf-diary-title {
@@ -220,7 +232,8 @@
     transform 180ms ease;
 }
 
-.shelf-diary:hover {
+.shelf-diary:hover,
+.shelf-diary--hovered {
   filter: brightness(1.02);
   transform: scale(1.06);
 }
@@ -230,6 +243,29 @@
   width: 100%;
   height: 100%;
   object-fit: contain;
+}
+
+.shelf-diary-edit {
+  padding: 0;
+  border: 0;
+  border-bottom: 1px solid currentColor;
+  background: transparent;
+  color: #24221e;
+  cursor: pointer;
+  font: inherit;
+  font-size: 16px;
+  line-height: 1.2;
+  transition:
+    color 160ms ease,
+    transform 180ms ease;
+}
+
+.shelf-diary-edit:hover {
+  color: #5e574c;
+}
+
+.shelf-diary-edit--hovered {
+  transform: scale(1.06);
 }
 
 @media (max-width: 900px) {
@@ -243,7 +279,8 @@
   }
 
   .shelf-diary-grid,
-  .shelf-diary-title-grid {
+  .shelf-diary-title-grid,
+  .shelf-diary-edit-grid {
     gap: 2vh;
   }
 
@@ -254,6 +291,10 @@
 
   .shelf-diary-title {
     font-size: 22px;
+  }
+
+  .shelf-diary-edit {
+    font-size: 14px;
   }
 }
 
@@ -272,7 +313,8 @@
   }
 
   .shelf-diary-grid,
-  .shelf-diary-title-grid {
+  .shelf-diary-title-grid,
+  .shelf-diary-edit-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 

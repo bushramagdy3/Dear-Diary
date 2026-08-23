@@ -4,7 +4,6 @@ import Footer from '../../components/footer/Footer'
 import Header from '../../components/header/Header'
 import person0 from '../../assets/static/0.png'
 import person1 from '../../assets/static/1.png'
-import { people } from '../../static preview/people'
 import './People.css'
 
 const personImages = {
@@ -12,7 +11,7 @@ const personImages = {
   1: person1,
 }
 
-function People({ currentPage, setCurrentPage }) {
+function People({ currentPage, people, setCurrentPage, setEditingPersonId }) {
   const cardsPerPage = 3
   const [firstCardIndex, setFirstCardIndex] = useState(0)
 
@@ -55,6 +54,11 @@ function People({ currentPage, setCurrentPage }) {
 
   function openAddPersonPage() {
     setCurrentPage('add-person')
+  }
+
+  function openEditPersonPage(personId) {
+    setEditingPersonId(personId)
+    setCurrentPage('edit-person')
   }
 
   return (
@@ -109,7 +113,11 @@ function People({ currentPage, setCurrentPage }) {
                   <h2 className="person-card__name">{formatText(card.name)}</h2>
                   <p className="person-card__relationship">{formatText(card.relationship)}</p>
                   <p className="person-card__description">{formatText(card.description)}</p>
-                  <button className="person-card__edit" type="button">
+                  <button
+                    className="person-card__edit"
+                    onClick={() => openEditPersonPage(card.id)}
+                    type="button"
+                  >
                     Edit
                   </button>
                 </article>
