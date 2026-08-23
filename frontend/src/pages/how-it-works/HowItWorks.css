@@ -38,13 +38,14 @@
 .how-main {
   position: relative;
   z-index: 1;
-  display: flex;
   flex: 1 0 auto;
-  flex-direction: column;
+  min-height: 760px;
   padding: 58px 6% 34px;
 }
 
 .how-intro {
+  position: relative;
+  z-index: 2;
   max-width: 760px;
 }
 
@@ -66,19 +67,14 @@
 }
 
 .how-steps {
-  display: grid;
-  width: 100%;
-  max-width: 1400px;
-  flex: 1 0 auto;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  align-items: center;
-  gap: 46px;
-  margin: 28px auto 0;
+  position: absolute;
+  inset: 0;
+  z-index: 1;
 }
 
 .how-step {
-  width: 100%;
-  max-width: 250px;
+  position: absolute;
+  width: 250px;
   transform-origin: center;
   transition:
     color 180ms ease,
@@ -119,27 +115,41 @@
   line-height: 1.35;
 }
 
-.how-step--one,
-.how-step--three {
-  grid-column: 1;
+.how-step--one {
+  top: 26%;
+  left: 7.5%;
 }
 
-.how-step--two,
+.how-step--two {
+  top: 25%;
+  right: 3%;
+}
+
+.how-step--three {
+  top: 50%;
+  left: 7.5%;
+}
+
 .how-step--four {
-  grid-column: 4;
-  justify-self: end;
+  top: 57%;
+  right: 5%;
 }
 
 .how-step--five {
-  grid-column: 1 / span 2;
+  bottom: 8%;
+  left: 15%;
 }
 
 .how-privacy {
+  position: absolute;
+  right: 0;
+  bottom: 34px;
+  left: 0;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 14px;
-  margin: 26px 0 0;
+  margin: 0;
   color: #3f3a33;
   font-size: 16px;
 }
@@ -155,10 +165,16 @@
   }
 
   .how-main {
+    display: flex;
+    min-height: auto;
+    flex-direction: column;
     padding-top: 52px;
   }
 
   .how-steps {
+    position: relative;
+    inset: auto;
+    display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     align-items: start;
     gap: 34px;
@@ -171,8 +187,16 @@
   .how-step--three,
   .how-step--four,
   .how-step--five {
+    position: static;
+    width: auto;
+    max-width: 250px;
     grid-column: auto;
     justify-self: start;
+  }
+
+  .how-privacy {
+    position: static;
+    margin: 30px 0 0;
   }
 }
 

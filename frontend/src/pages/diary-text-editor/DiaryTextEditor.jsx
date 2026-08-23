@@ -53,7 +53,7 @@ function DiaryTextEditor({ diaries, diaryId, setCurrentPage }) {
 
         <section className="diary-editor-workspace">
           <div className="diary-editor-blank-sheet">
-            <Tiptap/>
+            <Tiptap />
           </div>
         </section>
       </main>
