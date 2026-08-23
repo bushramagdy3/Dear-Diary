@@ -27,9 +27,9 @@
   background:
     linear-gradient(
       90deg,
-      rgba(246, 241, 233, 0.82) 0%,
-      rgba(246, 241, 233, 0.2) 42%,
-      rgba(246, 241, 233, 0.36) 100%
+      rgba(246, 241, 233, 0.84) 0%,
+      rgba(246, 241, 233, 0.24) 45%,
+      rgba(246, 241, 233, 0.42) 100%
     );
   content: "";
   pointer-events: none;
@@ -38,13 +38,14 @@
 .how-main {
   position: relative;
   z-index: 1;
+  display: flex;
   flex: 1 0 auto;
-  min-height: 43rem;
-  padding: clamp(2.5rem, 5.8vh, 4.8rem) clamp(1.5rem, 5.6vw, 5.6rem) 1.5rem;
+  flex-direction: column;
+  padding: 58px 6% 34px;
 }
 
 .how-intro {
-  max-width: 47rem;
+  max-width: 760px;
 }
 
 .how-title {
@@ -57,7 +58,7 @@
 }
 
 .how-subtitle {
-  margin: 0.55rem 0 0;
+  margin: 8px 0 0;
   color: #4a453d;
   font-size: 20px;
   font-style: italic;
@@ -65,21 +66,27 @@
 }
 
 .how-steps {
-  position: absolute;
-  inset: 0;
+  display: grid;
+  width: 100%;
+  max-width: 1400px;
+  flex: 1 0 auto;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  align-items: center;
+  gap: 46px;
+  margin: 28px auto 0;
 }
 
 .how-step {
-  position: absolute;
-  width: min(15rem, 22vw);
+  width: 100%;
+  max-width: 250px;
   transform-origin: center;
   transition:
-    transform 180ms ease,
-    color 180ms ease;
+    color 180ms ease,
+    transform 180ms ease;
 }
 
 .how-step:hover {
-  transform: scale(1.08);
+  transform: scale(1.06);
 }
 
 .how-step__number,
@@ -90,119 +97,105 @@
 
 .how-step__number {
   font-family: "Bodoni 72", "Didot", "Cormorant Garamond", Georgia, serif;
-  font-size: 40px;
+  font-size: 42px;
   font-weight: 400;
   line-height: 0.95;
 }
 
 .how-step__title {
-  margin-top: 0.65rem;
-  padding-bottom: 0.55rem;
+  margin-top: 10px;
+  padding-bottom: 9px;
   border-bottom: 1px solid rgba(36, 34, 30, 0.2);
   font-family: "Bodoni 72", "Didot", "Cormorant Garamond", Georgia, serif;
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 400;
   line-height: 1.05;
 }
 
 .how-step__description {
-  margin-top: 0.75rem;
+  margin-top: 10px;
   color: #39352f;
   font-size: 15px;
   line-height: 1.35;
 }
 
-.how-step--one {
-  top: 26%;
-  left: 7.5%;
-}
-
-.how-step--two {
-  top: 25%;
-  right: 3%;
-}
-
+.how-step--one,
 .how-step--three {
-  top: 50%;
-  left: 7.5%;
+  grid-column: 1;
 }
 
+.how-step--two,
 .how-step--four {
-  top: 57%;
-  right: 5%;
+  grid-column: 4;
+  justify-self: end;
 }
 
 .how-step--five {
-  bottom: 8%;
-  left: 15%;
+  grid-column: 1 / span 2;
 }
 
 .how-privacy {
-  position: absolute;
-  right: 0;
-  bottom: 2.2rem;
-  left: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.85rem;
-  margin: 0;
+  gap: 14px;
+  margin: 26px 0 0;
   color: #3f3a33;
-  font-size: clamp(0.9rem, 1.08vw, 1.05rem);
+  font-size: 16px;
 }
 
 .how-privacy__icon {
-  width: 1.1rem;
-  height: 1.1rem;
+  width: 18px;
+  height: 18px;
 }
 
 @media (max-width: 1050px) {
-  .how-page {
-    overflow-x: hidden;
-  }
-
   .how-page::after {
     background: rgba(246, 241, 233, 0.68);
   }
 
   .how-main {
-    min-height: auto;
+    padding-top: 52px;
   }
 
   .how-steps {
-    position: relative;
-    display: grid;
-    grid-template-columns: repeat(2, minmax(12rem, 1fr));
-    gap: 2rem;
-    margin-top: clamp(3rem, 8vw, 5rem);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+    gap: 34px;
+    margin-top: 44px;
   }
 
-  .how-step {
-    position: static;
-    width: auto;
-  }
-
-  .how-privacy {
-    position: static;
-    margin-top: 3rem;
+  .how-step,
+  .how-step--one,
+  .how-step--two,
+  .how-step--three,
+  .how-step--four,
+  .how-step--five {
+    grid-column: auto;
+    justify-self: start;
   }
 }
 
 @media (max-width: 640px) {
   .how-main {
-    padding-inline: 1.15rem;
+    padding-right: 18px;
+    padding-left: 18px;
   }
 
   .how-title {
-    font-size: clamp(3.3rem, 15vw, 4.9rem);
+    font-size: 54px;
   }
 
   .how-subtitle {
-    font-size: 1.08rem;
+    font-size: 18px;
   }
 
   .how-steps {
     grid-template-columns: 1fr;
-    gap: 1.6rem;
+    gap: 28px;
+  }
+
+  .how-step {
+    max-width: none;
   }
 }

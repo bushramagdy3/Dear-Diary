@@ -30,25 +30,30 @@
 }
 
 .add-person-page .site-header {
-  padding-block: 9px;
+  padding-top: 9px;
+  padding-bottom: 9px;
 }
 
 .add-person-page .site-footer {
-  padding-block: 12px;
+  padding-top: 12px;
+  padding-bottom: 12px;
 }
 
 .add-person-main {
   position: relative;
   z-index: 1;
   display: grid;
+  width: 100%;
   flex: 1 0 auto;
-  grid-template-columns: 47% 53%;
-  gap: 34px;
-  padding: 34px 70px 44px;
+  grid-template-columns: minmax(420px, 620px) minmax(520px, 1fr);
+  align-items: start;
+  gap: 42px;
+  padding: 38px 5% 48px;
 }
 
 .add-person-form {
-  padding-right: 34px;
+  min-width: 0;
+  padding-right: 38px;
   border-right: 1px solid rgba(36, 34, 30, 0.24);
 }
 
@@ -122,7 +127,7 @@
 .add-person-actions {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 40px;
+  gap: 28px;
   margin-top: 24px;
 }
 
@@ -164,7 +169,7 @@
 }
 
 .add-person-portrait {
-  padding-left: 8px;
+  min-width: 0;
 }
 
 .portrait-title {
@@ -177,9 +182,10 @@
 
 .portrait-tabs {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  overflow: hidden;
+  width: 100%;
   max-width: 640px;
+  overflow: hidden;
+  grid-template-columns: 1fr 1fr;
   border: 1px solid rgba(36, 34, 30, 0.62);
   border-radius: 5px;
 }
@@ -205,8 +211,8 @@
 
 .portrait-workspace {
   display: grid;
-  grid-template-columns: 230px 1fr;
-  gap: 42px;
+  grid-template-columns: 230px 360px;
+  gap: 38px;
   align-items: start;
   margin-top: 42px;
 }
@@ -332,9 +338,43 @@
   font-size: 20px;
 }
 
-@media (max-width: 1050px) {
+@media (max-width: 1220px) {
+  .add-person-main {
+    grid-template-columns: minmax(380px, 520px) minmax(420px, 1fr);
+    gap: 30px;
+    padding-right: 4%;
+    padding-left: 4%;
+  }
+
+  .portrait-workspace {
+    grid-template-columns: 210px 320px;
+    gap: 26px;
+  }
+
+  .portrait-upload-box,
+  .portrait-words-box,
+  .portrait-placeholder-card {
+    min-height: 320px;
+  }
+
+  .portrait-placeholder-card {
+    width: 320px;
+    height: 320px;
+  }
+
+  .portrait-generate-button {
+    width: 300px;
+  }
+}
+
+@media (max-width: 1120px) {
+  .add-person-page::after {
+    background: rgba(246, 241, 233, 0.76);
+  }
+
   .add-person-main {
     grid-template-columns: 1fr;
+    gap: 36px;
     padding-right: 6%;
     padding-left: 6%;
   }
@@ -344,14 +384,19 @@
     border-right: 0;
   }
 
-  .add-person-portrait {
-    padding-left: 0;
+  .portrait-workspace {
+    grid-template-columns: 230px 360px;
   }
 }
 
 @media (max-width: 700px) {
+  .add-person-main {
+    padding-right: 18px;
+    padding-left: 18px;
+  }
+
   .add-person-title {
-    font-size: 56px;
+    font-size: 54px;
   }
 
   .add-person-actions,
@@ -366,6 +411,7 @@
   .portrait-placeholder-card {
     width: 300px;
     height: 300px;
+    justify-self: center;
   }
 
   .portrait-card-content {

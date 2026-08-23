@@ -44,17 +44,6 @@ function MyShelf({ currentPage, diaries, setCurrentPage, setEditingDiaryId, setO
     return diary.title || 'Untitled diary'
   }
 
-  function getDiaryTitleClassName(diary) {
-    let cn = ""
-    if (diary.id === hoveredDiaryId) {
-      cn += `shelf-diary-title shelf-diary-title--hovered`
-    }
-    else
-      cn += 'shelf-diary-title'
-    cn += ` title-with-cover${diary.coverId}`
-    return cn
-  }
-
   function showPreviousDiaries() {
     const previousIndex = firstDiaryIndex - diariesPerPage
 
@@ -121,44 +110,31 @@ function MyShelf({ currentPage, diaries, setCurrentPage, setEditingDiaryId, setO
           {shelfIsEmpty && <p className="shelf-is-empty-note">Your shelf is empty. Create your first diary!</p>}
 
           {!shelfIsEmpty && (
-            <div className="shelf-grid-stack">
-              <div className="shelf-diary-grid">
-                {visibleDiaries.map((diary) => (
+            <div className="shelf-diary-grid">
+              {visibleDiaries.map((diary) => (
+                <div
+                  className="shelf-diary-card"
+                  key={diary.id}
+                  onMouseEnter={() => setHoveredDiaryId(diary.id)}
+                  onMouseLeave={() => setHoveredDiaryId(null)}
+                >
                   <button
                     className={`shelf-diary ${diary.id === hoveredDiaryId ? 'shelf-diary--hovered' : ''}`}
-                    key={diary.id}
                     onBlur={() => setHoveredDiaryId(null)}
                     onClick={() => openDiaryTextEditor(diary.id)}
                     onFocus={() => setHoveredDiaryId(diary.id)}
-                    onMouseEnter={() => setHoveredDiaryId(diary.id)}
-                    onMouseLeave={() => setHoveredDiaryId(null)}
                     type="button"
                   >
                     <img
                       src={getCoverImage(diary.coverId)}
                       alt={`${getDiaryTitle(diary)} diary cover`}
                     />
-
+                    <span className={`shelf-diary-title title-with-cover${diary.coverId}`}>
+                      {getDiaryTitle(diary)}
+                    </span>
                   </button>
-                ))}
-              </div>
 
-              <div className="shelf-diary-title-grid">
-                {visibleDiaries.map((diary) => (
-                  <p className={getDiaryTitleClassName(diary)} key={diary.id}>
-                    {getDiaryTitle(diary)}
-                  </p>
-                ))}
-              </div>
-
-              <div className="shelf-diary-actions-grid">
-                {visibleDiaries.map((diary) => (
-                  <div
-                    className={`shelf-diary-actions ${diary.id === hoveredDiaryId ? 'shelf-diary-actions--hovered' : ''}`}
-                    key={diary.id}
-                    onMouseEnter={() => setHoveredDiaryId(diary.id)}
-                    onMouseLeave={() => setHoveredDiaryId(null)}
-                  >
+                  <div className={`shelf-diary-actions ${diary.id === hoveredDiaryId ? 'shelf-diary-actions--hovered' : ''}`}>
                     <button
                       className="shelf-diary-link"
                       onBlur={() => setHoveredDiaryId(null)}
@@ -178,8 +154,8 @@ function MyShelf({ currentPage, diaries, setCurrentPage, setEditingDiaryId, setO
                       Edit
                     </button>
                   </div>
-                ))}
-              </div>
+                </div>
+              ))}
             </div>
           )}
 

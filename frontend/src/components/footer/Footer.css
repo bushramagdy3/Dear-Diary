@@ -1,15 +1,16 @@
 .site-footer {
   position: relative;
-  z-index: 2;
+  z-index: 5;
   display: flex;
+  width: 100%;
   align-items: center;
   justify-content: center;
-  gap: 1rem;
-  width: 100%;
-  padding: 1.35rem clamp(1.25rem, 3.8vw, 3.4rem);
+  gap: 42px;
+  padding: 14px 24px;
   border-top: 1px solid rgba(39, 36, 31, 0.15);
   color: #4f4a42;
-  font-size: clamp(0.88rem, 1.05vw, 1.02rem);
+  font-size: 16px;
+  text-align: center;
 }
 
 .site-footer__credit {
@@ -19,19 +20,22 @@
 .site-footer__links {
   display: flex;
   justify-content: center;
-  gap: clamp(2rem, 4vw, 3.2rem);
+  gap: 42px;
 }
 
 .site-footer__link {
   color: inherit;
   text-decoration: underline;
-  text-underline-offset: 0.22em;
+  text-underline-offset: 4px;
 }
 
 @media (max-width: 700px) {
   .site-footer {
-    flex-wrap: wrap;
-    gap: 0.8rem;
-    text-align: center;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .site-footer__links {
+    gap: 28px;
   }
 }

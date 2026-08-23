@@ -1,14 +1,13 @@
 .site-header {
   position: relative;
-  z-index: 2;
+  z-index: 5;
   display: grid;
-  grid-template-columns: minmax(11rem, 1fr) auto minmax(11rem, 1fr);
-  align-items: center;
-  gap: 1.25rem;
   width: 100%;
-  padding: 1.55rem clamp(1.25rem, 3.8vw, 3.4rem) 1.35rem;
+  grid-template-columns: minmax(170px, 1fr) auto minmax(170px, 1fr);
+  align-items: center;
+  gap: 24px;
+  padding: 12px 28px;
   border-bottom: 1px solid rgba(39, 36, 31, 0.15);
-  padding: 10px 20px;
 }
 
 .site-header__brand,
@@ -20,16 +19,18 @@
 
 .site-header__brand {
   font-family: "Bodoni 72", "Didot", "Cormorant Garamond", Georgia, serif;
-  font-size: clamp(1.4rem, 2.3vw, 2.65rem);
+  font-size: 40px;
   font-weight: 400;
   line-height: 1;
+  white-space: nowrap;
 }
 
 .site-header__nav {
   display: flex;
+  min-width: 0;
   align-items: center;
   justify-content: center;
-  gap: clamp(1.1rem, 3vw, 3.5rem);
+  gap: 48px;
 }
 
 .site-header__link {
@@ -38,9 +39,9 @@
   border: 0;
   background: transparent;
   cursor: pointer;
-  font-size: clamp(0.64rem, 0.78vw, 0.82rem);
+  font-size: 13px;
   font-weight: 600;
-  letter-spacing: 0.24em;
+  letter-spacing: 3px;
   line-height: 1.2;
   text-transform: uppercase;
   white-space: nowrap;
@@ -48,8 +49,8 @@
 
 .site-header__link::after {
   position: absolute;
-  right: 0.24em;
-  bottom: -0.5rem;
+  right: 3px;
+  bottom: -8px;
   left: 0;
   height: 1px;
   background: currentColor;
@@ -76,41 +77,86 @@
 
 .site-header__backup {
   justify-self: end;
-  font-size: clamp(0.82rem, 1vw, 0.98rem);
+  font-size: 17px;
   font-style: italic;
   line-height: 1.2;
   text-decoration: underline;
-  text-underline-offset: 0.24em;
+  text-underline-offset: 4px;
+  white-space: nowrap;
 }
 
-@media (max-width: 820px) {
+@media (max-width: 1180px) {
+  .site-header {
+    grid-template-columns: minmax(150px, 1fr) auto minmax(150px, 1fr);
+    gap: 18px;
+    padding-right: 22px;
+    padding-left: 22px;
+  }
+
+  .site-header__brand {
+    font-size: 34px;
+  }
+
+  .site-header__nav {
+    gap: 30px;
+  }
+
+  .site-header__link {
+    font-size: 12px;
+    letter-spacing: 2.5px;
+  }
+}
+
+@media (max-width: 840px) {
   .site-header {
     grid-template-columns: 1fr auto;
-    gap: 1rem;
-    padding-block: 1.15rem;
+    gap: 16px;
+    padding: 14px 18px 12px;
+  }
+
+  .site-header__brand {
+    font-size: 32px;
+  }
+
+  .site-header__backup {
+    font-size: 16px;
   }
 
   .site-header__nav {
     grid-column: 1 / -1;
     grid-row: 2;
     justify-content: flex-start;
-    gap: 1.25rem;
+    gap: 24px;
     overflow-x: auto;
-    padding-bottom: 0.2rem;
+    padding: 4px 0 8px;
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 520px) {
   .site-header {
-    padding-inline: 1rem;
+    grid-template-columns: 1fr;
+    justify-items: center;
+    gap: 12px;
+    padding-right: 16px;
+    padding-left: 16px;
+  }
+
+  .site-header__brand,
+  .site-header__backup {
+    justify-self: center;
   }
 
   .site-header__brand {
-    font-size: 1.45rem;
+    font-size: 30px;
+  }
+
+  .site-header__nav {
+    width: 100%;
+    gap: 20px;
   }
 
   .site-header__link {
-    font-size: 0.62rem;
-    letter-spacing: 0.18em;
+    font-size: 11px;
+    letter-spacing: 2px;
   }
 }

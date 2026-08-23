@@ -42,6 +42,11 @@ body {
   min-width: 320px;
   min-height: 100vh;
   margin: 0;
+  overflow-x: hidden;
+}
+
+img {
+  max-width: 100%;
 }
 
 button,

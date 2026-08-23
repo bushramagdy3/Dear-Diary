@@ -35,25 +35,27 @@
   pointer-events: none;
 }
 
+.people-page .site-header {
+  padding-top: 9px;
+  padding-bottom: 9px;
+}
+
+.people-page .site-footer {
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+
 .people-main {
   position: relative;
   z-index: 1;
   display: flex;
   flex: 1 0 auto;
   flex-direction: column;
-  padding: 30px 80px;
-}
-
-.people-page .site-header {
-  padding-block: 0.55rem;
-}
-
-.people-page .site-footer {
-  padding-block: 0.75rem;
+  padding: 30px 6% 24px;
 }
 
 .people-intro {
-  max-width: 56rem;
+  max-width: 900px;
 }
 
 .people-title {
@@ -66,7 +68,7 @@
 }
 
 .people-subtitle {
-  margin: 0.55rem 0 0;
+  margin: 8px 0 0;
   color: #4a453d;
   font-size: 20px;
   font-style: italic;
@@ -80,7 +82,7 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  margin-top: 10px;
+  margin-top: 12px;
   border: 1px solid #1f1e1b;
   border-radius: 2px;
   background: #1f1e1b;
@@ -102,16 +104,18 @@
 }
 
 .people-gallery {
-  display: flex;
+  display: grid;
+  width: 100%;
+  flex: 1 0 auto;
+  grid-template-columns: 52px minmax(0, 1fr) 52px;
   align-items: center;
-  justify-content: center;
-  gap: 26px;
-  margin-top: 12px;
+  gap: 22px;
+  margin-top: 26px;
 }
 
 .people-arrow-space {
   display: flex;
-  width: 44px;
+  width: 52px;
   align-items: center;
   justify-content: center;
 }
@@ -141,18 +145,19 @@
 .people-card-grid {
   display: grid;
   width: 100%;
-  max-width: 1120px;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 44px;
+  max-width: 1140px;
+  justify-self: center;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   align-items: start;
   justify-items: center;
+  gap: 44px;
 }
 
 .person-card {
   position: relative;
   display: flex;
-  width: 330px;
-  min-height: 0;
+  width: 100%;
+  max-width: 330px;
   height: 455px;
   align-items: center;
   flex-direction: column;
@@ -173,7 +178,7 @@
 
 .person-card:hover {
   filter: brightness(1.01);
-  transform: scale(1.06);
+  transform: scale(1.04);
 }
 
 .person-card__portrait {
@@ -206,12 +211,16 @@
 
 .person-card__description {
   width: 100%;
+  max-width: 220px;
   margin-top: 12px;
   padding-bottom: 12px;
   border-bottom: 1px solid rgba(36, 34, 30, 0.14);
   color: #2f2b25;
   font-size: 14px;
   line-height: 1.25;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .person-card__edit {
@@ -251,86 +260,135 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.85rem;
-  margin: clamp(0.45rem, 1.1vh, 0.8rem) 0 0;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin: 16px 0 0;
   color: #3f3a33;
-  font-size: clamp(0.9rem, 1.08vw, 1.05rem);
+  font-size: 16px;
+  text-align: center;
 }
 
 .people-privacy__icon {
-  width: 1.1rem;
-  height: 1.1rem;
+  width: 18px;
+  height: 18px;
 }
 
-@media (max-width: 900px) {
-  .people-page {
-    overflow-x: hidden;
-  }
-
-  .people-page::after {
-    background: rgba(246, 241, 233, 0.64);
-  }
-
-  .people-main {
-    padding-inline: clamp(1.25rem, 6vw, 3.5rem);
-  }
-
+@media (min-height: 980px) and (min-width: 1100px) {
   .people-gallery {
-    gap: 14px;
+    margin-top: 42px;
   }
 
   .people-card-grid {
-    grid-template-columns: repeat(3, 1fr);
-    justify-content: center;
-    gap: 16px;
+    gap: 56px;
   }
 
   .person-card {
-    width: 230px;
-    height: 318px;
-    padding: 42px 34px 32px;
+    max-width: 360px;
+    height: 496px;
   }
 
   .person-card__portrait {
-    width: 128px;
-    height: 122px;
+    width: 210px;
+    height: 196px;
+  }
+}
+
+@media (max-width: 1100px) {
+  .people-main {
+    padding-right: 5%;
+    padding-left: 5%;
   }
 
-  .person-card__name {
-    font-size: 24px;
+  .people-card-grid {
+    max-width: 760px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 34px;
+  }
+}
+
+@media (max-width: 760px) {
+  .people-page::after {
+    background: rgba(246, 241, 233, 0.68);
   }
 
-  .person-card__relationship,
-  .person-card__description,
-  .person-card__edit {
-    font-size: 13px;
+  .people-title {
+    font-size: 62px;
   }
 
-  .people-privacy {
-    margin-top: 1rem;
+  .people-gallery {
+    grid-template-columns: 42px minmax(0, 1fr) 42px;
+    gap: 12px;
+    align-items: start;
+  }
+
+  .people-arrow-space {
+    width: 42px;
+    padding-top: 170px;
+  }
+
+  .people-arrow {
+    width: 38px;
+    height: 38px;
+  }
+
+  .people-card-grid {
+    max-width: 360px;
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .person-card {
+    max-width: 310px;
+    height: 428px;
   }
 }
 
 @media (max-width: 520px) {
+  .people-main {
+    padding-right: 18px;
+    padding-left: 18px;
+  }
+
   .people-title {
-    font-size: 70px;
-    line-height: 0.9;
+    font-size: 54px;
   }
 
   .people-subtitle {
-    font-size: 20px;
+    font-size: 18px;
   }
 
   .people-add-button {
     width: 100%;
   }
 
-  .people-card-grid {
-    grid-template-columns: 1fr;
+  .people-gallery {
+    grid-template-columns: 34px minmax(0, 1fr) 34px;
+    gap: 8px;
+  }
+
+  .people-arrow-space {
+    width: 34px;
+    padding-top: 146px;
+  }
+
+  .people-arrow {
+    width: 32px;
+    height: 32px;
+    font-size: 20px;
   }
 
   .person-card {
-    width: 280px;
+    max-width: 280px;
     height: 386px;
+    padding: 48px 40px 36px;
+  }
+
+  .person-card__portrait {
+    width: 156px;
+    height: 148px;
+  }
+
+  .person-card__name {
+    font-size: 28px;
   }
 }

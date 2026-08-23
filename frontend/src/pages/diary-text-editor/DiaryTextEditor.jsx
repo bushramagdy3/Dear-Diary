@@ -1,5 +1,6 @@
 import { FiCheck, FiChevronLeft, FiDownload, FiPlus } from 'react-icons/fi'
 import './DiaryTextEditor.css'
+import Tiptap from '../../components/tiptap/Tiptap'
 
 function DiaryTextEditor({ diaries, diaryId, setCurrentPage }) {
   const diary = diaries.find((item) => item.id === diaryId) || diaries[0] || {
@@ -51,7 +52,9 @@ function DiaryTextEditor({ diaries, diaryId, setCurrentPage }) {
         </aside>
 
         <section className="diary-editor-workspace">
-          <div className="diary-editor-blank-sheet"></div>
+          <div className="diary-editor-blank-sheet">
+            <Tiptap/>
+          </div>
         </section>
       </main>
     </div>

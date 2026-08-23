@@ -19,18 +19,20 @@
 }
 
 .shelf-page .site-header {
-  padding-block: 9px;
+  padding-top: 9px;
+  padding-bottom: 9px;
 }
 
 .shelf-page .site-footer {
-  padding-block: 12px;
+  padding-top: 12px;
+  padding-bottom: 12px;
 }
 
 .shelf-main {
   display: flex;
   flex: 1 0 auto;
   flex-direction: column;
-  padding: 22px 7% 0;
+  padding: 26px 6% 24px;
 }
 
 .shelf-intro {
@@ -59,7 +61,7 @@
   flex-wrap: wrap;
   align-items: center;
   gap: 26px;
-  margin-top: 12px;
+  margin-top: 14px;
 }
 
 .shelf-create,
@@ -82,8 +84,8 @@
   font-size: 16px;
   line-height: 1;
   transition:
-    transform 160ms ease,
-    background 160ms ease;
+    background 160ms ease,
+    transform 160ms ease;
 }
 
 .shelf-create:hover {
@@ -111,18 +113,19 @@
 }
 
 .shelf-gallery {
-  display: flex;
+  display: grid;
+  width: 100%;
   flex: 1 0 auto;
+  grid-template-columns: 52px minmax(0, 1fr) 52px;
   align-items: center;
-  justify-content: center;
-  gap: 3vh;
-  margin-top: 0;
-  padding-bottom: 2vh;
+  gap: 22px;
+  margin-top: 30px;
+  padding-bottom: 16px;
 }
 
 .shelf-arrow-space {
   display: flex;
-  width: 44px;
+  width: 52px;
   align-items: center;
   justify-content: center;
 }
@@ -149,84 +152,44 @@
   transform: scale(1.06);
 }
 
-.shelf-grid-stack {
-  display: grid;
-  width: 100%;
-  max-width: 1420px;
-  height: 66vh;
-  grid-template-rows: minmax(0, 1fr) 28px;
-}
-
-.shelf-diary-grid,
-.shelf-diary-title-grid,
-.shelf-diary-actions-grid {
-  display: grid;
-  grid-column: 1;
-  width: 100%;
-  grid-template-columns: repeat(4, 1fr);
-  justify-items: center;
-  gap: 4vh;
-}
-
-.shelf-diary-grid,
-.shelf-diary-title-grid {
-  grid-row: 1;
-  height: 100%;
-  align-items: end;
+.shelf-is-empty-note {
+  justify-self: center;
+  margin: 80px 0;
+  font-size: 20px;
+  font-style: italic;
 }
 
 .shelf-diary-grid {
-  z-index: 1;
+  display: grid;
+  width: 100%;
+  max-width: 1640px;
+  justify-self: center;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  align-items: end;
+  justify-items: center;
+  gap: 38px;
 }
 
-.shelf-diary-title-grid {
-  align-items: center;
-  pointer-events: none;
-  z-index: 2;
-}
-
-.shelf-diary-actions-grid {
-  grid-row: 2;
-  align-items: start;
-  z-index: 3;
-}
-
-.shelf-diary-title {
+.shelf-diary-card {
   display: flex;
-  width: 38vh;
-  height: 100%;
+  width: 100%;
+  min-width: 0;
   align-items: center;
-  justify-content: center;
-  margin: 0;
-  color: #171613;
-  font-family: "Bodoni 72", "Didot", "Cormorant Garamond", Georgia, serif;
-  font-size: 32px;
-  line-height: 1.08;
-  text-align: center;
-  transition: transform 180ms ease;
-}
-
-.title-with-cover3,
-.title-with-cover6,
-.title-with-cover7,
-.title-with-cover8 {
-  color: rgba(255, 250, 242, 0.85)
-}
-
-.shelf-diary-title--hovered {
-  transform: scale(1.06);
+  flex-direction: column;
 }
 
 .shelf-diary {
+  position: relative;
   display: flex;
-  width: 38vh;
-  height: 100%;
-  align-items: flex-end;
+  width: 100%;
+  max-width: 35vh;
+  align-items: center;
   justify-content: center;
   padding: 0;
   border: 0;
   background: transparent;
   cursor: pointer;
+  transform-origin: bottom center;
   transition:
     filter 180ms ease,
     transform 180ms ease;
@@ -235,26 +198,54 @@
 .shelf-diary:hover,
 .shelf-diary--hovered {
   filter: brightness(1.02);
-  transform: scale(1.06);
+  transform: scale(1.04);
 }
 
 .shelf-diary img {
   display: block;
   width: 100%;
-  height: 100%;
+  height: auto;
   object-fit: contain;
+}
+
+.shelf-diary-title {
+  position: absolute;
+  top: 50%;
+  left: 8%;
+  display: flex;
+  width: 84%;
+  min-height: 54px;
+  align-items: center;
+  justify-content: center;
+  color: #171613;
+  font-family: "Bodoni 72", "Didot", "Cormorant Garamond", Georgia, serif;
+  font-size: 32px;
+  line-height: 1.08;
+  text-align: center;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.title-with-cover3,
+.title-with-cover6,
+.title-with-cover7,
+.title-with-cover8 {
+  color: rgba(255, 250, 242, 0.88);
 }
 
 .shelf-diary-actions {
   display: flex;
+  min-height: 30px;
   align-items: center;
   justify-content: center;
-  gap: 18px;
+  gap: 22px;
+  margin-top: 14px;
+  transform-origin: top center;
   transition: transform 180ms ease;
 }
 
 .shelf-diary-actions--hovered {
-  transform: scale(1.06);
+  transform: scale(1.04);
 }
 
 .shelf-diary-link {
@@ -267,74 +258,136 @@
   font: inherit;
   font-size: 16px;
   line-height: 1.2;
-  transition:
-    color 160ms ease;
+  transition: color 160ms ease;
 }
 
 .shelf-diary-link:hover {
   color: #5e574c;
 }
 
-@media (max-width: 900px) {
-  .shelf-main {
-    padding-right: 6%;
-    padding-left: 6%;
+@media (min-height: 980px) and (min-width: 1100px) {
+  .shelf-gallery {
+    gap: 34px;
+    margin-top: 42px;
   }
 
-  .shelf-grid-stack {
-    height: 32vh;
+  .shelf-diary-grid {
+    gap: 46px;
   }
 
-  .shelf-diary-grid,
-  .shelf-diary-title-grid,
-  .shelf-diary-actions-grid {
-    gap: 2vh;
-  }
-
-  .shelf-diary,
-  .shelf-diary-title {
-    width: 20vw;
-  }
-
-  .shelf-diary-title {
-    font-size: 22px;
-  }
-
-  .shelf-diary-link {
-    font-size: 14px;
+  .shelf-diary {
+    max-width: 38vh;
   }
 }
 
-@media (max-width: 520px) {
+@media (max-width: 1300px) {
+  .shelf-main {
+    padding-right: 4%;
+    padding-left: 4%;
+  }
+
+  .shelf-gallery {
+    gap: 16px;
+  }
+
+  .shelf-diary-grid {
+    gap: 28px;
+  }
+
+  .shelf-diary {
+    max-width: 30vh;
+  }
+
+  .shelf-diary-title {
+    font-size: 26px;
+  }
+}
+
+@media (max-width: 900px) {
+  .shelf-main {
+    padding: 30px 5% 34px;
+  }
+
   .shelf-title {
-    font-size: 70px;
-    line-height: 0.9;
+    font-size: 62px;
+  }
+
+  .shelf-gallery {
+    grid-template-columns: 42px minmax(0, 1fr) 42px;
+    gap: 12px;
+    align-items: start;
+  }
+
+  .shelf-arrow-space {
+    width: 42px;
+    padding-top: 150px;
+  }
+
+  .shelf-arrow {
+    width: 38px;
+    height: 38px;
+  }
+
+  .shelf-diary-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 34px 24px;
+  }
+
+  .shelf-diary {
+    max-width: 250px;
+  }
+}
+
+@media (max-width: 560px) {
+  .shelf-main {
+    padding-right: 18px;
+    padding-left: 18px;
+  }
+
+  .shelf-title {
+    font-size: 54px;
   }
 
   .shelf-subtitle {
     font-size: 18px;
   }
 
+  .shelf-actions {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 14px;
+  }
+
   .shelf-create {
     width: 100%;
   }
 
-  .shelf-diary-grid,
-  .shelf-diary-title-grid,
-  .shelf-diary-actions-grid {
-    grid-template-columns: repeat(2, 1fr);
+  .shelf-gallery {
+    grid-template-columns: 34px minmax(0, 1fr) 34px;
+    gap: 8px;
   }
 
-  .shelf-diary,
-  .shelf-diary-title {
-    width: 42vw;
+  .shelf-arrow-space {
+    width: 34px;
+    padding-top: 112px;
+  }
+
+  .shelf-arrow {
+    width: 32px;
+    height: 32px;
+    font-size: 20px;
+  }
+
+  .shelf-diary-grid {
+    grid-template-columns: 1fr;
+    gap: 28px;
   }
 
   .shelf-diary {
-    height: 26vh;
+    max-width: 250px;
   }
 
   .shelf-diary-title {
-    font-size: 20px;
+    font-size: 24px;
   }
 }
