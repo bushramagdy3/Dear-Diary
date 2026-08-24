@@ -223,8 +223,15 @@
   white-space: nowrap;
 }
 
-.person-card__edit {
+.person-card__actions {
+  display: flex;
+  justify-content: center;
+  gap: 18px;
   margin-top: 10px;
+}
+
+.person-card__edit,
+.person-card__delete {
   padding: 0;
   border: 0;
   border-bottom: 1px solid currentColor;
@@ -236,8 +243,17 @@
   line-height: 1.2;
 }
 
-.person-card__edit:hover {
+.person-card__edit:hover,
+.person-card__delete:hover {
   color: #5e574c;
+}
+
+.person-card__delete {
+  color: #7a3d44;
+}
+
+.person-card__delete:hover {
+  color: #9a4e58;
 }
 
 .person-card--add {

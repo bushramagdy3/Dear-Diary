@@ -11,6 +11,7 @@ import cover6 from '../../assets/journal-covers/6.png'
 import cover7 from '../../assets/journal-covers/7.png'
 import cover8 from '../../assets/journal-covers/8.png'
 import './CreateDiary.css'
+import { formatDate } from '../../utils'
 
 const coverOptions = [
   { id: 0, image: cover0 },
@@ -24,7 +25,7 @@ const coverOptions = [
   { id: 8, image: cover8 },
 ]
 
-function CreateDiary({ currentPage, setCurrentPage }) {
+function CreateDiary({ currentPage, setCurrentPage, diaryList, setDiaryList }) {
   const [selectedCoverId, setSelectedCoverId] = useState(0)
   const [diaryTitle, setDiaryTitle] = useState('My diary')
 
@@ -43,6 +44,38 @@ function CreateDiary({ currentPage, setCurrentPage }) {
   }
 
   function createDiary() {
+    const now = new Date()
+    const newDiary = {
+      id: crypto.randomUUID(),
+      title: diaryTitle,
+      coverId: selectedCoverId,
+      created_at: formatDate(now.getDate(), now.getMonth() + 1, now.getFullYear()),
+      entries: [
+        {
+          id: crypto.randomUUID(),
+          name: "First Day",
+          created_at: formatDate(now.getDate(), now.getMonth() + 1, now.getFullYear()),
+          content: {
+            "type": "doc",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "attrs": {
+                        "textAlign": null
+                    },
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "Start writing about your day..."
+                        }
+                    ]
+                }
+            ]
+          }
+        }
+      ]
+    }
+    setDiaryList([...diaryList, newDiary]) 
     setCurrentPage('my-shelf')
   }
 

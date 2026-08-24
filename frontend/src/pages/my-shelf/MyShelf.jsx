@@ -25,7 +25,7 @@ const coverImages = {
   8: cover8,
 }
 
-function MyShelf({ currentPage, diaries, setCurrentPage, setEditingDiaryId, setOpenedDiaryId }) {
+function MyShelf({ currentPage, diaries, setCurrentPage, setEditingDiaryId, setOpenedDiaryId, deleteDiary }) {
   const diariesPerPage = 4
   const [firstDiaryIndex, setFirstDiaryIndex] = useState(0)
   const [hoveredDiaryId, setHoveredDiaryId] = useState(null)
@@ -75,6 +75,14 @@ function MyShelf({ currentPage, diaries, setCurrentPage, setEditingDiaryId, setO
   function openDiaryTextEditor(diaryId) {
     setOpenedDiaryId(diaryId)
     setCurrentPage('diary-text-editor')
+  }
+
+  function deleteCurrentDiary(diaryId) {
+    deleteDiary(diaryId)
+
+    if (visibleDiaries.length === 1 && canGoBack) {
+      showPreviousDiaries()
+    }
   }
 
   return (
@@ -152,6 +160,15 @@ function MyShelf({ currentPage, diaries, setCurrentPage, setEditingDiaryId, setO
                       type="button"
                     >
                       Edit
+                    </button>
+                    <button
+                      className="shelf-diary-link shelf-diary-delete"
+                      onBlur={() => setHoveredDiaryId(null)}
+                      onClick={() => deleteCurrentDiary(diary.id)}
+                      onFocus={() => setHoveredDiaryId(diary.id)}
+                      type="button"
+                    >
+                      Delete
                     </button>
                   </div>
                 </div>

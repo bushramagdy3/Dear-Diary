@@ -46,13 +46,42 @@ function App() {
     )
   }
 
+  function deleteDiary(diaryId) {
+    setDiaryList((currentDiaries) =>
+      currentDiaries.filter((diary) => diary.id !== diaryId),
+    )
+
+    if (editingDiaryId === diaryId) {
+      setEditingDiaryId(null)
+    }
+
+    if (openedDiaryId === diaryId) {
+      setOpenedDiaryId(null)
+    }
+  }
+
+  function deletePerson(personId) {
+    setPeopleList((currentPeople) =>
+      currentPeople.filter((person) => person.id !== personId),
+    )
+
+    if (editingPersonId === personId) {
+      setEditingPersonId(null)
+    }
+  }
+
   return (
     <>
       {currentPage === "home" && (
         <Home currentPage={currentPage} setCurrentPage={setCurrentPage} />
       )}
       {currentPage === "create-diary" && (
-        <CreateDiary currentPage={currentPage} setCurrentPage={setCurrentPage} />
+        <CreateDiary 
+          currentPage={currentPage} 
+          setCurrentPage={setCurrentPage} 
+          diaryList={diaryList} 
+          setDiaryList = {setDiaryList}
+        />
       )}
       {currentPage === "edit-diary" && (
         <EditDiary
@@ -63,7 +92,12 @@ function App() {
         />
       )}
       {currentPage === "add-person" && (
-        <AddPerson currentPage="people" setCurrentPage={setCurrentPage} />
+        <AddPerson
+          currentPage="people"
+          peopleList={peopleList}
+          setCurrentPage={setCurrentPage}
+          setPeopleList={setPeopleList}
+        />
       )}
       {currentPage === "edit-person" && (
         <EditPerson
@@ -80,6 +114,7 @@ function App() {
           setCurrentPage={setCurrentPage}
           setEditingDiaryId={setEditingDiaryId}
           setOpenedDiaryId={setOpenedDiaryId}
+          deleteDiary={deleteDiary}
         />
       )}
       {currentPage === "people" && (
@@ -88,6 +123,7 @@ function App() {
           people={peopleList}
           setCurrentPage={setCurrentPage}
           setEditingPersonId={setEditingPersonId}
+          deletePerson={deletePerson}
         />
       )}
       {currentPage === "how-it-works" && (

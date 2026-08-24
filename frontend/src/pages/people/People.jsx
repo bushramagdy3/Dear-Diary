@@ -11,7 +11,7 @@ const personImages = {
   1: person1,
 }
 
-function People({ currentPage, people, setCurrentPage, setEditingPersonId }) {
+function People({ currentPage, people, setCurrentPage, setEditingPersonId, deletePerson }) {
   const cardsPerPage = 3
   const [firstCardIndex, setFirstCardIndex] = useState(0)
 
@@ -59,6 +59,14 @@ function People({ currentPage, people, setCurrentPage, setEditingPersonId }) {
   function openEditPersonPage(personId) {
     setEditingPersonId(personId)
     setCurrentPage('edit-person')
+  }
+
+  function deleteCurrentPerson(personId) {
+    deletePerson(personId)
+
+    if (visibleCards.length === 1 && canGoBack) {
+      showPreviousCards()
+    }
   }
 
   return (
@@ -113,13 +121,22 @@ function People({ currentPage, people, setCurrentPage, setEditingPersonId }) {
                   <h2 className="person-card__name">{formatText(card.name)}</h2>
                   <p className="person-card__relationship">{formatText(card.relationship)}</p>
                   <p className="person-card__description">{formatText(card.description)}</p>
-                  <button
-                    className="person-card__edit"
-                    onClick={() => openEditPersonPage(card.id)}
-                    type="button"
-                  >
-                    Edit
-                  </button>
+                  <div className="person-card__actions">
+                    <button
+                      className="person-card__edit"
+                      onClick={() => openEditPersonPage(card.id)}
+                      type="button"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      className="person-card__delete"
+                      onClick={() => deleteCurrentPerson(card.id)}
+                      type="button"
+                    >
+                      Delete
+                    </button>
+                  </div>
                 </article>
               )
             })}

@@ -265,6 +265,14 @@
   color: #5e574c;
 }
 
+.shelf-diary-delete {
+  color: #7a3d44;
+}
+
+.shelf-diary-delete:hover {
+  color: #9a4e58;
+}
+
 @media (min-height: 980px) and (min-width: 1100px) {
   .shelf-gallery {
     gap: 34px;

@@ -7,11 +7,39 @@ import anonymousFigure from '../../assets/add-person/portrait-anonymous-figure.p
 import emptyCard from '../../assets/add-person/portrait-empty-card.png'
 import './AddPerson.css'
 
-function AddPerson({ currentPage, setCurrentPage }) {
+function AddPerson({ currentPage, peopleList, setCurrentPage, setPeopleList }) {
   const [portraitMode, setPortraitMode] = useState('upload')
+  const [personName, setPersonName] = useState('')
+  const [personRelationship, setPersonRelationship] = useState('')
+  const [personDescription, setPersonDescription] = useState('')
   const generatedPortrait = ''
 
   function goToPeople() {
+    setCurrentPage('people')
+  }
+
+  function updatePersonName(event) {
+    setPersonName(event.target.value)
+  }
+
+  function updatePersonRelationship(event) {
+    setPersonRelationship(event.target.value)
+  }
+
+  function updatePersonDescription(event) {
+    setPersonDescription(event.target.value)
+  }
+
+  function savePerson() {
+    const newPerson = {
+      id: crypto.randomUUID(),
+      name: personName.trim() || 'Unnamed person',
+      relationship: personRelationship || 'other',
+      description: personDescription.trim(),
+      imageId: 0,
+    }
+
+    setPeopleList([...peopleList, newPerson])
     setCurrentPage('people')
   }
 
@@ -36,20 +64,27 @@ function AddPerson({ currentPage, setCurrentPage }) {
           <input
             className="add-person-input"
             id="person-name"
+            onChange={updatePersonName}
             placeholder="Their name"
             type="text"
+            value={personName}
           />
 
           <label className="add-person-label" htmlFor="person-relationship">
             Relationship
           </label>
-          <select className="add-person-input" id="person-relationship">
-            <option>Choose relationship</option>
-            <option>Friend</option>
-            <option>Family</option>
-            <option>Partner</option>
-            <option>Classmate</option>
-            <option>Other</option>
+          <select
+            className="add-person-input"
+            id="person-relationship"
+            onChange={updatePersonRelationship}
+            value={personRelationship}
+          >
+            <option value="">Choose relationship</option>
+            <option value="friend">Friend</option>
+            <option value="family">Family</option>
+            <option value="partner">Partner</option>
+            <option value="classmate">Classmate</option>
+            <option value="other">Other</option>
           </select>
 
           <label className="add-person-label" htmlFor="person-description">
@@ -59,16 +94,18 @@ function AddPerson({ currentPage, setCurrentPage }) {
             className="add-person-description"
             id="person-description"
             maxLength="1000"
+            onChange={updatePersonDescription}
             placeholder="Describe their appearance, personality, style, and anything the AI should remember..."
+            value={personDescription}
           />
 
-          <p className="add-person-count">0 / 1000</p>
+          <p className="add-person-count">{personDescription.length} / 1000</p>
 
           <div className="add-person-actions">
             <button className="add-person-cancel" onClick={goToPeople} type="button">
               Cancel
             </button>
-            <button className="add-person-save" onClick={goToPeople} type="button">
+            <button className="add-person-save" onClick={savePerson} type="button">
               Save person
             </button>
           </div>
