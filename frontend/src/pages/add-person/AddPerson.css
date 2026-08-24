@@ -44,10 +44,12 @@
   z-index: 1;
   display: grid;
   width: 100%;
-  flex: 1 0 auto;
+  flex: 0 0 auto;
   grid-template-columns: minmax(420px, 620px) minmax(520px, 1fr);
+  align-content: center;
   align-items: start;
   gap: 42px;
+  margin: auto 0;
   padding: 38px 5% 48px;
 }
 
@@ -373,8 +375,11 @@
   }
 
   .add-person-main {
+    flex: 1 0 auto;
     grid-template-columns: 1fr;
+    align-content: start;
     gap: 36px;
+    margin: 0;
     padding-right: 6%;
     padding-left: 6%;
   }

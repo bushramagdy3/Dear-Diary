@@ -24,10 +24,12 @@
 .create-main {
   display: grid;
   width: 100%;
-  flex: 1 0 auto;
+  flex: 0 0 auto;
   grid-template-columns: minmax(500px, 620px) minmax(320px, 1fr);
+  align-content: center;
   align-items: center;
   gap: 48px;
+  margin: auto 0;
   padding: 34px 5% 40px;
 }
 
@@ -277,9 +279,11 @@
 @media (max-width: 960px) {
   .create-main {
     display: flex;
+    flex: 1 0 auto;
     align-items: stretch;
     flex-direction: column;
     gap: 34px;
+    margin: 0;
     padding-right: 6%;
     padding-left: 6%;
   }

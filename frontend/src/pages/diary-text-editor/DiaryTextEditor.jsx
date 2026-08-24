@@ -1,4 +1,4 @@
-import { FiCheck, FiChevronLeft, FiDownload, FiPlus, FiTrash2 } from 'react-icons/fi'
+import { FiCheck, FiChevronLeft, FiDownload, FiEdit2, FiPlus, FiTrash2 } from 'react-icons/fi'
 import './DiaryTextEditor.css'
 import Tiptap from '../../components/tiptap/Tiptap'
 import { useEffect, useRef, useState } from 'react'
@@ -13,7 +13,10 @@ function DiaryTextEditor({ appData, diaries, diaryId, setAppData, setCurrentPage
   const [currentEntry, setCurrentEntry] = useState(0)
   const [isAddNewEntry, setIsAddNewEntry] = useState(false)
   const [entries, setEntries] = useState(diary.entries)
+  const [editingEntryIndex, setEditingEntryIndex] = useState(null)
+  const [editedEntryName, setEditedEntryName] = useState('')
   const newEntryInputRef = useRef(null)
+  const editEntryInputRef = useRef(null)
 
   const selectedEntry = entries[currentEntry]
 
@@ -22,6 +25,12 @@ function DiaryTextEditor({ appData, diaries, diaryId, setAppData, setCurrentPage
       newEntryInputRef.current.focus()
     }
   }, [isAddNewEntry])
+
+  useEffect(() => {
+    if (editingEntryIndex != null){
+      editEntryInputRef.current.focus()
+    }
+  }, [editingEntryIndex])
 
   function getEntryListDate(dateText) {
     const dateParts = dateText.split(' ')
@@ -164,29 +173,87 @@ function DiaryTextEditor({ appData, diaries, diaryId, setAppData, setCurrentPage
           </button>
 
           <div className="diary-editor-entry-list">
-            {entries.map((entry, index) => (
-              <div className="diary-editor-entry-item" key={entry.id}>
-                <button 
-                  className="diary-editor-entry-button"
-                  onClick={() => setCurrentEntry(index)} 
-                  disabled={currentEntry === index} 
-                  type="button"
-                >
-                  <span className="diary-editor-entry-date">
-                    {getEntryListDate(entry.created_at)}
-                  </span>
-                  <span className="diary-editor-entry-name">{entry.name}</span>
-                </button>
-                <button
-                  className="diary-editor-delete-entry"
-                  onClick={() => deleteEntry(index)}
-                  title="Delete entry"
-                  type="button"
-                >
-                  <FiTrash2 />
-                </button>
-              </div>
-            ))}
+            {entries.map((entry, index) => {
+              if(editingEntryIndex != index)
+                return(
+                  <div className="diary-editor-entry-item" key={entry.id}>
+                    <button 
+                      className="diary-editor-entry-button"
+                      onClick={() => setCurrentEntry(index)} 
+                      disabled={currentEntry === index} 
+                      type="button"
+                    >
+                      <span className="diary-editor-entry-date">
+                        {getEntryListDate(entry.created_at)}
+                      </span>
+                      <span className="diary-editor-entry-name">{entry.name}</span>
+                    </button>
+                    <button
+                      className="diary-editor-delete-entry"
+                      onClick={() => deleteEntry(index)}
+                      title="Delete entry"
+                      type="button"
+                    >
+                      <FiTrash2 />
+                    </button>
+                    <button
+                      className="diary-editor-edit-entry"
+                      onClick={() => {
+                        setEditingEntryIndex(index)
+                        setEditedEntryName(entry.name)
+                      }}
+                      title="Edit entry"
+                      type="button"
+                    >
+                      <FiEdit2 />
+                    </button>
+                  </div>)
+              return (
+                <div className="diary-editor-entry-item" key={entry.id}>
+                  <div 
+                    className="diary-editor-entry-button diary-editor-entry-button--draft" 
+                  >
+                    <span className="diary-editor-entry-date">
+                      {formatDate(
+                        new Date().getDate(), 
+                        new Date().getMonth() + 1, 
+                        new Date().getFullYear()
+                      )}
+                    </span>
+                    <input
+                      className="diary-editor-entry-name diary-editor-new-entry-input"
+                      onKeyDown={(event) =>{ 
+                        if(event.key == "Enter"){
+                          const updatedAppData = {... appData}
+                          updatedAppData.diaries.forEach(element => {
+                            if(element.id == diaryId){
+                              element.entries.forEach((item, index) => {
+                                if(index == editingEntryIndex){
+                                  if(editedEntryName === "")
+                                    item.name = "Untitled Entry"
+                                  else
+                                    item.name = editedEntryName
+                                }
+                              });
+                            }
+                          });
+                          setAppData(updatedAppData)
+                          setEditingEntryIndex(null)
+                          setEditedEntryName('')
+                        }
+                      }}
+                      onChange={(event) => setEditedEntryName(event.target.value)}
+                      onBlur={() => {
+                        setEditingEntryIndex(null)
+                        setEditedEntryName('')
+                      }}
+                      value={editedEntryName}
+                      type="text"
+                      ref={editEntryInputRef}
+                    />
+                  </div>
+                </div>)
+            })}
             {isAddNewEntry &&
               <div className="diary-editor-entry-item">
                 <div 

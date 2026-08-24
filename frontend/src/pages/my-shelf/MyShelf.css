@@ -30,8 +30,9 @@
 
 .shelf-main {
   display: flex;
-  flex: 1 0 auto;
+  flex: 0 0 auto;
   flex-direction: column;
+  margin: auto 0;
   padding: 26px 6% 24px;
 }
 
@@ -313,6 +314,8 @@
 
 @media (max-width: 900px) {
   .shelf-main {
+    flex: 1 0 auto;
+    margin: 0;
     padding: 30px 5% 34px;
   }
 

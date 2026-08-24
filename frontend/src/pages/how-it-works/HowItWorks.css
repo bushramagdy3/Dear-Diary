@@ -38,8 +38,9 @@
 .how-main {
   position: relative;
   z-index: 1;
-  flex: 1 0 auto;
+  flex: 0 0 auto;
   min-height: 760px;
+  margin: auto 0;
   padding: 58px 6% 34px;
 }
 
@@ -166,8 +167,10 @@
 
   .how-main {
     display: flex;
+    flex: 1 0 auto;
     min-height: auto;
     flex-direction: column;
+    margin: 0;
     padding-top: 52px;
   }
 
