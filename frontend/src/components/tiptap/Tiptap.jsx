@@ -139,7 +139,7 @@ function shouldShow({editor, from, to}){
   return from !== to && selectedText.length > 0
 }
 
-function Tiptap({entry}) {
+function Tiptap({ diaryId, entry, appData, setAppData }) {
   const editor = useEditor({
     shouldRerenderOnTransaction: true,
     extensions: [
@@ -155,7 +155,31 @@ function Tiptap({entry}) {
     },
     onUpdate: ({ editor }) => {
       const diaryContent = editor.getJSON()
-      console.log(diaryContent)
+      const updatedAppData = {
+        ...appData,
+        diaries: appData.diaries.map((diary) => {
+          if (diary.id === diaryId) {
+            return {
+              ...diary,
+              entries: diary.entries.map((currentEntry) => {
+                if (currentEntry.id === entry.id) {
+                  return {
+                    ...currentEntry,
+                    content: diaryContent,
+                  }
+                }
+
+                return currentEntry
+              }),
+            }
+          }
+
+          return diary
+        }),
+      }
+
+      setAppData(updatedAppData)
+      console.log(updatedAppData)
     },
   })
 

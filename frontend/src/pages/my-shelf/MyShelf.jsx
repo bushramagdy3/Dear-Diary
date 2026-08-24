@@ -25,7 +25,7 @@ const coverImages = {
   8: cover8,
 }
 
-function MyShelf({ currentPage, diaries, setCurrentPage, setEditingDiaryId, setOpenedDiaryId, deleteDiary }) {
+function MyShelf({ appData, currentPage, diaries, setAppData, setCurrentPage, setEditingDiaryId, setOpenedDiaryId }) {
   const diariesPerPage = 4
   const [firstDiaryIndex, setFirstDiaryIndex] = useState(0)
   const [hoveredDiaryId, setHoveredDiaryId] = useState(null)
@@ -78,7 +78,15 @@ function MyShelf({ currentPage, diaries, setCurrentPage, setEditingDiaryId, setO
   }
 
   function deleteCurrentDiary(diaryId) {
-    deleteDiary(diaryId)
+    const updatedAppData = {
+      ...appData,
+      diaries: appData.diaries.filter((diary) => diary.id !== diaryId),
+    }
+
+    setAppData(updatedAppData)
+    console.log(updatedAppData)
+    setEditingDiaryId(null)
+    setOpenedDiaryId(null)
 
     if (visibleDiaries.length === 1 && canGoBack) {
       showPreviousDiaries()

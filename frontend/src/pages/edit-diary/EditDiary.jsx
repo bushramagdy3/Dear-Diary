@@ -24,7 +24,7 @@ const coverOptions = [
   { id: 8, image: cover8 },
 ]
 
-function EditDiary({ diaryId, diaries, saveDiaryChanges, setCurrentPage }) {
+function EditDiary({ appData, diaryId, diaries, setAppData, setCurrentPage }) {
   const diary = diaries.find((item) => item.id === diaryId) || {
     id: '',
     title: 'My diary',
@@ -50,11 +50,25 @@ function EditDiary({ diaryId, diaries, saveDiaryChanges, setCurrentPage }) {
   }
 
   function saveDiary() {
-    saveDiaryChanges({
+    const updatedDiary = {
       ...diary,
       coverId: selectedCoverId,
       title: diaryTitle.trim() || 'Untitled diary',
-    })
+    }
+
+    const updatedAppData = {
+      ...appData,
+      diaries: appData.diaries.map((currentDiary) => {
+        if (currentDiary.id === updatedDiary.id) {
+          return updatedDiary
+        }
+
+        return currentDiary
+      }),
+    }
+
+    setAppData(updatedAppData)
+    console.log(updatedAppData)
     setCurrentPage('my-shelf')
   }
 

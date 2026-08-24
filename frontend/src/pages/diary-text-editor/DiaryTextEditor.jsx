@@ -4,7 +4,7 @@ import Tiptap from '../../components/tiptap/Tiptap'
 import { useEffect, useRef, useState } from 'react'
 import { formatDate } from '../../utils'
 
-function DiaryTextEditor({ diaries, diaryId, setCurrentPage }) {
+function DiaryTextEditor({ appData, diaries, diaryId, setAppData, setCurrentPage }) {
   const diary = diaries.find((item) => item.id === diaryId) || diaries[0] || {
     title: 'Untitled diary',
     entries: [],
@@ -19,7 +19,7 @@ function DiaryTextEditor({ diaries, diaryId, setCurrentPage }) {
 
   useEffect(() => {
     if (isAddNewEntry) {
-      newEntryInputRef.current?.focus()
+      newEntryInputRef.current.focus()
     }
   }, [isAddNewEntry])
 
@@ -67,15 +67,47 @@ function DiaryTextEditor({ diaries, diaryId, setCurrentPage }) {
         ]
       }
     }
-    setEntries([... entries, newEntry])
+    const updatedEntries = [...entries, newEntry]
+    const updatedAppData = {
+      ...appData,
+      diaries: appData.diaries.map((currentDiary) => {
+        if (currentDiary.id === diary.id) {
+          return {
+            ...currentDiary,
+            entries: updatedEntries,
+          }
+        }
+
+        return currentDiary
+      }),
+    }
+
+    setEntries(updatedEntries)
+    setAppData(updatedAppData)
+    console.log(updatedAppData)
     setCurrentEntry(entries.length)
     setIsAddNewEntry(false)
   }
 
   function deleteEntry(entryIndex) {
     const updatedEntries = entries.filter((entry, index) => index !== entryIndex)
+    const updatedAppData = {
+      ...appData,
+      diaries: appData.diaries.map((currentDiary) => {
+        if (currentDiary.id === diary.id) {
+          return {
+            ...currentDiary,
+            entries: updatedEntries,
+          }
+        }
+
+        return currentDiary
+      }),
+    }
 
     setEntries(updatedEntries)
+    setAppData(updatedAppData)
+    console.log(updatedAppData)
 
     if (updatedEntries.length === 0) {
       setCurrentEntry(0)
@@ -172,6 +204,7 @@ function DiaryTextEditor({ diaries, diaryId, setCurrentPage }) {
                   <input
                     className="diary-editor-entry-name diary-editor-new-entry-input"
                     onKeyDown={addNewEntry}
+                    onBlur={() => setIsAddNewEntry(false)}
                     placeholder="Entry title"
                     ref={newEntryInputRef}
                     type="text"
@@ -190,7 +223,13 @@ function DiaryTextEditor({ diaries, diaryId, setCurrentPage }) {
                   <p>{selectedEntry.created_at}</p>
                   <h2>{selectedEntry.name}</h2>
                 </div>
-                <Tiptap key={selectedEntry.id} entry={selectedEntry}/>
+                <Tiptap 
+                  key={selectedEntry.id} 
+                  appData={appData}
+                  diaryId={diary.id} 
+                  entry={selectedEntry}
+                  setAppData={setAppData}
+                />
               </>
             )}
           </div>

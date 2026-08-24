@@ -7,7 +7,7 @@ import anonymousFigure from '../../assets/add-person/portrait-anonymous-figure.p
 import emptyCard from '../../assets/add-person/portrait-empty-card.png'
 import './AddPerson.css'
 
-function AddPerson({ currentPage, peopleList, setCurrentPage, setPeopleList }) {
+function AddPerson({ appData, currentPage, setAppData, setCurrentPage }) {
   const [portraitMode, setPortraitMode] = useState('upload')
   const [personName, setPersonName] = useState('')
   const [personRelationship, setPersonRelationship] = useState('')
@@ -39,7 +39,13 @@ function AddPerson({ currentPage, peopleList, setCurrentPage, setPeopleList }) {
       imageId: 0,
     }
 
-    setPeopleList([...peopleList, newPerson])
+    const updatedAppData = {
+      ...appData,
+      people: [...appData.people, newPerson],
+    }
+
+    setAppData(updatedAppData)
+    console.log(updatedAppData)
     setCurrentPage('people')
   }
 

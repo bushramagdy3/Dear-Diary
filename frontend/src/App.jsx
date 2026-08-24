@@ -9,66 +9,17 @@ import HowItWorks from './pages/how-it-works/HowItWorks'
 import MyShelf from './pages/my-shelf/MyShelf'
 import People from './pages/people/People'
 import DiaryTextEditor from './pages/diary-text-editor/DiaryTextEditor'
-import { appData } from './data'
-
-const diaries = appData.diaries
-const people = appData.people
+import { appData as initialAppData } from './data'
 
 function App() {
   const [currentPage, setCurrentPage] = useState("home")
-  const [diaryList, setDiaryList] = useState(diaries)
-  const [peopleList, setPeopleList] = useState(people)
+  const [appData, setAppData] = useState(initialAppData)
   const [editingDiaryId, setEditingDiaryId] = useState(null)
   const [openedDiaryId, setOpenedDiaryId] = useState(null)
   const [editingPersonId, setEditingPersonId] = useState(null)
 
-  function saveDiaryChanges(updatedDiary) {
-    setDiaryList((currentDiaries) =>
-      currentDiaries.map((diary) => {
-        if (diary.id === updatedDiary.id) {
-          return updatedDiary
-        }
-
-        return diary
-      }),
-    )
-  }
-
-  function savePersonChanges(updatedPerson) {
-    setPeopleList((currentPeople) =>
-      currentPeople.map((person) => {
-        if (person.id === updatedPerson.id) {
-          return updatedPerson
-        }
-
-        return person
-      }),
-    )
-  }
-
-  function deleteDiary(diaryId) {
-    setDiaryList((currentDiaries) =>
-      currentDiaries.filter((diary) => diary.id !== diaryId),
-    )
-
-    if (editingDiaryId === diaryId) {
-      setEditingDiaryId(null)
-    }
-
-    if (openedDiaryId === diaryId) {
-      setOpenedDiaryId(null)
-    }
-  }
-
-  function deletePerson(personId) {
-    setPeopleList((currentPeople) =>
-      currentPeople.filter((person) => person.id !== personId),
-    )
-
-    if (editingPersonId === personId) {
-      setEditingPersonId(null)
-    }
-  }
+  const diaryList = appData.diaries
+  const peopleList = appData.people
 
   return (
     <>
@@ -77,53 +28,57 @@ function App() {
       )}
       {currentPage === "create-diary" && (
         <CreateDiary 
+          appData={appData}
           currentPage={currentPage} 
           setCurrentPage={setCurrentPage} 
-          diaryList={diaryList} 
-          setDiaryList = {setDiaryList}
+          setAppData={setAppData}
         />
       )}
       {currentPage === "edit-diary" && (
         <EditDiary
+          appData={appData}
           diaryId={editingDiaryId}
           diaries={diaryList}
-          saveDiaryChanges={saveDiaryChanges}
+          setAppData={setAppData}
           setCurrentPage={setCurrentPage}
         />
       )}
       {currentPage === "add-person" && (
         <AddPerson
+          appData={appData}
           currentPage="people"
-          peopleList={peopleList}
+          setAppData={setAppData}
           setCurrentPage={setCurrentPage}
-          setPeopleList={setPeopleList}
         />
       )}
       {currentPage === "edit-person" && (
         <EditPerson
+          appData={appData}
           people={peopleList}
           personId={editingPersonId}
-          savePersonChanges={savePersonChanges}
+          setAppData={setAppData}
           setCurrentPage={setCurrentPage}
         />
       )}
       {currentPage === "my-shelf" && (
         <MyShelf
+          appData={appData}
           currentPage={currentPage}
           diaries={diaryList}
+          setAppData={setAppData}
           setCurrentPage={setCurrentPage}
           setEditingDiaryId={setEditingDiaryId}
           setOpenedDiaryId={setOpenedDiaryId}
-          deleteDiary={deleteDiary}
         />
       )}
       {currentPage === "people" && (
         <People
+          appData={appData}
           currentPage={currentPage}
           people={peopleList}
+          setAppData={setAppData}
           setCurrentPage={setCurrentPage}
           setEditingPersonId={setEditingPersonId}
-          deletePerson={deletePerson}
         />
       )}
       {currentPage === "how-it-works" && (
@@ -131,8 +86,10 @@ function App() {
       )}
       {currentPage === "diary-text-editor" && (
         <DiaryTextEditor
+          appData={appData}
           diaries={diaryList}
           diaryId={openedDiaryId}
+          setAppData={setAppData}
           setCurrentPage={setCurrentPage}
         />
       )}

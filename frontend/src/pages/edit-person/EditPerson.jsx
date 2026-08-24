@@ -13,7 +13,7 @@ const personImages = {
   1: person1,
 }
 
-function EditPerson({ people, personId, savePersonChanges, setCurrentPage }) {
+function EditPerson({ appData, people, personId, setAppData, setCurrentPage }) {
   const person = people.find((item) => item.id === personId) || {
     id: '',
     name: '',
@@ -46,12 +46,26 @@ function EditPerson({ people, personId, savePersonChanges, setCurrentPage }) {
   }
 
   function savePerson() {
-    savePersonChanges({
+    const updatedPerson = {
       ...person,
       name: personName.trim() || 'Unnamed person',
       relationship: personRelationship || 'other',
       description: personDescription.trim(),
-    })
+    }
+
+    const updatedAppData = {
+      ...appData,
+      people: appData.people.map((currentPerson) => {
+        if (currentPerson.id === updatedPerson.id) {
+          return updatedPerson
+        }
+
+        return currentPerson
+      }),
+    }
+
+    setAppData(updatedAppData)
+    console.log(updatedAppData)
     setCurrentPage('people')
   }
 

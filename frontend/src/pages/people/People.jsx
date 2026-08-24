@@ -11,7 +11,7 @@ const personImages = {
   1: person1,
 }
 
-function People({ currentPage, people, setCurrentPage, setEditingPersonId, deletePerson }) {
+function People({ appData, currentPage, people, setAppData, setCurrentPage, setEditingPersonId }) {
   const cardsPerPage = 3
   const [firstCardIndex, setFirstCardIndex] = useState(0)
 
@@ -62,7 +62,14 @@ function People({ currentPage, people, setCurrentPage, setEditingPersonId, delet
   }
 
   function deleteCurrentPerson(personId) {
-    deletePerson(personId)
+    const updatedAppData = {
+      ...appData,
+      people: appData.people.filter((person) => person.id !== personId),
+    }
+
+    setAppData(updatedAppData)
+    console.log(updatedAppData)
+    setEditingPersonId(null)
 
     if (visibleCards.length === 1 && canGoBack) {
       showPreviousCards()

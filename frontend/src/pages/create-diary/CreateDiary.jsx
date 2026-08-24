@@ -25,7 +25,7 @@ const coverOptions = [
   { id: 8, image: cover8 },
 ]
 
-function CreateDiary({ currentPage, setCurrentPage, diaryList, setDiaryList }) {
+function CreateDiary({ appData, currentPage, setAppData, setCurrentPage }) {
   const [selectedCoverId, setSelectedCoverId] = useState(0)
   const [diaryTitle, setDiaryTitle] = useState('My diary')
 
@@ -75,7 +75,13 @@ function CreateDiary({ currentPage, setCurrentPage, diaryList, setDiaryList }) {
         }
       ]
     }
-    setDiaryList([...diaryList, newDiary]) 
+    const updatedAppData = {
+      ...appData,
+      diaries: [...appData.diaries, newDiary],
+    }
+
+    setAppData(updatedAppData)
+    console.log(updatedAppData)
     setCurrentPage('my-shelf')
   }
 
