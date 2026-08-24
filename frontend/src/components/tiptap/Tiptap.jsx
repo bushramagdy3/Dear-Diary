@@ -1,167 +1,183 @@
 import { useEditor, EditorContent } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
-//import './styles.scss'
+import TextAlign from '@tiptap/extension-text-align'
+import DiaryImage from './ImageDiary'
+import { BubbleMenu } from '@tiptap/react/menus'
+import { FaWandMagicSparkles  } from "react-icons/fa6"
+import { 
+  GrBold, 
+  GrItalic, 
+  GrUnderline,
+  GrUnorderedList, 
+  GrTextAlignRight, 
+  GrTextAlignLeft, 
+  GrTextAlignCenter,
+  GrUndo,
+  GrRedo 
+} from 'react-icons/gr'
+import './Tiptap.css'
+import loadingImageSrc from "../../assets/tiptap-writing-space/dear-diary-generating.gif"
 
-const MenuBar = ({ editor }) => {
-  if (!editor) {
+function getButtonClass(isActive) {
+  if (isActive) {
+    return 'toolbar-button active-toolbar-button'
+  }
+
+  return 'toolbar-button'
+}
+
+function MenuBar({ editor }) {
+  if (editor == null) {
     return null
   }
 
   return (
-    <>
-      <button
-        onClick={() => editor.chain().focus().toggleBold().run()}
-        className={editor.isActive('bold') ? 'is-active' : ''}
-      >
-        bold
-      </button>
-      <button
-        onClick={() => editor.chain().focus().toggleItalic().run()}
-        className={editor.isActive('italic') ? 'is-active' : ''}
-      >
-        italic
-      </button>
-      <button
-        onClick={() => editor.chain().focus().toggleStrike().run()}
-        className={editor.isActive('strike') ? 'is-active' : ''}
-      >
-        strike
-      </button>
-      <button
-        onClick={() => editor.chain().focus().toggleCode().run()}
-        className={editor.isActive('code') ? 'is-active' : ''}
-      >
-        code
-      </button>
-      <button onClick={() => editor.chain().focus().unsetAllMarks().run()}>
-        clear marks
-      </button>
-      <button onClick={() => editor.chain().focus().clearNodes().run()}>
-        clear nodes
-      </button>
-      <button
-        onClick={() => editor.chain().focus().setParagraph().run()}
-        className={editor.isActive('paragraph') ? 'is-active' : ''}
-      >
-        paragraph
-      </button>
-      <button
-        onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
-        className={editor.isActive('heading', { level: 1 }) ? 'is-active' : ''}
-      >
-        h1
-      </button>
-      <button
-        onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
-        className={editor.isActive('heading', { level: 2 }) ? 'is-active' : ''}
-      >
-        h2
-      </button>
-      <button
-        onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
-        className={editor.isActive('heading', { level: 3 }) ? 'is-active' : ''}
-      >
-        h3
-      </button>
-      <button
-        onClick={() => editor.chain().focus().toggleHeading({ level: 4 }).run()}
-        className={editor.isActive('heading', { level: 4 }) ? 'is-active' : ''}
-      >
-        h4
-      </button>
-      <button
-        onClick={() => editor.chain().focus().toggleHeading({ level: 5 }).run()}
-        className={editor.isActive('heading', { level: 5 }) ? 'is-active' : ''}
-      >
-        h5
-      </button>
-      <button
-        onClick={() => editor.chain().focus().toggleHeading({ level: 6 }).run()}
-        className={editor.isActive('heading', { level: 6 }) ? 'is-active' : ''}
-      >
-        h6
-      </button>
-      <button
-        onClick={() => editor.chain().focus().toggleBulletList().run()}
-        className={editor.isActive('bulletList') ? 'is-active' : ''}
-      >
-        bullet list
-      </button>
-      <button
-        onClick={() => editor.chain().focus().toggleOrderedList().run()}
-        className={editor.isActive('orderedList') ? 'is-active' : ''}
-      >
-        ordered list
-      </button>
-      <button
-        onClick={() => editor.chain().focus().toggleCodeBlock().run()}
-        className={editor.isActive('codeBlock') ? 'is-active' : ''}
-      >
-        code block
-      </button>
-      <button
-        onClick={() => editor.chain().focus().toggleBlockquote().run()}
-        className={editor.isActive('blockquote') ? 'is-active' : ''}
-      >
-        blockquote
-      </button>
-      <button onClick={() => editor.chain().focus().setHorizontalRule().run()}>
-        horizontal rule
-      </button>
-      <button onClick={() => editor.chain().focus().setHardBreak().run()}>
-        hard break
-      </button>
-      <button onClick={() => editor.chain().focus().undo().run()}>
-        undo
-      </button>
-      <button onClick={() => editor.chain().focus().redo().run()}>
-        redo
-      </button>
-    </>
+    <div className="editor-toolbar">
+      <div className="toolbar-button-group">
+        <button
+          className={getButtonClass(editor.isActive('bold'))}
+          onClick={() => editor.chain().focus().toggleBold().run()}
+          title="Bold"
+          type="button"
+        >
+          <GrBold />
+        </button>
+        <button
+          className={getButtonClass(editor.isActive('italic'))}
+          onClick={() => editor.chain().focus().toggleItalic().run()}
+          title="Italic"
+          type="button"
+        >
+          <GrItalic />
+        </button>
+        <button
+          className={getButtonClass(editor.isActive('underline'))}
+          onClick={() => editor.chain().focus().toggleUnderline().run()}
+          title="Underline"
+          type="button"
+        >
+          <GrUnderline />
+        </button>
+      </div>
+
+      <div className="toolbar-button-group">
+        <button
+          className={getButtonClass(editor.isActive('bulletList'))}
+          onClick={() => editor.chain().focus().toggleBulletList().run()}
+          title="Bullets"
+          type="button"
+        >
+          <GrUnorderedList />
+        </button>
+      </div>
+
+      <div className="toolbar-button-group">
+        <button
+          className={getButtonClass(editor.isActive({ textAlign: 'left' }))}
+          onClick={() => editor.chain().focus().setTextAlign('left').run()}
+          title="Align left"
+          type="button"
+        >
+          <GrTextAlignLeft />
+        </button>
+
+        <button
+          className={getButtonClass(editor.isActive({ textAlign: 'center' }))}
+          onClick={() => editor.chain().focus().setTextAlign('center').run()}
+          title="Align center"
+          type="button"
+        >
+          <GrTextAlignCenter />
+        </button>
+
+        <button
+          className={getButtonClass(editor.isActive({ textAlign: 'right' }))}
+          onClick={() => editor.chain().focus().setTextAlign('right').run()}
+          title="Align right"
+          type="button"
+        >
+          <GrTextAlignRight />
+        </button>
+      </div>
+
+      <div className="toolbar-button-group">
+        <button
+          className="toolbar-button"
+          disabled={!editor.can().chain().focus().undo().run()}
+          onClick={() => editor.chain().focus().undo().run()}
+          title="Undo"
+          type="button"
+        >
+          <GrUndo />
+        </button>
+
+        <button
+          className="toolbar-button"
+          disabled={!editor.can().chain().focus().redo().run()}
+          onClick={() => editor.chain().focus().redo().run()}
+          title="Redo"
+          type="button"
+        >
+          <GrRedo />
+        </button>
+      </div>
+    </div>
   )
+}
+
+const illustrateMenuOptions = { placement: 'top', offset: 8 }
+
+function handleIllustrate(editor) {
+  const { from, to } = editor.state.selection
+  const selectedText = editor.state.doc.textBetween(from, to, ' ')
+  console.log('Illustrate this:', selectedText)
+  editor.chain().focus().setTextSelection(to).setImage({src: loadingImageSrc, alt: selectedText}).run()
+}
+
+function shouldShow({editor, from, to}){
+  const selectedText = editor.state.doc.textBetween(from, to, " ").trim();
+  return from !== to && selectedText.length > 0
 }
 
 function Tiptap() {
   const editor = useEditor({
+    shouldRerenderOnTransaction: true,
     extensions: [
       StarterKit,
+      TextAlign.configure({ types: ['heading', 'paragraph'] }),
+      DiaryImage
     ],
-    content: `
-      <h2>
-        Hi there,
-      </h2>
-      <p>
-        this is a <em>basic</em> example of <strong>tiptap</strong>. Sure, there are all kind of basic text styles you’d probably expect from a text editor. But wait until you see the lists:
-      </p>
-      <ul>
-        <li>
-          That’s a bullet list with one …
-        </li>
-        <li>
-          … or two list items.
-        </li>
-      </ul>
-      <p>
-        Isn’t that great? And all of that is editable. But wait, there’s more. Let’s try a code block:
-      </p>
-      <pre><code class="language-css">body {
-  display: none;
-}</code></pre>
-      <p>
-        I know, I know, this is impressive. It’s only the tip of the iceberg though. Give it a try and click a little bit around. Don’t forget to check the other examples too.
-      </p>
-      <blockquote>
-        Wow, that’s amazing. Good work, boy! 👏
-        <br />
-        — Mom
-      </blockquote>
-    `,
+    content: '<p>Start writing about your day...</p>',
+    editorProps: {
+      attributes: {
+        class: 'diary-writing-paper',
+      },
+    },
+    onUpdate: ({ editor }) => {
+      const diaryContent = editor.getJSON()
+      console.log(diaryContent)
+    },
   })
 
   return (
-    <div>
+    <div className="tiptap-editor">
       <MenuBar editor={editor} />
-      <EditorContent editor={editor} />
+      <BubbleMenu
+        className="tiptap-illustrate-menu"
+        editor={editor}
+        options={illustrateMenuOptions}
+        shouldShow={shouldShow}
+      >
+        <button
+          className="illustrate-selection-button"
+          onClick={() => handleIllustrate(editor)}
+          type="button"
+        >
+          <FaWandMagicSparkles className="wand"/>
+          Illustrate
+        </button>
+      </BubbleMenu>
+      <EditorContent className="tiptap-writing-area" editor={editor} />
     </div>
   )
 }

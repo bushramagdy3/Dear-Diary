@@ -1,0 +1,337 @@
+.tiptap-editor {
+  display: flex;
+  width: 100%;
+  min-height: 0;
+  flex-direction: column;
+}
+
+.editor-toolbar {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 22px 0 34px;
+}
+
+.toolbar-button-group {
+  display: inline-flex;
+  overflow: hidden;
+  border: 1px solid rgba(36, 34, 30, 0.2);
+  border-radius: 4px;
+  background: rgba(255, 250, 244, 0.78);
+  box-shadow: 0 8px 18px rgba(60, 49, 39, 0.05);
+}
+
+.toolbar-button {
+  display: inline-flex;
+  width: 46px;
+  height: 42px;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-right: 1px solid rgba(36, 34, 30, 0.16);
+  background: transparent;
+  color: #24221e;
+  cursor: pointer;
+  font-family: "Bodoni 72", "Didot", "Cormorant Garamond", Georgia, serif;
+  font-size: 17px;
+  transition:
+    background 160ms ease,
+    transform 160ms ease,
+    color 160ms ease;
+}
+
+.toolbar-button:last-child {
+  border-right: 0;
+}
+
+.toolbar-button svg {
+  width: 19px;
+  height: 19px;
+}
+
+.toolbar-button:hover {
+  background: rgba(239, 218, 215, 0.74);
+}
+
+.toolbar-button:active {
+  transform: translateY(1px);
+}
+
+.toolbar-button:disabled {
+  color: rgba(36, 34, 30, 0.28);
+  cursor: default;
+}
+
+.toolbar-button:disabled:hover {
+  background: transparent;
+}
+
+.active-toolbar-button {
+  background: #efd7d8;
+  color: #1f1e1b;
+}
+
+.tiptap-illustrate-menu {
+  z-index: 12;
+  animation: illustrate-menu-fade 180ms ease both;
+}
+
+.illustrate-selection-button {
+  display: inline-flex;
+  min-width: 120px;
+  min-height: 36px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(149, 91, 98, 0.2);
+  border-radius: 5px;
+  background: #efd1d5;
+  box-shadow: 0 8px 18px rgba(78, 51, 50, 0.13);
+  color: #24221e;
+  cursor: pointer;
+  font-family: "Bodoni 72", "Didot", "Cormorant Garamond", Georgia, serif;
+  font-size: 18px;
+  animation: illustrate-button-show 220ms ease both;
+  transition:
+    background 160ms ease,
+    transform 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.wand {
+  margin-right: 10px;
+  animation: wand-soft-twinkle 420ms ease both;
+}
+
+.illustrate-selection-button:hover {
+  background: #e8c3c9;
+  box-shadow: 0 10px 22px rgba(78, 51, 50, 0.18);
+  transform: translateY(-1px);
+}
+
+.illustrate-selection-button:focus-visible {
+  outline: 2px solid rgba(36, 34, 30, 0.64);
+  outline-offset: 3px;
+}
+
+.tiptap-writing-area {
+  width: 100%;
+  min-height: 0;
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 12px;
+}
+
+.diary-writing-paper {
+  min-height: 100%;
+  outline: 0;
+  color: #24221e;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 18px;
+  line-height: 1.2;
+  padding-bottom: 52px;
+}
+
+.diary-writing-paper::selection,
+.diary-writing-paper p::selection,
+.diary-writing-paper li::selection {
+  background: rgba(238, 203, 207, 0.82);
+  color: #1f1e1b;
+}
+
+.diary-writing-paper p {
+  margin: 0 0 30px;
+}
+
+.diary-writing-paper ul,
+.diary-writing-paper ol {
+  margin: 0 0 30px 30px;
+  padding: 0;
+}
+
+.diary-writing-paper li {
+  padding-left: 4px;
+}
+
+.diary-image-wrapper {
+  position: relative;
+  display: block;
+  max-width: 550px;
+  width: 82%;
+  margin: 24px auto 34px;
+  animation: diary-image-show 280ms ease both;
+}
+
+.diary-image-wrapper--deleting {
+  pointer-events: none;
+  animation: diary-image-delete 220ms ease forwards;
+}
+
+.diary-image-wrapper .diary-illustration {
+  display: block;
+  width: 100%;
+  height: auto;
+  transition:
+    opacity 190ms ease,
+    transform 190ms ease;
+}
+
+.diary-image-actions {
+  position: absolute;
+  right: 14px;
+  bottom: 14px;
+  display: flex;
+  gap: 8px;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(6px);
+  transition:
+    opacity 160ms ease,
+    transform 160ms ease;
+}
+
+.diary-image-wrapper:hover .diary-illustration,
+.diary-image-wrapper:focus-within .diary-illustration {
+  opacity: 0.72;
+  transform: scale(0.995);
+}
+
+.diary-image-wrapper:hover .diary-image-actions,
+.diary-image-wrapper:focus-within .diary-image-actions {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.diary-image-action-button {
+  display: inline-flex;
+  width: 38px;
+  height: 36px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(36, 34, 30, 0.18);
+  border-radius: 4px;
+  background: rgba(255, 250, 244, 0.92);
+  box-shadow: 0 8px 18px rgba(36, 34, 30, 0.12);
+  color: #24221e;
+  cursor: pointer;
+  transition:
+    background 160ms ease,
+    transform 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.diary-image-action-button svg {
+  width: 17px;
+  height: 17px;
+}
+
+.diary-image-action-button:hover {
+  background: #efd1d5;
+  box-shadow: 0 10px 22px rgba(78, 51, 50, 0.16);
+  transform: translateY(-1px);
+}
+
+.diary-image-action-button:disabled {
+  opacity: 0.45;
+  cursor: default;
+  background: rgba(245, 239, 230, 0.78);
+  box-shadow: none;
+  color: rgba(36, 34, 30, 0.38);
+}
+
+.diary-image-action-button:disabled:hover {
+  background: rgba(245, 239, 230, 0.78);
+  box-shadow: none;
+  transform: none;
+}
+
+@keyframes illustrate-menu-fade {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes illustrate-button-show {
+  from {
+    opacity: 0;
+    transform: translateY(6px) scale(0.96);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes wand-soft-twinkle {
+  from {
+    opacity: 0.45;
+    transform: rotate(-8deg) scale(0.92);
+  }
+
+  to {
+    opacity: 1;
+    transform: rotate(0) scale(1);
+  }
+}
+
+@keyframes diary-image-show {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes diary-image-delete {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateY(10px) scale(0.97);
+  }
+}
+
+@media (max-width: 900px) {
+  .editor-toolbar {
+    margin-bottom: 34px;
+  }
+
+  .diary-writing-paper {
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 560px) {
+  .editor-toolbar {
+    gap: 8px;
+  }
+
+  .toolbar-button {
+    width: 40px;
+    height: 38px;
+  }
+
+  .toolbar-button svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .diary-writing-paper {
+    font-size: 18px;
+    line-height: 1.65;
+  }
+}
