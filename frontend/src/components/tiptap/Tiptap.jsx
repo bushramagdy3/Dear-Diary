@@ -130,7 +130,7 @@ const illustrateMenuOptions = { placement: 'top', offset: 8 }
 function handleIllustrate(editor) {
   const { from, to } = editor.state.selection
   const selectedText = editor.state.doc.textBetween(from, to, ' ')
-  console.log('Illustrate this:', selectedText)
+  console.log("Illustrate: ", selectedText)
   editor.chain().focus().setTextSelection(to).setImage({src: loadingImageSrc, alt: selectedText}).run()
 }
 
@@ -179,7 +179,6 @@ function Tiptap({ diaryId, entry, appData, setAppData }) {
       }
 
       setAppData(updatedAppData)
-      console.log(updatedAppData)
     },
   })
 

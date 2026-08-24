@@ -65,7 +65,6 @@ function EditPerson({ appData, people, personId, setAppData, setCurrentPage }) {
     }
 
     setAppData(updatedAppData)
-    console.log(updatedAppData)
     setCurrentPage('people')
   }
 

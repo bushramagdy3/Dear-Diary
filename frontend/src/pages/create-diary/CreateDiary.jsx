@@ -81,7 +81,6 @@ function CreateDiary({ appData, currentPage, setAppData, setCurrentPage }) {
     }
 
     setAppData(updatedAppData)
-    console.log(updatedAppData)
     setCurrentPage('my-shelf')
   }
 

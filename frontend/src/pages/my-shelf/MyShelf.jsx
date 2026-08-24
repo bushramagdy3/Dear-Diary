@@ -84,7 +84,6 @@ function MyShelf({ appData, currentPage, diaries, setAppData, setCurrentPage, se
     }
 
     setAppData(updatedAppData)
-    console.log(updatedAppData)
     setEditingDiaryId(null)
     setOpenedDiaryId(null)
 

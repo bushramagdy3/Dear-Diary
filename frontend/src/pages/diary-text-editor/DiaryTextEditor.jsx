@@ -84,7 +84,6 @@ function DiaryTextEditor({ appData, diaries, diaryId, setAppData, setCurrentPage
 
     setEntries(updatedEntries)
     setAppData(updatedAppData)
-    console.log(updatedAppData)
     setCurrentEntry(entries.length)
     setIsAddNewEntry(false)
   }
@@ -107,7 +106,6 @@ function DiaryTextEditor({ appData, diaries, diaryId, setAppData, setCurrentPage
 
     setEntries(updatedEntries)
     setAppData(updatedAppData)
-    console.log(updatedAppData)
 
     if (updatedEntries.length === 0) {
       setCurrentEntry(0)

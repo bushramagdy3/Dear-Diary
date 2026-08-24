@@ -68,7 +68,6 @@ function People({ appData, currentPage, people, setAppData, setCurrentPage, setE
     }
 
     setAppData(updatedAppData)
-    console.log(updatedAppData)
     setEditingPersonId(null)
 
     if (visibleCards.length === 1 && canGoBack) {

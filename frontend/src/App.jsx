@@ -1,5 +1,4 @@
-import { useState } from 'react'
-import './App.css'
+import { useState, useEffect } from 'react'
 import AddPerson from './pages/add-person/AddPerson'
 import CreateDiary from './pages/create-diary/CreateDiary'
 import EditDiary from './pages/edit-diary/EditDiary'
@@ -9,11 +8,19 @@ import HowItWorks from './pages/how-it-works/HowItWorks'
 import MyShelf from './pages/my-shelf/MyShelf'
 import People from './pages/people/People'
 import DiaryTextEditor from './pages/diary-text-editor/DiaryTextEditor'
-import { appData as initialAppData } from './data'
 
 function App() {
   const [currentPage, setCurrentPage] = useState("home")
-  const [appData, setAppData] = useState(initialAppData)
+  const [appData, setAppData] = useState(() => {
+    const savedAppData = localStorage.getItem('appData')
+    if(savedAppData !== null){
+      return JSON.parse(savedAppData)
+    }
+    return {diaries: [], people: []}
+  })
+  useEffect(() => {
+    localStorage.setItem('appData', JSON.stringify(appData))
+  }, [appData])
   const [editingDiaryId, setEditingDiaryId] = useState(null)
   const [openedDiaryId, setOpenedDiaryId] = useState(null)
   const [editingPersonId, setEditingPersonId] = useState(null)

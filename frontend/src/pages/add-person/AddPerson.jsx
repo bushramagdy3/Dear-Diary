@@ -45,7 +45,6 @@ function AddPerson({ appData, currentPage, setAppData, setCurrentPage }) {
     }
 
     setAppData(updatedAppData)
-    console.log(updatedAppData)
     setCurrentPage('people')
   }
 
