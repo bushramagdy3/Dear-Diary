@@ -9,13 +9,15 @@ import HowItWorks from './pages/how-it-works/HowItWorks'
 import MyShelf from './pages/my-shelf/MyShelf'
 import People from './pages/people/People'
 import DiaryTextEditor from './pages/diary-text-editor/DiaryTextEditor'
-import { diaries as previewDiaries } from './static preview/diaries'
-import { people as previewPeople } from './static preview/people'
+import { appData } from './data'
+
+const diaries = appData.diaries
+const people = appData.people
 
 function App() {
   const [currentPage, setCurrentPage] = useState("home")
-  const [diaryList, setDiaryList] = useState(previewDiaries)
-  const [peopleList, setPeopleList] = useState(previewPeople)
+  const [diaryList, setDiaryList] = useState(diaries)
+  const [peopleList, setPeopleList] = useState(people)
   const [editingDiaryId, setEditingDiaryId] = useState(null)
   const [openedDiaryId, setOpenedDiaryId] = useState(null)
   const [editingPersonId, setEditingPersonId] = useState(null)

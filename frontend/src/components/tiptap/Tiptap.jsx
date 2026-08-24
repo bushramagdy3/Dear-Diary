@@ -139,7 +139,7 @@ function shouldShow({editor, from, to}){
   return from !== to && selectedText.length > 0
 }
 
-function Tiptap() {
+function Tiptap({entry}) {
   const editor = useEditor({
     shouldRerenderOnTransaction: true,
     extensions: [
@@ -147,7 +147,7 @@ function Tiptap() {
       TextAlign.configure({ types: ['heading', 'paragraph'] }),
       DiaryImage
     ],
-    content: '<p>Start writing about your day...</p>',
+    content: entry.content,
     editorProps: {
       attributes: {
         class: 'diary-writing-paper',
@@ -158,6 +158,9 @@ function Tiptap() {
       console.log(diaryContent)
     },
   })
+
+  if(entry == null)
+    return null
 
   return (
     <div className="tiptap-editor">

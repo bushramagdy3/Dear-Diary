@@ -1,12 +1,42 @@
-export const diaries = [
+export const appData = {
+    people: [
+        {
+            id: crypto.randomUUID(),
+            name: "layan",
+            relationship: "friend",
+            description: "y2k, wolfcut",
+            imageId: 0
+        },
+        {
+            id: crypto.randomUUID(),
+            name: "miriam",
+            relationship: "friend",
+            description: "curly hair, casual",
+            imageId: 1
+        },
+        {
+            id: crypto.randomUUID(),
+            name: "layan",
+            relationship: "friend",
+            description: "y2k, wolfcut",
+            imageId: 0
+        },
+        {
+            id: crypto.randomUUID(),
+            name: "miriam",
+            relationship: "friend",
+            description: "curly hair, casual",
+            imageId: 1
+        }
+    ],
+    diaries: [
     {
-        id: 0,
+        id: crypto.randomUUID(),
         title: "Little Life",
-        content: "",
         coverId: 3,
         entries: [
             {
-                id: 0,
+                id: crypto.randomUUID(),
                 name: "First Day",
                 created_at: "13 July 2026",
                 content: {
@@ -44,7 +74,7 @@ export const diaries = [
                 }
             },
             {
-                id: 1,
+                id: crypto.randomUUID(),
                 name: "Second Day",
                 created_at: "14 July 2026",
                 content: {
@@ -58,7 +88,7 @@ export const diaries = [
                             "content": [
                                 {
                                     "type": "text",
-                                    "text": "Start writing about your day..."
+                                    "text": "This is the 2nd entry"
                                 }
                             ]
                         },
@@ -82,5 +112,6 @@ export const diaries = [
                 }
             }
         ] 
-    },
+    }
 ]
+}

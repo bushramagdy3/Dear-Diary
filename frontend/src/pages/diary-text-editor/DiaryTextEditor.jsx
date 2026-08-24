@@ -1,10 +1,26 @@
 import { FiCheck, FiChevronLeft, FiDownload, FiPlus } from 'react-icons/fi'
 import './DiaryTextEditor.css'
 import Tiptap from '../../components/tiptap/Tiptap'
+import { useState } from 'react'
 
 function DiaryTextEditor({ diaries, diaryId, setCurrentPage }) {
   const diary = diaries.find((item) => item.id === diaryId) || diaries[0] || {
     title: 'Untitled diary',
+    entries: [],
+  }
+
+  const [currentEntry, setCurrentEntry] = useState(0)
+
+  const selectedEntry = diary.entries[currentEntry]
+
+  function getEntryListDate(dateText) {
+    const dateParts = dateText.split(' ')
+
+    if (dateParts.length < 2) {
+      return dateText
+    }
+
+    return `${dateParts[0]} ${dateParts[1].slice(0, 3).toUpperCase()}`
   }
 
   function goToMyShelf() {
@@ -48,12 +64,36 @@ function DiaryTextEditor({ diaries, diaryId, setCurrentPage }) {
             <span>New entry</span>
           </button>
 
-          <div className="diary-editor-entry-list"></div>
+          <div className="diary-editor-entry-list">
+            {diary.entries.map((entry, index) => (
+              <div className="diary-editor-entry-item" key={entry.id}>
+                <button 
+                  className="diary-editor-entry-button"
+                  onClick={() => setCurrentEntry(index)} 
+                  disabled={currentEntry === index} 
+                  type="button"
+                >
+                  <span className="diary-editor-entry-date">
+                    {getEntryListDate(entry.created_at)}
+                  </span>
+                  <span className="diary-editor-entry-name">{entry.name}</span>
+                </button>
+              </div>
+            ))}
+          </div>
         </aside>
 
         <section className="diary-editor-workspace">
           <div className="diary-editor-blank-sheet">
-            <Tiptap />
+            {selectedEntry != null && (
+              <>
+                <div className="diary-current-entry-header">
+                  <p>{selectedEntry.created_at}</p>
+                  <h2>{selectedEntry.name}</h2>
+                </div>
+                <Tiptap key={selectedEntry.id} entry={selectedEntry}/>
+              </>
+            )}
           </div>
         </section>
       </main>
