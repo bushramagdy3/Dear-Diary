@@ -1,4 +1,4 @@
-import { FiCheck, FiChevronLeft, FiDownload, FiEdit2, FiPlus, FiTrash2 } from 'react-icons/fi'
+import {FiChevronLeft, FiEdit2, FiPlus, FiTrash2 } from 'react-icons/fi'
 import './DiaryTextEditor.css'
 import Tiptap from '../../components/tiptap/Tiptap'
 import { useEffect, useRef, useState } from 'react'
@@ -144,13 +144,8 @@ function DiaryTextEditor({ appData, diaries, diaryId, setAppData, setCurrentPage
 
         <div className="diary-editor-topbar__right">
           <p className="diary-editor-saved">
-            <FiCheck />
-            <span>Saved on this device</span>
+            <span>Saved on this device only</span>
           </p>
-          <button className="diary-editor-export" type="button">
-            <FiDownload />
-            <span>Export</span>
-          </button>
         </div>
       </header>
 
