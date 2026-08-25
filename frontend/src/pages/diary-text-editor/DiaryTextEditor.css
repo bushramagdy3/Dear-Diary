@@ -1,6 +1,11 @@
 .diary-editor-page {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  width: 100%;
   height: 100vh;
   overflow: hidden;
+  flex-direction: column;
   background:
     radial-gradient(circle at 96% 16%, rgba(224, 204, 186, 0.24), transparent 18%),
     linear-gradient(90deg, rgba(246, 241, 233, 0.98), rgba(250, 247, 241, 0.94));
@@ -89,7 +94,8 @@
 
 .diary-editor-main {
   display: grid;
-  height: calc(100vh - 78px);
+  flex: 1 1 auto;
+  height: auto;
   min-height: 0;
   grid-template-columns: 348px 1fr;
 }
@@ -308,6 +314,7 @@
 .diary-editor-blank-sheet {
   display: flex;
   width: 100%;
+  height: 100%;
   max-width: 880px;
   min-height: 0;
   flex-direction: column;

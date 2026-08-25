@@ -4,6 +4,7 @@
   min-height: 0;
   flex: 1;
   flex-direction: column;
+  overflow: hidden;
 }
 
 .editor-toolbar {
@@ -157,8 +158,10 @@
 
 .diary-image-wrapper {
   position: relative;
-  display: block;
-  max-width: 550px;
+  display: flex;
+  justify-content: center;
+  max-width: 500px;
+  max-height: 300px;
   width: 82%;
   margin: 24px auto 34px;
   animation: diary-image-show 280ms ease both;
@@ -171,8 +174,11 @@
 
 .diary-image-wrapper .diary-illustration {
   display: block;
-  width: 100%;
+  width: auto;
+  max-width: 100%;
+  max-height: 300px;
   height: auto;
+  object-fit: contain;
   transition:
     opacity 190ms ease,
     transform 190ms ease;
@@ -314,6 +320,11 @@
   .diary-writing-paper {
     font-size: 20px;
   }
+
+  .diary-image-wrapper,
+  .diary-image-wrapper .diary-illustration {
+    max-height: 260px;
+  }
 }
 
 @media (max-width: 560px) {
@@ -334,5 +345,10 @@
   .diary-writing-paper {
     font-size: 18px;
     line-height: 1.65;
+  }
+
+  .diary-image-wrapper,
+  .diary-image-wrapper .diary-illustration {
+    max-height: 220px;
   }
 }

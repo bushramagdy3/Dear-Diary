@@ -16,7 +16,6 @@ import {
   GrRedo 
 } from 'react-icons/gr'
 import './Tiptap.css'
-import loadingImageSrc from "../../assets/tiptap-writing-space/dear-diary-generating.gif"
 
 function getButtonClass(isActive) {
   if (isActive) {
@@ -130,8 +129,16 @@ const illustrateMenuOptions = { placement: 'top', offset: 8 }
 function handleIllustrate(editor) {
   const { from, to } = editor.state.selection
   const selectedText = editor.state.doc.textBetween(from, to, ' ')
-  console.log("Illustrate: ", selectedText)
-  editor.chain().focus().setTextSelection(to).setImage({src: loadingImageSrc, alt: selectedText}).run()
+  console.log("illustrate:", selectedText)
+  editor
+    .chain()
+    .focus()
+    .setTextSelection(to)
+    .setImage({
+      src: '',
+      alt: selectedText,
+    })
+    .run()
 }
 
 function shouldShow({editor, from, to}){
