@@ -7,7 +7,6 @@ import { useEffect, useState } from 'react'
 import Image from '@tiptap/extension-image'
 import { FiTrash2, FiRefreshCw } from 'react-icons/fi'
 import loadingImageSrc from '../../assets/tiptap-writing-space/dear-diary-generating.gif'
-import testImageURL from '../../assets/static/0.png'
 import { addImage } from '../../database'
 
 function DiaryImageView({ node, updateAttributes, deleteNode }) {
@@ -15,8 +14,20 @@ function DiaryImageView({ node, updateAttributes, deleteNode }) {
   const [currentBlob, setCurrentBlob] = useState(null)
 
   useEffect(() => {
-    fetch(testImageURL)
-      .then((response) => response.blob())
+    fetch('http://127.0.0.1:8000/illustrations/generate', {
+      headers: {
+        "Content-Type": "application/json"
+      },
+      method: 'POST',
+      body: JSON.stringify({
+        prompt: node.attrs.alt
+      })
+    })
+      .then((response) => {
+        if(!response.ok)
+          throw new Error("cannot fetch")
+        return response.blob()
+      })
       .then((data) => {
         setCurrentBlob(data)
 
@@ -37,8 +48,20 @@ function DiaryImageView({ node, updateAttributes, deleteNode }) {
   function handleRegenerateImage() {
     setCurrentBlob(null)
     console.log("Regenerate", node.attrs.alt)
-    fetch(testImageURL)
-      .then((response) => response.blob())
+    fetch('http://127.0.0.1:8000/illustrations/regenerate', {
+      headers: {
+        "Content-Type": "application/json"
+      },
+      method: 'POST',
+      body: JSON.stringify({
+        prompt: node.attrs.alt
+      })
+    })
+      .then((response) => {
+        if(!response.ok)
+          throw new Error("cannot fetch")
+        return response.blob()
+      })
       .then((data) => {
         setCurrentBlob(data)
 

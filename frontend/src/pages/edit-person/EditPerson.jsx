@@ -7,7 +7,6 @@ import emptyCard from '../../assets/add-person/portrait-empty-card.png'
 import '../add-person/AddPerson.css'
 import { addImage, getBlobById } from '../../database'
 import anonymousFigure from '../../assets/add-person/portrait-anonymous-figure.png'
-import testImageURL from '../../assets/static/0.png'
 
 function EditPerson({ appData, people, personId, setAppData, setCurrentPage }) {
 
@@ -34,7 +33,7 @@ function EditPerson({ appData, people, personId, setAppData, setCurrentPage }) {
     .catch(message => {
       console.error(message)
     })
-  }, [person.imageId])
+  }, [])
 
   function goToPeople() {
     setCurrentPage('people')
@@ -77,8 +76,20 @@ function EditPerson({ appData, people, personId, setAppData, setCurrentPage }) {
   }
 
   function handleRegenerateButton(){
-    fetch(testImageURL)
-      .then((response) => response.blob())
+    fetch('http://127.0.0.1:8000/portraits/regenerate', {
+      headers: {
+        "Content-Type": "application/json"
+      },
+      method: 'POST',
+      body: JSON.stringify({
+        prompt: personDescription
+      })
+    })
+      .then((response) => {
+        if(!response.ok)
+          throw new Error("cannot fetch")
+        return response.blob()
+      })
       .then((data) => {
         setCurrentBlob(data)
         const newImage = {

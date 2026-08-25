@@ -6,7 +6,6 @@ import Header from '../../components/header/Header'
 import anonymousFigure from '../../assets/add-person/portrait-anonymous-figure.png'
 import emptyCard from '../../assets/add-person/portrait-empty-card.png'
 import './AddPerson.css'
-import testImageURL from '../../assets/static/1.png'
 import { addImage } from '../../database';
 
 function AddPerson({ appData, currentPage, setAppData, setCurrentPage }) {
@@ -16,6 +15,7 @@ function AddPerson({ appData, currentPage, setAppData, setCurrentPage }) {
   const [personDescription, setPersonDescription] = useState('')
   const [potraitImage, setPotraitImage] = useState(null)
   const [generatedPortraitId, setGeneratedPotraitId] = useState(null)
+  const [isGenerate, setIsGenerate] = useState(true)
 
   function goToPeople() {
     setCurrentPage('people')
@@ -52,8 +52,20 @@ function AddPerson({ appData, currentPage, setAppData, setCurrentPage }) {
   }
 
   function handleGenerateButton(){
-    fetch(testImageURL)
-      .then((response) => response.blob())
+    fetch('http://127.0.0.1:8000/portraits/generate', {
+      headers: {
+        "Content-Type": "application/json"
+      },
+      method: 'POST',
+      body: JSON.stringify({
+        prompt: "Y2K, Curly hair"
+      })
+    })
+      .then((response) => {
+        if(!response.ok)
+          throw new Error("cannot fetch")
+        return response.blob()
+      })
       .then((data) => {
         setPotraitImage(URL.createObjectURL(data))
         const newImage = {
@@ -64,6 +76,7 @@ function AddPerson({ appData, currentPage, setAppData, setCurrentPage }) {
           .then((message) => console.log(message))
           .catch((message) => console.error(message))
         setGeneratedPotraitId(newImage.id)
+        setIsGenerate(false)
       })
       .catch((message) => console.error(message))
   }
@@ -197,7 +210,7 @@ function AddPerson({ appData, currentPage, setAppData, setCurrentPage }) {
 
               <button className="portrait-generate-button" type="button" onClick={handleGenerateButton}>
                 <IoSparklesSharp />
-                <span>Generate portrait</span>
+                <span>{isGenerate ? "Generate portrait" : "Regenerate portrait"}</span>
               </button>
             </div>
           </div>
