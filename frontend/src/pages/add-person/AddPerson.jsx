@@ -6,13 +6,16 @@ import Header from '../../components/header/Header'
 import anonymousFigure from '../../assets/add-person/portrait-anonymous-figure.png'
 import emptyCard from '../../assets/add-person/portrait-empty-card.png'
 import './AddPerson.css'
+import testImageURL from '../../assets/static/1.png'
+import { addImage } from '../../database';
 
 function AddPerson({ appData, currentPage, setAppData, setCurrentPage }) {
   const [portraitMode, setPortraitMode] = useState('upload')
   const [personName, setPersonName] = useState('')
   const [personRelationship, setPersonRelationship] = useState('')
   const [personDescription, setPersonDescription] = useState('')
-  const generatedPortrait = ''
+  const [potraitImage, setPotraitImage] = useState(null)
+  const [generatedPortraitId, setGeneratedPotraitId] = useState(null)
 
   function goToPeople() {
     setCurrentPage('people')
@@ -36,7 +39,7 @@ function AddPerson({ appData, currentPage, setAppData, setCurrentPage }) {
       name: personName.trim() || 'Unnamed person',
       relationship: personRelationship || 'other',
       description: personDescription.trim(),
-      imageId: 0,
+      imageId: generatedPortraitId,
     }
 
     const updatedAppData = {
@@ -46,6 +49,23 @@ function AddPerson({ appData, currentPage, setAppData, setCurrentPage }) {
 
     setAppData(updatedAppData)
     setCurrentPage('people')
+  }
+
+  function handleGenerateButton(){
+    fetch(testImageURL)
+      .then((response) => response.blob())
+      .then((data) => {
+        setPotraitImage(URL.createObjectURL(data))
+        const newImage = {
+          id: crypto.randomUUID(),
+          blob: data
+        }
+        addImage(newImage)
+          .then((message) => console.log(message))
+          .catch((message) => console.error(message))
+        setGeneratedPotraitId(newImage.id)
+      })
+      .catch((message) => console.error(message))
   }
 
   return (
@@ -160,22 +180,22 @@ function AddPerson({ appData, currentPage, setAppData, setCurrentPage }) {
                 <img className="portrait-empty-card-image" src={emptyCard} alt="" />
 
                 <div className="portrait-card-content">
-                  {generatedPortrait ? (
+                  {potraitImage ? (
                     <img
                       className="portrait-result-image"
-                      src={generatedPortrait}
+                      src={potraitImage}
                       alt="Generated portrait"
                     />
                   ) : (
                     <>
-                      <img className="portrait-placeholder-figure" src={anonymousFigure} alt="" />
+                      <img className="portrait-placeholder-figure" src={anonymousFigure} alt=""/>
                       <p>Your generated portrait will appear here</p>
                     </>
                   )}
                 </div>
               </div>
 
-              <button className="portrait-generate-button" type="button">
+              <button className="portrait-generate-button" type="button" onClick={handleGenerateButton}>
                 <IoSparklesSharp />
                 <span>Generate portrait</span>
               </button>

@@ -1,19 +1,16 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { FiImage } from 'react-icons/fi'
 import { IoSparklesSharp } from 'react-icons/io5'
 import Footer from '../../components/footer/Footer'
 import Header from '../../components/header/Header'
 import emptyCard from '../../assets/add-person/portrait-empty-card.png'
-import person0 from '../../assets/static/0.png'
-import person1 from '../../assets/static/1.png'
 import '../add-person/AddPerson.css'
-
-const personImages = {
-  0: person0,
-  1: person1,
-}
+import { addImage, getBlobById } from '../../database'
+import anonymousFigure from '../../assets/add-person/portrait-anonymous-figure.png'
+import testImageURL from '../../assets/static/0.png'
 
 function EditPerson({ appData, people, personId, setAppData, setCurrentPage }) {
+
   const person = people.find((item) => item.id === personId) || {
     id: '',
     name: '',
@@ -26,8 +23,18 @@ function EditPerson({ appData, people, personId, setAppData, setCurrentPage }) {
   const [personName, setPersonName] = useState(person.name)
   const [personRelationship, setPersonRelationship] = useState(person.relationship)
   const [personDescription, setPersonDescription] = useState(person.description)
+  const [currentBlob, setCurrentBlob] = useState(null)
+  const [generatedPortraitId, setGeneratedPotraitId] = useState(person.imageId)
 
-  const portraitImage = personImages[person.imageId] || personImages[0]
+  useEffect(() => {
+    getBlobById(person.imageId)
+      .then(data => {
+        setCurrentBlob(data)
+    })
+    .catch(message => {
+      console.error(message)
+    })
+  }, [person.imageId])
 
   function goToPeople() {
     setCurrentPage('people')
@@ -51,6 +58,7 @@ function EditPerson({ appData, people, personId, setAppData, setCurrentPage }) {
       name: personName.trim() || 'Unnamed person',
       relationship: personRelationship || 'other',
       description: personDescription.trim(),
+      imageId: generatedPortraitId,
     }
 
     const updatedAppData = {
@@ -66,6 +74,23 @@ function EditPerson({ appData, people, personId, setAppData, setCurrentPage }) {
 
     setAppData(updatedAppData)
     setCurrentPage('people')
+  }
+
+  function handleRegenerateButton(){
+    fetch(testImageURL)
+      .then((response) => response.blob())
+      .then((data) => {
+        setCurrentBlob(data)
+        const newImage = {
+          id: crypto.randomUUID(),
+          blob: data
+        }
+        addImage(newImage)
+          .then((message) => console.log(message))
+          .catch((message) => console.error(message))
+        setGeneratedPotraitId(newImage.id)
+      })
+      .catch((message) => console.error(message))
   }
 
   return (
@@ -182,15 +207,15 @@ function EditPerson({ appData, people, personId, setAppData, setCurrentPage }) {
                 <div className="portrait-card-content">
                   <img
                     className="portrait-result-image"
-                    src={portraitImage}
+                    src={currentBlob ? URL.createObjectURL(currentBlob) : anonymousFigure}
                     alt={`${personName || 'Saved person'} portrait`}
                   />
                 </div>
               </div>
 
-              <button className="portrait-generate-button" type="button">
+              <button className="portrait-generate-button" type="button" onClick={handleRegenerateButton}>
                 <IoSparklesSharp />
-                <span>Generate portrait</span>
+                <span>Regenerate portrait</span>
               </button>
             </div>
           </div>

@@ -2,14 +2,8 @@ import { useState } from 'react'
 import { FiChevronLeft, FiChevronRight, FiLock, FiPlus } from 'react-icons/fi'
 import Footer from '../../components/footer/Footer'
 import Header from '../../components/header/Header'
-import person0 from '../../assets/static/0.png'
-import person1 from '../../assets/static/1.png'
 import './People.css'
-
-const personImages = {
-  0: person0,
-  1: person1,
-}
+import PersonCard from '../../components/personCard/PersonCard'
 
 function People({ appData, currentPage, people, setAppData, setCurrentPage, setEditingPersonId }) {
   const cardsPerPage = 3
@@ -21,17 +15,6 @@ function People({ appData, currentPage, people, setAppData, setCurrentPage, setE
   const canGoBack = firstCardIndex > 0
   const canGoForward = lastCardIndex < peopleCards.length
 
-  function getPersonImage(imageId) {
-    return personImages[imageId] || personImages[0]
-  }
-
-  function formatText(text) {
-    if (!text) {
-      return ''
-    }
-
-    return text.charAt(0).toUpperCase() + text.slice(1)
-  }
 
   function showPreviousCards() {
     const previousIndex = firstCardIndex - cardsPerPage
@@ -54,11 +37,6 @@ function People({ appData, currentPage, people, setAppData, setCurrentPage, setE
 
   function openAddPersonPage() {
     setCurrentPage('add-person')
-  }
-
-  function openEditPersonPage(personId) {
-    setEditingPersonId(personId)
-    setCurrentPage('edit-person')
   }
 
   function deleteCurrentPerson(personId) {
@@ -118,32 +96,14 @@ function People({ appData, currentPage, people, setAppData, setCurrentPage, setE
               }
 
               return (
-                <article className="person-card" key={card.id}>
-                  <img
-                    className="person-card__portrait"
-                    src={getPersonImage(card.imageId)}
-                    alt={`${formatText(card.name)} portrait`}
-                  />
-                  <h2 className="person-card__name">{formatText(card.name)}</h2>
-                  <p className="person-card__relationship">{formatText(card.relationship)}</p>
-                  <p className="person-card__description">{formatText(card.description)}</p>
-                  <div className="person-card__actions">
-                    <button
-                      className="person-card__edit"
-                      onClick={() => openEditPersonPage(card.id)}
-                      type="button"
-                    >
-                      Edit
-                    </button>
-                    <button
-                      className="person-card__delete"
-                      onClick={() => deleteCurrentPerson(card.id)}
-                      type="button"
-                    >
-                      Delete
-                    </button>
-                  </div>
-                </article>
+                <PersonCard 
+                  key={card.id}
+                  className="person-card" 
+                  card={card} 
+                  setEditingPersonId={setEditingPersonId}
+                  deleteCurrentPerson={deleteCurrentPerson}
+                  setCurrentPage={setCurrentPage}
+                />
               )
             })}
           </div>
