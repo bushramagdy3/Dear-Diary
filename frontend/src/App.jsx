@@ -8,22 +8,30 @@ import HowItWorks from './pages/how-it-works/HowItWorks'
 import MyShelf from './pages/my-shelf/MyShelf'
 import People from './pages/people/People'
 import DiaryTextEditor from './pages/diary-text-editor/DiaryTextEditor'
+import { getAppData, saveAppData } from './database'
 
 function App() {
   const [currentPage, setCurrentPage] = useState("home")
-  const [appData, setAppData] = useState(() => {
-    const savedAppData = localStorage.getItem('appData')
-    if(savedAppData !== null){
-      return JSON.parse(savedAppData)
-    }
-    return {diaries: [], people: []}
-  })
+  const [appData, setAppData] = useState(null)
+
   useEffect(() => {
-    localStorage.setItem('appData', JSON.stringify(appData))
+    getAppData()
+    .then(data => setAppData(data))
+    .catch(err => console.error(err))
+  }, [])
+
+  useEffect(() => {
+    if(appData){
+      saveAppData(appData).then(message => console.log(message)).then(message => console.log(message))
+    }
   }, [appData])
+
   const [editingDiaryId, setEditingDiaryId] = useState(null)
   const [openedDiaryId, setOpenedDiaryId] = useState(null)
   const [editingPersonId, setEditingPersonId] = useState(null)
+
+  if(appData == null)
+    return <></>
 
   const diaryList = appData.diaries
   const peopleList = appData.people

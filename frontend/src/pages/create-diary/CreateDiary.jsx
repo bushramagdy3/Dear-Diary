@@ -53,7 +53,7 @@ function CreateDiary({ appData, currentPage, setAppData, setCurrentPage }) {
       entries: [
         {
           id: crypto.randomUUID(),
-          name: "First Day",
+          name: "First Entry",
           created_at: formatDate(now.getDate(), now.getMonth() + 1, now.getFullYear()),
           content: {
             "type": "doc",
@@ -66,7 +66,7 @@ function CreateDiary({ appData, currentPage, setAppData, setCurrentPage }) {
                     "content": [
                         {
                             "type": "text",
-                            "text": "Start writing about your day..."
+                            "text": "Start writing your first entry..."
                         }
                     ]
                 }
