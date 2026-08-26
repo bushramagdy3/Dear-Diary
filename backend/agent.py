@@ -14,6 +14,20 @@ class PersonIdentificationResult(BaseModel):
     people_mentioned_ids: list[int]
     people_missing_names: list[str]
 
+class PersonRefrence(BaseModel):
+    name :str
+    image :str
+
+class ImageRequest(BaseModel):
+    illustration: str
+    people_refrences: List[PersonRefrence]
+
+def getOwner(people):
+    for person in people:
+        if person["relationship"] == "user":
+            return person
+    return None
+
 model = ChatOpenAI(model="gpt-5.6-luna", api_key=setting.OPENAI_API_KEY)
 
 class AgentState(TypedDict):
@@ -21,6 +35,7 @@ class AgentState(TypedDict):
     people :List[dict]
     people_mentioned_ids :List[int]
     people_missing_names :List[str]
+    image_request :ImageRequest
     generated_image: str
 
 def people_identification(state :AgentState) -> AgentState:
@@ -40,6 +55,14 @@ def people_identification(state :AgentState) -> AgentState:
         If the person can be matched to one of the stored people, return that stored person's id.
         If the diary clearly refers to a specific person who is present in the scene but cannot be matched to any stored person, include the name of that person in missing_people.
 
+        One of the provided people may represent the diary owner and will be explicitly marked as the user.
+
+        First-person references such as "I", "me", "my", and "myself" refer to this diary owner.
+
+        If the diary owner is physically present or participating in the event, include the diary owner's ID (the user) in people_mentioned_ids.
+
+        If the diary owner is present but no user profile is provided, include "user" in people_missing_names.
+
         A person should only count as present if they are actually participating in or physically present during the event being illustrated.
 
         Do not count people who are only mentioned, remembered, discussed, called, texted, or referred to as part of another story unless they are also physically present in the current scene.
@@ -50,7 +73,7 @@ def people_identification(state :AgentState) -> AgentState:
 
         present_person_ids: a list of the integer IDs of stored people who are present in the scene.
 
-        missing_people_names: a list of names for people who are present in the scene but do not have a matching stored-person record.
+        people_missing_names: a list of names for people who are present in the scene but do not have a matching stored-person record.
 
         If no stored people are present, return an empty list for present_person_ids.
 
@@ -71,28 +94,123 @@ def people_identification(state :AgentState) -> AgentState:
         "people_missing_names": response.people_missing_names
     }
 
+def should_interrupt(state :AgentState) -> str:
+    if len(state["people_missing_names"]) == 0:
+        return "don't interrupt"
+    return "interrupt"
+
+def interrupt(state :AgentState) -> AgentState:
+    return None
+
+def plan_illustration(state :AgentState) -> AgentState:
+    owner = getOwner(state["people"])
+    system_prompt = SystemMessage(content = """
+    You are responsible for converting a diary snippet into a concise visual scene description for an image generator.
+
+    Your task is to identify the single scene that best represents the event described in the diary snippet and express only the information needed to illustrate that scene.
+
+    Use only information that is explicitly supported by the diary snippet.
+
+    Preserve:
+
+    * the names of people who are physically present in the scene
+    * the setting, when it is stated or clearly established
+    * the main visible actions or interactions
+    * visually relevant objects or details that are explicitly part of the event
+
+    Remove:
+
+    * dialogue content
+    * explanations and background information
+    * thoughts and internal feelings that are not directly visible
+    * people who are only mentioned or discussed but are not present
+    * details that do not affect what should visibly appear in the illustration
+
+    Do not invent, infer, embellish, or complete missing visual details. Do not add poses, gestures, expressions, objects, clothing, actions, relationships, or environmental details unless they are supported by the diary snippet.
+
+    Prioritize the main visual moment of the scene. Omit secondary details that occur before or after that moment unless they are important to understanding what should be illustrated.
+
+    Replace first-person references to the diary owner with the diary owner's provided name.
+
+    Do not act as an art director. Do not specify camera angles, framing, lighting, composition, styling, or other image-generation choices.
+
+    Keep the result natural, concise, and faithful to the original event. Prefer omission over assumption when a detail is uncertain.
+
+    Return only the final scene description, with no explanation or additional text.
+
+    """)
+    input = HumanMessage(content=f"""
+        DIARY SNIPPET:
+        {state["snippet"]}
+
+        DIARY OWNER:
+        {owner["name"] if owner != None else "Undefined"}
+    """)
+    illustration = model.invoke([system_prompt, input]).content
+
+    people_refrences = []
+    for id in state["people_mentioned_ids"]:
+        for person in state["people"]:
+            if id == person["id"]:
+                people_refrences.append(PersonRefrence(name=person["name"], image=person["image"]))
+
+    request = ImageRequest(illustration=illustration, people_refrences=people_refrences)
+
+    return {"image_request": request}
+
+def generate_image(state :AgentState) -> AgentState:
+    return state
+
 graph = StateGraph(AgentState)
 
 graph.add_node("people_identification", people_identification)
+graph.add_node("interrupt", interrupt)
+graph.add_node("plan_illustration", plan_illustration)
+graph.add_node("generate_image", generate_image)
 
 graph.add_edge(START, "people_identification")
-graph.add_edge("people_identification", END)
+graph.add_conditional_edges(
+    "people_identification",
+    should_interrupt,
+    {
+        "don't interrupt": "plan_illustration",
+        "interrupt": "interrupt"
+    }
+)
+graph.add_edge("interrupt", "people_identification")
+graph.add_edge("plan_illustration", "generate_image")
+graph.add_edge("generate_image", END)
 
 app = graph.compile()
 
+# with open("graph.png", "wb") as f:
+#     f.write(app.get_graph().draw_mermaid_png())
+
 result = app.invoke({
-    "snippet": """Today I went to the mall with Sara and my cousin Adam.
-                We got food and then Adam convinced us to go bowling.""",
+    "snippet": """
+        I met Layan after class and we went to a coffee shop together. We ordered iced matcha and sat near the window talking for a while. Miriam texted Layan asking if she wanted to meet later, but we stayed at the café for another hour.
+    """,
     "people": [
         {
-            "id": 17,
-            "name": "Sara",
-            "relationship": "friend"
+            "id": 1,
+            "name": "Bushra",
+            "is_user": True,
+            "relationship": "user",
+            "image": "./sample-portraits/bushra"
         },
         {
-            "id": 31,
-            "name": "Omar",
-            "relationship": "friend"
+            "id": 17,
+            "name": "Layan",
+            "is_user": False,
+            "relationship": "friend",
+            "image": "./sample-portraits/layan"
+        },
+        {
+            "id": 18,
+            "name": "Miriam",
+            "is_user": False,
+            "relationship": "friend",
+            "image": "./sample-portraits/miriam"
         }
     ]
 })
