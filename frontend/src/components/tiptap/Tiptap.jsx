@@ -148,7 +148,7 @@ function shouldShow({editor, from, to}){
 }
 
 function Tiptap({ diaryId, entry, appData, setAppData }) {
-  const peopleForRequest = formatPeopleForRequest(appData.people)
+  const peopleForRequest = await formatPeopleForRequest(appData.people)
 
   const editor = useEditor({
     shouldRerenderOnTransaction: true,

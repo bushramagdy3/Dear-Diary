@@ -4,6 +4,7 @@ from fastapi.responses import FileResponse
 from schemas import illustrationsGenrateRequest, portraitGenrateRequest
 from agents import generate_illustration_agent, generate_portrait_agent
 import os
+import base64
 
 app = FastAPI()
 
@@ -21,22 +22,16 @@ app.add_middleware(
 def main():
     return {"message": "Hello World"}
 
-# class AgentState(TypedDict):
-#     snippet :str
-#     people :List[dict]
-#     people_mentioned_ids :List[int]
-#     people_missing_names :List[str]
-#     image_request :ImageRequest
-#     generated_image: str
-
 @app.post("/illustrations/generate")
 def illustrate(request :illustrationsGenrateRequest):
     peopleForAgent = []
     tmpPaths = []
     try:
         for person in request.people:
+            base64String = person.imageBlob.split(",")[1]
+            image_bytes = base64.b64decode(base64String)
             with open(f'./portraits/{person.id}.png', "wb") as f:
-                f.write(person.imageBlob)
+                f.write(image_bytes)
                 tmpPaths.append(f'./portraits/{person.id}.png')
             peopleForAgent.append({
                 "id": person.id,
@@ -60,10 +55,30 @@ def illustrate(request :illustrationsGenrateRequest):
 
 @app.post("/illustrations/regenerate")
 def regenerateIllustration(request :illustrationsGenrateRequest):
-    result = generate_illustration_agent.app.invoke({
-        "snippet": request.prompt,
-        "people": [person.model_dump() for person in request.people]
-    })
+    peopleForAgent = []
+    tmpPaths = []
+    try:
+        for person in request.people:
+            base64String = person.imageBlob.split(",")[1]
+            image_bytes = base64.b64decode(base64String)
+            with open(f'./portraits/{person.id}.png', "wb") as f:
+                f.write(image_bytes)
+                tmpPaths.append(f'./portraits/{person.id}.png')
+            peopleForAgent.append({
+                "id": person.id,
+                "name": person.name,
+                "relationship": person.relationship,
+                "is_user": person.is_user,
+                "imagePath": f"./portraits/{person.id}.png"
+            })
+        result = generate_illustration_agent.app.invoke({
+            "snippet": request.prompt,
+            "people": peopleForAgent
+        })
+    finally:
+        for path in tmpPaths:
+            if os.path.exists(path):
+                os.remove(path)
     return FileResponse(
         result["generated_image"],
         media_type="image/png"
