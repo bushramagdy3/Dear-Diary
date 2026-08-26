@@ -9,9 +9,10 @@ import { FiTrash2, FiRefreshCw } from 'react-icons/fi'
 import loadingImageSrc from '../../assets/tiptap-writing-space/dear-diary-generating.gif'
 import { addImage } from '../../database'
 
-function DiaryImageView({ node, updateAttributes, deleteNode }) {
+function DiaryImageView({ node, updateAttributes, deleteNode, extension }) {
   const [isDeleting, setIsDeleting] = useState(false)
   const [currentBlob, setCurrentBlob] = useState(null)
+  const people = extension.options.people || []
 
   useEffect(() => {
     fetch('http://127.0.0.1:8000/illustrations/generate', {
@@ -20,7 +21,8 @@ function DiaryImageView({ node, updateAttributes, deleteNode }) {
       },
       method: 'POST',
       body: JSON.stringify({
-        prompt: node.attrs.alt
+        prompt: node.attrs.alt,
+        people: people
       })
     })
       .then((response) => {
@@ -54,7 +56,8 @@ function DiaryImageView({ node, updateAttributes, deleteNode }) {
       },
       method: 'POST',
       body: JSON.stringify({
-        prompt: node.attrs.alt
+        prompt: node.attrs.alt,
+        people: people
       })
     })
       .then((response) => {

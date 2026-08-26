@@ -82,7 +82,8 @@ function EditPerson({ appData, people, personId, setAppData, setCurrentPage }) {
       },
       method: 'POST',
       body: JSON.stringify({
-        prompt: personDescription
+        description: personDescription,
+        reference_image_path: ""
       })
     })
       .then((response) => {

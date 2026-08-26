@@ -58,7 +58,8 @@ function AddPerson({ appData, currentPage, setAppData, setCurrentPage }) {
       },
       method: 'POST',
       body: JSON.stringify({
-        prompt: "Y2K, Curly hair"
+        description: personDescription,
+        reference_image_path: ""
       })
     })
       .then((response) => {

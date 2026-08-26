@@ -22,3 +22,21 @@ export function formatDate(day, month, year) {
 
   return `${day} ${monthNames[monthNumber - 1]} ${year}`
 }
+
+export function formatPeopleForRequest(people) {
+  const requestPeople = []
+
+  for (let index = 0; index < people.length; index++) {
+    const person = people[index]
+    let personId = Number(person.id)
+    requestPeople.push({
+      id: personId,
+      name: person.name || '',
+      relationship: person.relationship || '',
+      is_user: Boolean(person.is_user),
+      image: person.imageId ? String(person.imageId) : '',
+    })
+  }
+
+  return requestPeople
+}

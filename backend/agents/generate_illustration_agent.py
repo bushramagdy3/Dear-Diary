@@ -194,6 +194,17 @@ def generate_image(state :AgentState) -> AgentState:
         Use a truly transparent background with no filled background layer.
         Do not simulate transparency with a checkerboard, grid, pattern, paper texture, or colored backdrop.
 
+        Use each reference image only as an identity reference for the corresponding person.
+
+        Preserve each person’s recognizable identity, facial structure, distinguishing features, and overall likeness, but adapt them naturally to the action, pose, and scene being illustrated.
+
+        Do not force a portrait-like presentation of the face. Do not force front-facing angles, direct eye contact, or unnaturally clear facial visibility just to display identity.
+
+        Allow the person’s pose, body position, movement, and viewing angle to follow the natural requirements of the scene, even when the face is turned, partially obscured, or not fully visible.
+
+        Prioritize a natural and believable depiction of the action while keeping the person recognizable as the same individual.
+
+
         Do not include any notebook page, paper sheet, paper texture, spiral binding, frame, border, panel, page layout, mockup presentation, caption, label, watermark, or decorative surrounding elements.
 
         Do not include any text in the final image.
@@ -205,10 +216,10 @@ def generate_image(state :AgentState) -> AgentState:
         background="transparent",
         output_format="png"
     )
-    result.data[0].b64_json
     image_bytes = base64.b64decode(result.data[0].b64_json)
     with open("./generated/output.png", "wb") as f:
         f.write(image_bytes)
+    return {"generated_image": "./generated/output.png"}
 
 graph = StateGraph(AgentState)
 
@@ -234,29 +245,4 @@ app = graph.compile()
 
 # with open("graph.png", "wb") as f:
 #     f.write(app.get_graph().draw_mermaid_png())
-
-result = app.invoke({
-    "snippet": """
-    Layan and Miriam went to a coffee shop after class. They ordered iced matcha and sat together near the window. Miriam showed Layan something in her notebook, and they spent a while talking about university before leaving.
-    """,
-
-    "people": [
-        {
-            "id": 17,
-            "name": "Layan",
-            "is_user": False,
-            "relationship": "friend",
-            "image": "./sample-potraits/layan.png"
-        },
-        {
-            "id": 18,
-            "name": "Miriam",
-            "is_user": False,
-            "relationship": "friend",
-            "image": "./sample-potraits/miriam.png"
-        }
-    ]
-})
-
-print(result)
 

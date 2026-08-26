@@ -16,6 +16,7 @@ import {
   GrRedo 
 } from 'react-icons/gr'
 import './Tiptap.css'
+import { formatPeopleForRequest } from '../../utils'
 
 function getButtonClass(isActive) {
   if (isActive) {
@@ -147,12 +148,16 @@ function shouldShow({editor, from, to}){
 }
 
 function Tiptap({ diaryId, entry, appData, setAppData }) {
+  const peopleForRequest = formatPeopleForRequest(appData.people)
+
   const editor = useEditor({
     shouldRerenderOnTransaction: true,
     extensions: [
       StarterKit,
       TextAlign.configure({ types: ['heading', 'paragraph'] }),
-      DiaryImage
+      DiaryImage.configure({
+        people: peopleForRequest
+      })
     ],
     content: entry.content,
     editorProps: {

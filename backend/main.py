@@ -1,7 +1,9 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
-from schemas import illustrationsGenrateRequest
+from schemas import illustrationsGenrateRequest, portraitGenrateRequest
+from agents import generate_illustration_agent, generate_portrait_agent
+
 app = FastAPI()
 
 origins = ["http://localhost:5173"]
@@ -20,32 +22,44 @@ def main():
 
 @app.post("/illustrations/generate")
 def illustrate(request :illustrationsGenrateRequest):
-    print("Text to illustrate:", request.prompt)
+    result = generate_illustration_agent.app.invoke({
+        "snippet": request.prompt,
+        "people": [person.model_dump() for person in request.people]
+    })
     return FileResponse(
-        "test-images/generated-image.png",
+        result["generated_image"],
         media_type="image/png"
     )
 
 @app.post("/illustrations/regenerate")
 def regenerateIllustration(request :illustrationsGenrateRequest):
-    print("Text to regenerate:", request.prompt)
+    result = generate_illustration_agent.app.invoke({
+        "snippet": request.prompt,
+        "people": [person.model_dump() for person in request.people]
+    })
     return FileResponse(
-        "test-images/regerated-image.png",
+        result["generated_image"],
         media_type="image/png"
     )
 
 @app.post("/portraits/generate")
-def generatePotrait(request :illustrationsGenrateRequest):
-    print("Text to generate potrait:", request.prompt)
+def generatePotrait(request :portraitGenrateRequest):
+    result = generate_portrait_agent.app.invoke({
+        "person_description": request.description,
+        "reference_image_path": request.reference_image_path
+    })
     return FileResponse(
-        "test-images/generated-potrait.png",
+        result["generated_portrait_path"],
         media_type="image/png"
     )
 
 @app.post("/portraits/regenerate")
-def regeneratePotrait(request :illustrationsGenrateRequest):
-    print("Text to regenerate potrait:", request.prompt)
+def regeneratePotrait(request :portraitGenrateRequest):
+    result = generate_portrait_agent.app.invoke({
+        "person_description": request.description,
+        "reference_image_path": request.reference_image_path
+    })
     return FileResponse(
-        "test-images/generated-potrait.png",
+        result["generated_portrait_path"],
         media_type="image/png"
     )
