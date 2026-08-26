@@ -9,6 +9,8 @@ from IPython.display import Image, display
 from settings import setting
 from pydantic import BaseModel
 import json
+from openai import OpenAI
+import base64
 
 class PersonIdentificationResult(BaseModel):
     people_mentioned_ids: list[int]
@@ -27,6 +29,8 @@ def getOwner(people):
         if person["relationship"] == "user":
             return person
     return None
+
+client = OpenAI(api_key=setting.OPENAI_API_KEY)
 
 model = ChatOpenAI(model="gpt-5.6-luna", api_key=setting.OPENAI_API_KEY)
 
@@ -159,7 +163,52 @@ def plan_illustration(state :AgentState) -> AgentState:
     return {"image_request": request}
 
 def generate_image(state :AgentState) -> AgentState:
-    return state
+    reference_lines = []
+    image_files = []
+
+    for i, person in enumerate(state["image_request"].people_refrences, start=1):
+        reference_lines.append(f"Reference image {i} represents {person.name}.")
+        image_files.append(open(person.image, "rb"))
+
+    reference_mapping = "\n".join(reference_lines)
+
+    prompt = f"""
+        Create a standalone hand-drawn diary-style sketch illustration of the following scene:
+
+        {state["image_request"].illustration}
+
+        Reference images are provided for the named people in the scene.
+
+        {reference_mapping}
+
+        Use each reference image only to preserve the corresponding person's recognizable identity, facial features, and overall likeness. Do not copy the exact pose, outfit, hairstyle, background, framing, or other incidental details from the reference portraits unless they are directly required by the scene.
+
+        Illustrate only the people who are explicitly part of the scene description. Do not add extra people, and do not include people who are only mentioned but not present.
+
+        Use only scene details that are clearly supported by the provided scene description. Do not invent or embellish additional objects, actions, gestures, props, environmental details, or interactions that are not necessary to depict the described scene.
+
+        Keep the composition natural, clean, and visually coherent.
+
+        Render the result as a simple sketch with a diary-like aesthetic, but output only the illustration itself.
+
+        Use a truly transparent background with no filled background layer.
+        Do not simulate transparency with a checkerboard, grid, pattern, paper texture, or colored backdrop.
+
+        Do not include any notebook page, paper sheet, paper texture, spiral binding, frame, border, panel, page layout, mockup presentation, caption, label, watermark, or decorative surrounding elements.
+
+        Do not include any text in the final image.
+    """
+    result = client.images.edit(
+        model="gpt-image-2",
+        image=image_files,
+        prompt=prompt,
+        background="transparent",
+        output_format="png"
+    )
+    result.data[0].b64_json
+    image_bytes = base64.b64decode(result.data[0].b64_json)
+    with open("./generated/output.png", "wb") as f:
+        f.write(image_bytes)
 
 graph = StateGraph(AgentState)
 
@@ -188,29 +237,23 @@ app = graph.compile()
 
 result = app.invoke({
     "snippet": """
-        I met Layan after class and we went to a coffee shop together. We ordered iced matcha and sat near the window talking for a while. Miriam texted Layan asking if she wanted to meet later, but we stayed at the café for another hour.
+    Layan and Miriam went to a coffee shop after class. They ordered iced matcha and sat together near the window. Miriam showed Layan something in her notebook, and they spent a while talking about university before leaving.
     """,
+
     "people": [
-        {
-            "id": 1,
-            "name": "Bushra",
-            "is_user": True,
-            "relationship": "user",
-            "image": "./sample-portraits/bushra"
-        },
         {
             "id": 17,
             "name": "Layan",
             "is_user": False,
             "relationship": "friend",
-            "image": "./sample-portraits/layan"
+            "image": "./sample-potraits/layan.png"
         },
         {
             "id": 18,
             "name": "Miriam",
             "is_user": False,
             "relationship": "friend",
-            "image": "./sample-portraits/miriam"
+            "image": "./sample-potraits/miriam.png"
         }
     ]
 })
