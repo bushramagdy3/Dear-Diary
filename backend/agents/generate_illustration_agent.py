@@ -156,7 +156,7 @@ def plan_illustration(state :AgentState) -> AgentState:
     for id in state["people_mentioned_ids"]:
         for person in state["people"]:
             if id == person["id"]:
-                people_refrences.append(PersonRefrence(name=person["name"], image=person["image"]))
+                people_refrences.append(PersonRefrence(name=person["name"], image=person["imagePath"]))
 
     request = ImageRequest(illustration=illustration, people_refrences=people_refrences)
 
@@ -219,7 +219,7 @@ def generate_image(state :AgentState) -> AgentState:
     image_bytes = base64.b64decode(result.data[0].b64_json)
     with open("./generated/output.png", "wb") as f:
         f.write(image_bytes)
-    return {"generated_image": "./generated/output.png"}
+    return {"generated_image": "./generated/illustration-output.png"}
 
 graph = StateGraph(AgentState)
 

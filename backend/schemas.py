@@ -6,7 +6,7 @@ class Person(BaseModel):
     name :str
     relationship :str
     is_user :bool
-    image :str
+    imageBlob :str
 
 class illustrationsGenrateRequest(BaseModel):
     prompt :str

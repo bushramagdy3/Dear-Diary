@@ -1,5 +1,3 @@
-import { getBlobById } from '../../database'
-import { useEffect, useState } from 'react'
 import anonymousFigure from '../../assets/add-person/portrait-anonymous-figure.png'
 
 function formatText(text) {
@@ -11,18 +9,6 @@ function formatText(text) {
 }
 
 function PersonCard({card, setEditingPersonId, deleteCurrentPerson, setCurrentPage}){
-    const [currentBlob, setCurrentBlob] = useState(null)
-
-    useEffect(() => {
-        getBlobById(card.imageId)
-        .then(data => {
-            setCurrentBlob(data)
-        })
-        .catch(message => {
-            console.error(message)
-        })
-    }, [card.imageId])
-
     function openEditPersonPage(personId) {
         setEditingPersonId(personId)
         setCurrentPage('edit-person')
@@ -32,7 +18,7 @@ function PersonCard({card, setEditingPersonId, deleteCurrentPerson, setCurrentPa
         <article className="person-card" key={card.id}>
             <img
             className="person-card__portrait"
-            src={currentBlob ? URL.createObjectURL(currentBlob): anonymousFigure}
+            src={card.portraitBlob ? URL.createObjectURL(card.portraitBlob): anonymousFigure}
             alt={`${formatText(card.name)} portrait`}
             />
             <h2 className="person-card__name">{formatText(card.name)}</h2>

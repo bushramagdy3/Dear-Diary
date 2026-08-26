@@ -6,15 +6,13 @@ import Header from '../../components/header/Header'
 import anonymousFigure from '../../assets/add-person/portrait-anonymous-figure.png'
 import emptyCard from '../../assets/add-person/portrait-empty-card.png'
 import './AddPerson.css'
-import { addImage } from '../../database';
 
 function AddPerson({ appData, currentPage, setAppData, setCurrentPage }) {
   const [portraitMode, setPortraitMode] = useState('upload')
   const [personName, setPersonName] = useState('')
   const [personRelationship, setPersonRelationship] = useState('')
   const [personDescription, setPersonDescription] = useState('')
-  const [potraitImage, setPotraitImage] = useState(null)
-  const [generatedPortraitId, setGeneratedPotraitId] = useState(null)
+  const [portraitBlob, setPortraitBlob] = useState(null)
   const [isGenerate, setIsGenerate] = useState(true)
 
   function goToPeople() {
@@ -39,7 +37,7 @@ function AddPerson({ appData, currentPage, setAppData, setCurrentPage }) {
       name: personName.trim() || 'Unnamed person',
       relationship: personRelationship || 'other',
       description: personDescription.trim(),
-      imageId: generatedPortraitId,
+      portraitBlob: portraitBlob,
     }
 
     const updatedAppData = {
@@ -68,15 +66,7 @@ function AddPerson({ appData, currentPage, setAppData, setCurrentPage }) {
         return response.blob()
       })
       .then((data) => {
-        setPotraitImage(URL.createObjectURL(data))
-        const newImage = {
-          id: crypto.randomUUID(),
-          blob: data
-        }
-        addImage(newImage)
-          .then((message) => console.log(message))
-          .catch((message) => console.error(message))
-        setGeneratedPotraitId(newImage.id)
+        setPortraitBlob(data)
         setIsGenerate(false)
       })
       .catch((message) => console.error(message))
@@ -194,10 +184,10 @@ function AddPerson({ appData, currentPage, setAppData, setCurrentPage }) {
                 <img className="portrait-empty-card-image" src={emptyCard} alt="" />
 
                 <div className="portrait-card-content">
-                  {potraitImage ? (
+                  {portraitBlob ? (
                     <img
                       className="portrait-result-image"
-                      src={potraitImage}
+                      src={URL.createObjectURL(portraitBlob)}
                       alt="Generated portrait"
                     />
                   ) : (

@@ -1,11 +1,10 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { FiImage } from 'react-icons/fi'
 import { IoSparklesSharp } from 'react-icons/io5'
 import Footer from '../../components/footer/Footer'
 import Header from '../../components/header/Header'
 import emptyCard from '../../assets/add-person/portrait-empty-card.png'
 import '../add-person/AddPerson.css'
-import { addImage, getBlobById } from '../../database'
 import anonymousFigure from '../../assets/add-person/portrait-anonymous-figure.png'
 
 function EditPerson({ appData, people, personId, setAppData, setCurrentPage }) {
@@ -15,25 +14,14 @@ function EditPerson({ appData, people, personId, setAppData, setCurrentPage }) {
     name: '',
     relationship: '',
     description: '',
-    imageId: 0,
+    portraitBlob: null,
   }
 
   const [portraitMode, setPortraitMode] = useState('upload')
   const [personName, setPersonName] = useState(person.name)
   const [personRelationship, setPersonRelationship] = useState(person.relationship)
   const [personDescription, setPersonDescription] = useState(person.description)
-  const [currentBlob, setCurrentBlob] = useState(null)
-  const [generatedPortraitId, setGeneratedPotraitId] = useState(person.imageId)
-
-  useEffect(() => {
-    getBlobById(person.imageId)
-      .then(data => {
-        setCurrentBlob(data)
-    })
-    .catch(message => {
-      console.error(message)
-    })
-  }, [])
+  const [currentBlob, setCurrentBlob] = useState(person.portraitBlob)
 
   function goToPeople() {
     setCurrentPage('people')
@@ -57,7 +45,7 @@ function EditPerson({ appData, people, personId, setAppData, setCurrentPage }) {
       name: personName.trim() || 'Unnamed person',
       relationship: personRelationship || 'other',
       description: personDescription.trim(),
-      imageId: generatedPortraitId,
+      portraitBlob: currentBlob,
     }
 
     const updatedAppData = {
@@ -93,14 +81,6 @@ function EditPerson({ appData, people, personId, setAppData, setCurrentPage }) {
       })
       .then((data) => {
         setCurrentBlob(data)
-        const newImage = {
-          id: crypto.randomUUID(),
-          blob: data
-        }
-        addImage(newImage)
-          .then((message) => console.log(message))
-          .catch((message) => console.error(message))
-        setGeneratedPotraitId(newImage.id)
       })
       .catch((message) => console.error(message))
   }

@@ -7,14 +7,17 @@ import { useEffect, useState } from 'react'
 import Image from '@tiptap/extension-image'
 import { FiTrash2, FiRefreshCw } from 'react-icons/fi'
 import loadingImageSrc from '../../assets/tiptap-writing-space/dear-diary-generating.gif'
-import { addImage } from '../../database'
 
 function DiaryImageView({ node, updateAttributes, deleteNode, extension }) {
   const [isDeleting, setIsDeleting] = useState(false)
-  const [currentBlob, setCurrentBlob] = useState(null)
+  const [currentBlob, setCurrentBlob] = useState(node.attrs.blob)
   const people = extension.options.people || []
 
   useEffect(() => {
+    if (node.attrs.blob != null) {
+      return
+    }
+
     fetch('http://127.0.0.1:8000/illustrations/generate', {
       headers: {
         "Content-Type": "application/json"
@@ -32,17 +35,10 @@ function DiaryImageView({ node, updateAttributes, deleteNode, extension }) {
       })
       .then((data) => {
         setCurrentBlob(data)
-
-        const newImage = {
-          id: crypto.randomUUID(),
+        updateAttributes({
+          src: '',
           blob: data
-        }
-
-        addImage(newImage)
-          .then((message) => console.log(message))
-          .catch((message) => console.error(message))
-
-        updateAttributes({ src: newImage.id })
+        })
       })
       .catch((message) => console.error(message))
   }, [])
@@ -68,16 +64,10 @@ function DiaryImageView({ node, updateAttributes, deleteNode, extension }) {
       .then((data) => {
         setCurrentBlob(data)
 
-        const newImage = {
-          id: crypto.randomUUID(),
+        updateAttributes({
+          src: '',
           blob: data
-        }
-
-        addImage(newImage)
-          .then((message) => console.log(message))
-          .catch((message) => console.error(message))
-
-        updateAttributes({ src: newImage.id })
+        })
       })
       .catch((message) => console.error(message))
   }
@@ -124,6 +114,23 @@ function DiaryImageView({ node, updateAttributes, deleteNode, extension }) {
 }
 
 const DiaryImage = Image.extend({
+  addAttributes() {
+    return {
+      src: {
+        default: null,
+      },
+      alt: {
+        default: null,
+      },
+      title: {
+        default: null,
+      },
+      blob: {
+        default: null,
+      },
+    }
+  },
+
   addNodeView() {
     return ReactNodeViewRenderer(DiaryImageView)
   },

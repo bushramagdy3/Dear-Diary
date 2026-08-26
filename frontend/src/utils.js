@@ -34,7 +34,7 @@ export function formatPeopleForRequest(people) {
       name: person.name || '',
       relationship: person.relationship || '',
       is_user: Boolean(person.is_user),
-      image: person.imageId ? String(person.imageId) : '',
+      portraitBlob: person.portraitBlob,
     })
   }
 
