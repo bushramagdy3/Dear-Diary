@@ -6,6 +6,7 @@ import Header from '../../components/header/Header'
 import emptyCard from '../../assets/add-person/portrait-empty-card.png'
 import '../add-person/AddPerson.css'
 import anonymousFigure from '../../assets/add-person/portrait-anonymous-figure.png'
+import { blobToBase64 } from '../../utils'
 
 function EditPerson({ appData, people, personId, setAppData, setCurrentPage }) {
 
@@ -14,14 +15,32 @@ function EditPerson({ appData, people, personId, setAppData, setCurrentPage }) {
     name: '',
     relationship: '',
     description: '',
+    relationshipDescription: '',
+    referencePhotoBlob: null,
+    is_user: false,
     portraitBlob: null,
   }
 
-  const [portraitMode, setPortraitMode] = useState('upload')
-  const [personName, setPersonName] = useState(person.name)
-  const [personRelationship, setPersonRelationship] = useState(person.relationship)
-  const [personDescription, setPersonDescription] = useState(person.description)
+  const startingPortraitMode = person.referencePhotoBlob ? 'upload' : 'describe'
+
+  const [portraitMode, setPortraitMode] = useState(startingPortraitMode)
+  const [personName, setPersonName] = useState(person.name || '')
+  const [personRelationship, setPersonRelationship] = useState(person.relationship || '')
+  const [personDescription, setPersonDescription] = useState(person.description || '')
+  const [relationshipDescription, setRelationshipDescription] = useState(person.relationshipDescription || '')
+  const [uploadedImageBlob, setUploadedImageBlob] = useState(person.referencePhotoBlob || null)
+  const [isUser, setIsUser] = useState(Boolean(person.is_user) || person.relationship === 'user')
   const [currentBlob, setCurrentBlob] = useState(person.portraitBlob)
+
+  let canGeneratePortrait = false
+
+  if(portraitMode === 'upload' && uploadedImageBlob != null){
+    canGeneratePortrait = true
+  }
+
+  if(portraitMode === 'describe' && personDescription.trim() !== ''){
+    canGeneratePortrait = true
+  }
 
   function goToPeople() {
     setCurrentPage('people')
@@ -32,19 +51,58 @@ function EditPerson({ appData, people, personId, setAppData, setCurrentPage }) {
   }
 
   function updatePersonRelationship(event) {
-    setPersonRelationship(event.target.value)
+    const newRelationship = event.target.value == "Me" ? "user" : event.target.value
+
+    setPersonRelationship(newRelationship)
+
+    if(newRelationship === 'user'){
+      setIsUser(true)
+      return
+    }
+
+    setIsUser(false)
+  }
+
+  function updateIsUser(event) {
+    const checked = event.target.checked
+
+    setIsUser(checked)
+
+    if(checked){
+      setPersonRelationship('user')
+      return
+    }
+
+    if(personRelationship === 'user'){
+      setPersonRelationship('')
+    }
+  }
+
+  function updateRelationshipDescription(event) {
+    setRelationshipDescription(event.target.value)
   }
 
   function updatePersonDescription(event) {
     setPersonDescription(event.target.value)
   }
 
+  function updateUploadedImage(event) {
+    const file = event.target.files[0]
+
+    if(file){
+      setUploadedImageBlob(file)
+    }
+  }
+
   function savePerson() {
     const updatedPerson = {
       ...person,
       name: personName.trim() || 'Unnamed person',
-      relationship: personRelationship || 'other',
+      relationship: isUser ? 'user' : personRelationship || 'other',
+      is_user: isUser,
+      relationshipDescription: relationshipDescription.trim(),
       description: personDescription.trim(),
+      referencePhotoBlob: uploadedImageBlob,
       portraitBlob: currentBlob,
     }
 
@@ -63,15 +121,30 @@ function EditPerson({ appData, people, personId, setAppData, setCurrentPage }) {
     setCurrentPage('people')
   }
 
-  function handleRegenerateButton(){
-    fetch('http://127.0.0.1:8000/portraits/regenerate', {
+  async function handleRegenerateButton(){
+    if(canGeneratePortrait == false){
+      return
+    }
+
+    let description = null
+    let referenceImagePath = null
+
+    if(portraitMode === 'describe'){
+      description = personDescription
+    }
+
+    if(portraitMode === 'upload'){
+      referenceImagePath = await blobToBase64(uploadedImageBlob)
+    }
+
+    fetch('http://127.0.0.1:8000/portraits/generate', {
       headers: {
         "Content-Type": "application/json"
       },
       method: 'POST',
       body: JSON.stringify({
-        description: personDescription,
-        reference_image_path: ""
+        description: description,
+        reference_image_path: referenceImagePath
       })
     })
       .then((response) => {
@@ -122,6 +195,7 @@ function EditPerson({ appData, people, personId, setAppData, setCurrentPage }) {
             value={personRelationship}
           >
             <option value="">Choose relationship</option>
+            <option value="user">Me</option>
             <option value="friend">Friend</option>
             <option value="family">Family</option>
             <option value="partner">Partner</option>
@@ -129,19 +203,28 @@ function EditPerson({ appData, people, personId, setAppData, setCurrentPage }) {
             <option value="other">Other</option>
           </select>
 
-          <label className="add-person-label" htmlFor="person-description">
-            Description
+          <label className="add-person-checkbox">
+            <input
+              checked={isUser}
+              onChange={updateIsUser}
+              type="checkbox"
+            />
+            <span>This person is me</span>
+          </label>
+
+          <label className="add-person-label" htmlFor="person-relationship-description">
+            Relationship note
           </label>
           <textarea
             className="add-person-description"
-            id="person-description"
+            id="person-relationship-description"
             maxLength="1000"
-            onChange={updatePersonDescription}
-            placeholder="Describe their appearance, personality, style, and anything the AI should remember..."
-            value={personDescription}
+            onChange={updateRelationshipDescription}
+            placeholder="Write how this person fits into your life..."
+            value={relationshipDescription}
           />
 
-          <p className="add-person-count">{personDescription.length} / 1000</p>
+          <p className="add-person-count">{relationshipDescription.length} / 1000</p>
 
           <div className="add-person-actions">
             <button className="add-person-cancel" onClick={goToPeople} type="button">
@@ -178,18 +261,31 @@ function EditPerson({ appData, people, personId, setAppData, setCurrentPage }) {
               <div className="portrait-upload-box">
                 <FiImage className="portrait-upload-icon" />
                 <p>Drop an image here</p>
-                <button className="portrait-choose-button" type="button">
+                <input
+                  accept="image/png, image/jpeg"
+                  className="portrait-file-input"
+                  id="portrait-upload-image"
+                  onChange={updateUploadedImage}
+                  type="file"
+                />
+                <label className="portrait-choose-button" htmlFor="portrait-upload-image">
                   Choose image
-                </button>
-                <span>PNG or JPG - up to 10 MB</span>
+                </label>
+                <span>{uploadedImageBlob ? uploadedImageBlob.name || 'Image selected' : 'PNG or JPG - up to 10 MB'}</span>
               </div>
             )}
 
             {portraitMode === 'describe' && (
-              <textarea
-                className="portrait-words-box"
-                placeholder="Describe their face, hair, clothes, expression, and overall style..."
-              />
+              <div className="portrait-words-wrap">
+                <textarea
+                  className="portrait-words-box"
+                  maxLength="1000"
+                  onChange={updatePersonDescription}
+                  placeholder="Describe their appearance, style, expression, and anything the AI should remember..."
+                  value={personDescription}
+                />
+                <p className="portrait-words-count">{personDescription.length} / 1000</p>
+              </div>
             )}
 
             <div className="portrait-preview-area">
@@ -205,7 +301,12 @@ function EditPerson({ appData, people, personId, setAppData, setCurrentPage }) {
                 </div>
               </div>
 
-              <button className="portrait-generate-button" type="button" onClick={handleRegenerateButton}>
+              <button
+                className="portrait-generate-button"
+                disabled={canGeneratePortrait == false}
+                type="button"
+                onClick={handleRegenerateButton}
+              >
                 <IoSparklesSharp />
                 <span>Regenerate portrait</span>
               </button>

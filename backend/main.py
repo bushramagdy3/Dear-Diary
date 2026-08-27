@@ -5,6 +5,7 @@ from schemas import illustrationsGenrateRequest, portraitGenrateRequest
 from agents import generate_illustration_agent, generate_portrait_agent
 import os
 import base64
+import uuid
 
 app = FastAPI()
 
@@ -63,21 +64,30 @@ def illustrate(request :illustrationsGenrateRequest):
 
 @app.post("/portraits/generate")
 def generatePotrait(request :portraitGenrateRequest):
-    result = generate_portrait_agent.app.invoke({
-        "person_description": request.description,
-        "reference_image_path": request.reference_image_path
-    })
-    return FileResponse(
-        result["generated_portrait_path"],
-        media_type="image/png"
-    )
+    tmpPath = None
+    try:
+        if request.reference_image_path:
+            base64String = request.reference_image_path.split(",")[1]
+            image_bytes = base64.b64decode(base64String)
+            image_type = request.reference_image_path.split(";")[0].split("/")[1]
+            with open(f'./references/reference.{image_type}', "wb") as f:
+                f.write(image_bytes)
+                tmpPath = f'./references/reference.{image_type}'
+        result = generate_portrait_agent.app.invoke({
+            "person_description": request.description,
+            "reference_image_path": tmpPath
+        })
+    finally:
+        if tmpPath and os.path.exists(tmpPath):
+            os.remove(tmpPath)
 
-@app.post("/portraits/regenerate")
-def regeneratePotrait(request :portraitGenrateRequest):
-    result = generate_portrait_agent.app.invoke({
-        "person_description": request.description,
-        "reference_image_path": request.reference_image_path
-    })
+    if result["input_type"] == "invalid":
+        return JSONResponse(
+            status_code= 409,
+            content={
+                "type": "invalid-input",
+            }
+        )
     return FileResponse(
         result["generated_portrait_path"],
         media_type="image/png"

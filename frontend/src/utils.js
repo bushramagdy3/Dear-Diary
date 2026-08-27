@@ -41,7 +41,7 @@ export function formatPeopleForRequest(people) {
       id: personId,
       name: person.name || '',
       relationship: person.relationship || '',
-      is_user: Boolean(person.is_user),
+      is_user: Boolean(person.is_user) || person.relationship === 'user',
       portraitBlob: person.portraitBlob
     })
   }

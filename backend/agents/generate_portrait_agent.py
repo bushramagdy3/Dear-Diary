@@ -90,30 +90,29 @@ def generate_from_image(state :PortraitState) -> PortraitState:
         Output only the portrait illustration itself.
     """
     image_file = open(state["reference_image_path"], "rb")
-    result = client.images.edit(
-        model="gpt-image-2",
-        image=image_file,
-        prompt=prompt,
-        background="transparent",
-        output_format="png"
-    )
-    result.data[0].b64_json
-    image_bytes = base64.b64decode(result.data[0].b64_json)
-    output_path = "./generated/portrait-output.png"
-    with open(output_path, "wb") as f:
-        f.write(image_bytes)
+    try:
+        result = client.images.edit(
+            model="gpt-image-2",
+            image=image_file,
+            prompt=prompt,
+            background="transparent",
+            output_format="png"
+        )
+        result.data[0].b64_json
+        image_bytes = base64.b64decode(result.data[0].b64_json)
+        output_path = "./generated/portrait-output.png"
+        with open(output_path, "wb") as f:
+            f.write(image_bytes)
+    finally:
+        image_file.close()
 
     return {"generated_portrait_path": output_path}
-
-def error_handling(state :PortraitState) -> PortraitState:
-    return None
 
 graph = StateGraph(PortraitState)
 
 graph.add_node("identify_input_type", identify_input_type)
 graph.add_node("generate_from_description", generate_from_description)
 graph.add_node("generate_from_image", generate_from_image)
-graph.add_node("error_handling", error_handling)
 
 graph.add_edge(START, "identify_input_type")
 graph.add_conditional_edges(
@@ -122,12 +121,11 @@ graph.add_conditional_edges(
     {
         "description": "generate_from_description",
         "image": "generate_from_image",
-        "invalid": "error_handling"
+        "invalid": END
     }
 )
 graph.add_edge("generate_from_description", END)
 graph.add_edge("generate_from_image", END)
-graph.add_edge("error_handling", END)
 
 app = graph.compile()
 

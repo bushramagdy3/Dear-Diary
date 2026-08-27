@@ -8,6 +8,14 @@ function formatText(text) {
     return text.charAt(0).toUpperCase() + text.slice(1)
 }
 
+function formatRelationship(text) {
+    if (text === 'user') {
+        return 'Me'
+    }
+
+    return formatText(text)
+}
+
 function PersonCard({card, setEditingPersonId, deleteCurrentPerson, setCurrentPage}){
     function openEditPersonPage(personId) {
         setEditingPersonId(personId)
@@ -22,7 +30,7 @@ function PersonCard({card, setEditingPersonId, deleteCurrentPerson, setCurrentPa
             alt={`${formatText(card.name)} portrait`}
             />
             <h2 className="person-card__name">{formatText(card.name)}</h2>
-            <p className="person-card__relationship">{formatText(card.relationship)}</p>
+            <p className="person-card__relationship">{formatRelationship(card.relationship)}</p>
             <p className="person-card__description">{formatText(card.description)}</p>
             <div className="person-card__actions">
             <button

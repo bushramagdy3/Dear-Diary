@@ -93,6 +93,21 @@
   font-size: 17px;
 }
 
+.add-person-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 14px;
+  color: #2f2b25;
+  font-size: 16px;
+}
+
+.add-person-checkbox input {
+  width: 17px;
+  height: 17px;
+  accent-color: #1f1e1b;
+}
+
 .add-person-input,
 .add-person-description,
 .portrait-words-box {
@@ -263,10 +278,28 @@
   font-size: 16px;
 }
 
+.portrait-file-input {
+  display: none;
+}
+
+.portrait-words-wrap {
+  position: relative;
+  width: 100%;
+}
+
 .portrait-words-box {
   padding: 18px;
   line-height: 1.45;
   resize: none;
+}
+
+.portrait-words-count {
+  position: absolute;
+  right: 18px;
+  bottom: 14px;
+  margin: 0;
+  color: #767066;
+  font-size: 14px;
 }
 
 .portrait-preview-area {
@@ -338,6 +371,17 @@
   background: #1f1e1b;
   color: #fffaf2;
   font-size: 20px;
+}
+
+.portrait-generate-button:disabled {
+  border-color: rgba(36, 34, 30, 0.18);
+  background: rgba(36, 34, 30, 0.18);
+  color: rgba(36, 34, 30, 0.42);
+  cursor: default;
+}
+
+.portrait-generate-button:disabled:hover {
+  transform: none;
 }
 
 @media (max-width: 1220px) {
