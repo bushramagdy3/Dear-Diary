@@ -27,6 +27,33 @@ def identify_input_type(state :PortraitState) -> PortraitState:
 def route_input_type(state :PortraitState) -> str:
     return state["input_type"]
 
+def remove_background(state :PortraitState) -> PortraitState:
+    from PIL import Image as PILImage
+    import cv2
+    import numpy as np
+
+    image = PILImage.open(state["generated_portrait_path"]).convert("RGBA")
+    pixels = np.array(image)
+    rgb = pixels[:, :, :3]
+
+    gray = cv2.cvtColor(rgb, cv2.COLOR_RGB2GRAY).astype(np.float32)
+    darkness = 255 - gray
+
+    clear_threshold = 14
+    visible_threshold = 80
+    alpha = (darkness - clear_threshold) / (visible_threshold - clear_threshold)
+    alpha = np.clip(alpha, 0, 1)
+    alpha = (alpha * 255).astype(np.uint8)
+
+    pixels[:, :, 0] = gray.astype(np.uint8)
+    pixels[:, :, 1] = gray.astype(np.uint8)
+    pixels[:, :, 2] = gray.astype(np.uint8)
+    pixels[:, :, 3] = alpha
+
+    PILImage.fromarray(pixels, "RGBA").save(state["generated_portrait_path"])
+
+    return {"generated_portrait_path": state["generated_portrait_path"]}
+
 def generate_from_description(state :PortraitState) -> PortraitState:
     prompt = f"""
     Create a standalone hand-drawn graphite pencil portrait of the following person:
@@ -92,32 +119,17 @@ def generate_from_description(state :PortraitState) -> PortraitState:
 
     The pose should feel like something an artist naturally chose to sketch.
 
-    TRANSPARENCY:
-    The graphite drawing must exist directly on a transparent canvas.
+    BACKGROUND:
+    Generate the graphite drawing on a smooth, plain, pale white/off-white background.
 
-    There must be:
-    - no white paper
-    - no white background
-    - no opaque white face fill
-    - no opaque white body fill
-    - no solid canvas
-    - no rectangle
-    - no frame
+    The background must have:
+    - no texture
+    - no pattern
+    - no paper grain
+    - no color variation
     - no colored background
 
-    Only actual graphite marks should contain visible pixels.
-
-    Untouched areas of the drawing must remain transparent.
-
-    For example, if part of the face is not shaded, do NOT fill that skin area with white.
-    Represent the face through graphite contours, hatching, shadows, and pencil marks while leaving untouched negative space transparent.
-
-    The same rule applies to:
-    - skin
-    - hair highlights
-    - clothing highlights
-    - gaps between strokes
-    - surrounding empty space
+    Keep the background clean and even so it can be removed cleanly afterward.
 
     EDGES:
     Do NOT make the portrait look like a rectangular image that was cropped.
@@ -136,7 +148,7 @@ def generate_from_description(state :PortraitState) -> PortraitState:
 
     Do not include scenery, text, captions, notebook lines, borders, frames, paper texture, decorative elements, or watermarks.
 
-    Output only the graphite portrait on transparency.
+    Output only the graphite portrait on the smooth pale white/off-white background.
     """
     image_file = open('./agents/inspo.jpeg', "rb") 
     try:
@@ -144,8 +156,8 @@ def generate_from_description(state :PortraitState) -> PortraitState:
             model="gpt-image-2",
             image=image_file,
             prompt=prompt,
-            background="transparent",
-            output_format="png"
+            output_format="png",
+            quality="low"
         )
         result.data[0].b64_json
         image_bytes = base64.b64decode(result.data[0].b64_json)
@@ -231,31 +243,17 @@ def generate_from_image(state :PortraitState) -> PortraitState:
 
     while remaining recognizable as the person in Reference image 1.
 
-    TRANSPARENCY:
-    The graphite drawing must exist directly on a transparent canvas.
+    BACKGROUND:
+    Generate the graphite drawing on a smooth, plain, pale white/off-white background.
 
-    There must be:
-    - no white paper
-    - no white background
-    - no opaque white face fill
-    - no opaque white body fill
-    - no solid canvas
-    - no rectangle
-    - no frame
-    - no colored backdrop
+    The background must have:
+    - no texture
+    - no pattern
+    - no paper grain
+    - no color variation
+    - no colored background
 
-    Only actual graphite marks should contain visible pixels.
-
-    Untouched areas must remain transparent.
-
-    Do not fill unshaded skin with white.
-    Skin should be suggested through contours, graphite shading, hatching, shadows, and pencil marks while untouched regions remain transparent.
-
-    The same applies to:
-    - hair highlights
-    - clothing highlights
-    - gaps between strokes
-    - empty surrounding space
+    Keep the background clean and even so it can be removed cleanly afterward.
 
     EDGES:
     Do NOT create a hard rectangular crop.
@@ -275,7 +273,7 @@ def generate_from_image(state :PortraitState) -> PortraitState:
 
     Do not include scenery, text, captions, notebook lines, paper texture, borders, frames, decorative elements, or watermarks.
 
-    Output only the graphite portrait on transparency.
+    Output only the graphite portrait on the smooth pale white/off-white background.
     """
     image_files = [open(state["reference_image_path"], "rb"), open('./agents/inspo.jpeg', "rb")] 
     try:
@@ -283,8 +281,8 @@ def generate_from_image(state :PortraitState) -> PortraitState:
             model="gpt-image-2",
             image=image_files,
             prompt=prompt,
-            background="transparent",
-            output_format="png"
+            output_format="png",
+            quality="low"
         )
         result.data[0].b64_json
         image_bytes = base64.b64decode(result.data[0].b64_json)
@@ -301,6 +299,7 @@ graph = StateGraph(PortraitState)
 graph.add_node("identify_input_type", identify_input_type)
 graph.add_node("generate_from_description", generate_from_description)
 graph.add_node("generate_from_image", generate_from_image)
+graph.add_node("remove_background", remove_background)
 
 graph.add_edge(START, "identify_input_type")
 graph.add_conditional_edges(
@@ -312,8 +311,9 @@ graph.add_conditional_edges(
         "invalid": END
     }
 )
-graph.add_edge("generate_from_description", END)
-graph.add_edge("generate_from_image", END)
+graph.add_edge("generate_from_description", "remove_background")
+graph.add_edge("generate_from_image", "remove_background")
+graph.add_edge("remove_background", END)
 
 app = graph.compile()
 

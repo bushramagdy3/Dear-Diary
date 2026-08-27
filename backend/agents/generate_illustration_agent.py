@@ -42,6 +42,33 @@ class AgentState(TypedDict):
     image_request :ImageRequest
     generated_image: str
 
+def remove_background(state :AgentState) -> AgentState:
+    from PIL import Image as PILImage
+    import cv2
+    import numpy as np
+
+    image = PILImage.open(state["generated_image"]).convert("RGBA")
+    pixels = np.array(image)
+    rgb = pixels[:, :, :3]
+
+    gray = cv2.cvtColor(rgb, cv2.COLOR_RGB2GRAY).astype(np.float32)
+    darkness = 255 - gray
+
+    clear_threshold = 14
+    visible_threshold = 80
+    alpha = (darkness - clear_threshold) / (visible_threshold - clear_threshold)
+    alpha = np.clip(alpha, 0, 1)
+    alpha = (alpha * 255).astype(np.uint8)
+
+    pixels[:, :, 0] = gray.astype(np.uint8)
+    pixels[:, :, 1] = gray.astype(np.uint8)
+    pixels[:, :, 2] = gray.astype(np.uint8)
+    pixels[:, :, 3] = alpha
+
+    PILImage.fromarray(pixels, "RGBA").save(state["generated_image"])
+
+    return {"generated_image": state["generated_image"]}
+
 def people_identification(state :AgentState) -> AgentState:
     structured_model = model.with_structured_output(PersonIdentificationResult)
     system_prompt = SystemMessage(content="""
@@ -279,32 +306,17 @@ def generate_image(state :AgentState) -> AgentState:
 
         The people, objects, and environment should feel like one connected illustrated composition.
 
-        TRANSPARENCY:
-        The illustration must be generated on a transparent canvas, but transparency should apply primarily OUTSIDE the overall scene.
+        BACKGROUND:
+        Generate the graphite illustration on a smooth, plain, pale white/off-white background.
 
-        Do NOT treat every empty gap inside the scene as transparent cutout space.
+        The background must have:
+        - no texture
+        - no pattern
+        - no paper grain
+        - no color variation
+        - no colored background
 
-        Do NOT create transparent holes between:
-        - people
-        - objects
-        - furniture
-        - environmental elements
-        - background sketch elements
-
-        The interior of the illustrated scene should remain visually connected.
-
-        Use faint graphite shading, loose environmental strokes, light hatching, or soft tonal sketch marks where needed to keep interior scene space coherent.
-
-        There must still be:
-        - no solid white rectangular page
-        - no solid colored background
-        - no hard rectangular canvas
-        - no frame
-        - no opaque page surrounding the illustration
-
-        The overall scene should exist as one irregular graphite composition floating on transparency.
-
-        The transparent area should primarily surround the OUTER boundary of the complete scene.
+        Keep the background clean and even so it can be removed cleanly afterward.
 
         EDGES:
         The illustration must NOT look like a rectangular image that was cut out and pasted into the diary.
@@ -332,20 +344,22 @@ def generate_image(state :AgentState) -> AgentState:
 
         The center and interior of the scene should remain coherent and readable.
 
-        Only the outer boundary should gradually fade into transparent space.
+        Only the outer boundary should gradually fade into the smooth pale white/off-white background.
 
         The final result should feel like a complete scene sketched directly into a diary, with the environment softly disappearing around its edges rather than being enclosed inside a rectangular background.
 
-        Do not include text, captions, notebook lines, frames, borders, watermarks, checkerboards, or simulated transparency.
+        Do not include text, captions, notebook lines, frames, borders, or watermarks.
 
-        Output only the complete graphite diary illustration on transparency.
+        Output only the complete graphite diary illustration on the smooth pale white/off-white background.
         """
 
         result = client.images.edit(
             model="gpt-image-2",
             image=image_files,
             prompt=prompt,
-            output_format="png"
+            output_format="png",
+            quality="low",
+            size="1536x1024"
         )
         image_bytes = base64.b64decode(result.data[0].b64_json)
         with open("./generated/illustration-output.png", "wb") as f:
@@ -360,6 +374,7 @@ graph = StateGraph(AgentState)
 graph.add_node("people_identification", people_identification)
 graph.add_node("plan_illustration", plan_illustration)
 graph.add_node("generate_image", generate_image)
+graph.add_node("remove_background", remove_background)
 
 graph.add_edge(START, "people_identification")
 graph.add_conditional_edges(
@@ -372,7 +387,8 @@ graph.add_conditional_edges(
 )
 
 graph.add_edge("plan_illustration", "generate_image")
-graph.add_edge("generate_image", END)
+graph.add_edge("generate_image", "remove_background")
+graph.add_edge("remove_background", END)
 
 app = graph.compile()
 
