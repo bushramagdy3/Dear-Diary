@@ -2,11 +2,11 @@ from pydantic import BaseModel
 from typing import List
 
 class Person(BaseModel):
-    id :int
+    id :str
     name :str
     relationship :str
     is_user :bool
-    imageBlob :str
+    portraitBlob :str
 
 class illustrationsGenrateRequest(BaseModel):
     prompt :str

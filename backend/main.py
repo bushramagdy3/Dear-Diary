@@ -28,7 +28,7 @@ def illustrate(request :illustrationsGenrateRequest):
     tmpPaths = []
     try:
         for person in request.people:
-            base64String = person.imageBlob.split(",")[1]
+            base64String = person.portraitBlob.split(",")[1]
             image_bytes = base64.b64decode(base64String)
             with open(f'./portraits/{person.id}.png', "wb") as f:
                 f.write(image_bytes)
@@ -59,7 +59,7 @@ def regenerateIllustration(request :illustrationsGenrateRequest):
     tmpPaths = []
     try:
         for person in request.people:
-            base64String = person.imageBlob.split(",")[1]
+            base64String = person.portraitBlob.split(",")[1]
             image_bytes = base64.b64decode(base64String)
             with open(f'./portraits/{person.id}.png', "wb") as f:
                 f.write(image_bytes)

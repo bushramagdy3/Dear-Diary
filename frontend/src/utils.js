@@ -23,7 +23,7 @@ export function formatDate(day, month, year) {
   return `${day} ${monthNames[monthNumber - 1]} ${year}`
 }
 
-function blobToBase64(blob) {
+export function blobToBase64(blob) {
     return new Promise((resolve) => {
         const reader = new FileReader();
         reader.onloadend = () => resolve(reader.result);
@@ -31,18 +31,18 @@ function blobToBase64(blob) {
     });
 }
 
-export async function formatPeopleForRequest(people) {
+export function formatPeopleForRequest(people) {
   const requestPeople = []
 
   for (let index = 0; index < people.length; index++) {
     const person = people[index]
-    let personId = Number(person.id)
+    let personId = person.id
     requestPeople.push({
       id: personId,
       name: person.name || '',
       relationship: person.relationship || '',
       is_user: Boolean(person.is_user),
-      portraitBlob: await blobToBase64(person.portraitBlob)
+      portraitBlob: person.portraitBlob
     })
   }
 

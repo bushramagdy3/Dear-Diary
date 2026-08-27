@@ -3,47 +3,69 @@ import {
   ReactNodeViewRenderer,
 } from '@tiptap/react'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import Image from '@tiptap/extension-image'
 import { FiTrash2, FiRefreshCw } from 'react-icons/fi'
 import loadingImageSrc from '../../assets/tiptap-writing-space/dear-diary-generating.gif'
+import { blobToBase64 } from '../../utils'
 
 function DiaryImageView({ node, updateAttributes, deleteNode, extension }) {
   const [isDeleting, setIsDeleting] = useState(false)
   const [currentBlob, setCurrentBlob] = useState(node.attrs.blob)
   const people = extension.options.people || []
+  const hasGenerated = useRef(false)
 
   useEffect(() => {
-    if (node.attrs.blob != null) {
+    if (hasGenerated.current || node.attrs.blob != null)
       return
-    }
-
-    fetch('http://127.0.0.1:8000/illustrations/generate', {
-      headers: {
-        "Content-Type": "application/json"
-      },
-      method: 'POST',
-      body: JSON.stringify({
-        prompt: node.attrs.alt,
-        people: people
-      })
-    })
-      .then((response) => {
-        if(!response.ok)
-          throw new Error("cannot fetch")
-        return response.blob()
-      })
-      .then((data) => {
-        setCurrentBlob(data)
-        updateAttributes({
-          src: '',
-          blob: data
+    async function handleGenerateImage(){
+      const peopleForRequest = []
+      for(let i=0; i<people.length; i++){
+        peopleForRequest.push({
+          ...people[i],
+          portraitBlob: await blobToBase64(people[i].portraitBlob)
+        })
+      }
+      setCurrentBlob(null)
+      console.log("Generate", node.attrs.alt)
+      fetch('http://127.0.0.1:8000/illustrations/generate', {
+        headers: {
+          "Content-Type": "application/json"
+        },
+        method: 'POST',
+        body: JSON.stringify({
+          prompt: node.attrs.alt,
+          people: peopleForRequest
         })
       })
-      .catch((message) => console.error(message))
+        .then((response) => {
+          if(!response.ok)
+            throw new Error("cannot fetch")
+          return response.blob()
+        })
+        .then((data) => {
+          setCurrentBlob(data)
+
+          updateAttributes({
+            src: '',
+            blob: data
+          })
+        })
+        .catch((message) => console.error(message))
+    }
+    handleGenerateImage()
   }, [])
 
-  function handleRegenerateImage() {
+
+
+  async function handleRegenerateImage() {
+    const peopleForRequest = []
+    for(let i=0; i<people.length; i++){
+      peopleForRequest.push({
+        ...people[i],
+        portraitBlob: await blobToBase64(people[i].portraitBlob)
+      })
+    }
     setCurrentBlob(null)
     console.log("Regenerate", node.attrs.alt)
     fetch('http://127.0.0.1:8000/illustrations/regenerate', {
@@ -53,7 +75,7 @@ function DiaryImageView({ node, updateAttributes, deleteNode, extension }) {
       method: 'POST',
       body: JSON.stringify({
         prompt: node.attrs.alt,
-        people: people
+        people: peopleForRequest
       })
     })
       .then((response) => {

@@ -13,7 +13,7 @@ from openai import OpenAI
 import base64
 
 class PersonIdentificationResult(BaseModel):
-    people_mentioned_ids: list[int]
+    people_mentioned_ids: list[str]
     people_missing_names: list[str]
 
 class PersonRefrence(BaseModel):
@@ -75,7 +75,7 @@ def people_identification(state :AgentState) -> AgentState:
 
         Return exactly these two fields:
 
-        present_person_ids: a list of the integer IDs of stored people who are present in the scene.
+        present_person_ids: a list of the IDs of stored people who are present in the scene.
 
         people_missing_names: a list of names for people who are present in the scene but do not have a matching stored-person record.
 
@@ -165,60 +165,65 @@ def plan_illustration(state :AgentState) -> AgentState:
 def generate_image(state :AgentState) -> AgentState:
     reference_lines = []
     image_files = []
+    try:
+        for i, person in enumerate(state["image_request"].people_refrences, start=1):
+            reference_lines.append(f"Reference image {i} represents {person.name}.")
+            image_files.append(open(person.image, "rb"))
 
-    for i, person in enumerate(state["image_request"].people_refrences, start=1):
-        reference_lines.append(f"Reference image {i} represents {person.name}.")
-        image_files.append(open(person.image, "rb"))
+        reference_mapping = "\n".join(reference_lines)
 
-    reference_mapping = "\n".join(reference_lines)
+        prompt = f"""
+            Create a standalone hand-drawn diary-style sketch illustration of the following scene:
 
-    prompt = f"""
-        Create a standalone hand-drawn diary-style sketch illustration of the following scene:
+            {state["image_request"].illustration}
 
-        {state["image_request"].illustration}
+            Reference images are provided for the named people in the scene.
 
-        Reference images are provided for the named people in the scene.
+            {reference_mapping}
 
-        {reference_mapping}
+            Use each reference image only to preserve the corresponding person's recognizable identity, facial features, and overall likeness. Do not copy the exact pose, outfit, hairstyle, background, framing, or other incidental details from the reference portraits unless they are directly required by the scene.
 
-        Use each reference image only to preserve the corresponding person's recognizable identity, facial features, and overall likeness. Do not copy the exact pose, outfit, hairstyle, background, framing, or other incidental details from the reference portraits unless they are directly required by the scene.
+            Illustrate only the people who are explicitly part of the scene description. Do not add extra people, and do not include people who are only mentioned but not present.
 
-        Illustrate only the people who are explicitly part of the scene description. Do not add extra people, and do not include people who are only mentioned but not present.
+            Use only scene details that are clearly supported by the provided scene description. Do not invent or embellish additional objects, actions, gestures, props, environmental details, or interactions that are not necessary to depict the described scene.
 
-        Use only scene details that are clearly supported by the provided scene description. Do not invent or embellish additional objects, actions, gestures, props, environmental details, or interactions that are not necessary to depict the described scene.
+            Keep the composition natural, clean, and visually coherent.
 
-        Keep the composition natural, clean, and visually coherent.
+            Render the result as a simple sketch with a diary-like aesthetic, but output only the illustration itself.
 
-        Render the result as a simple sketch with a diary-like aesthetic, but output only the illustration itself.
+            Use a truly transparent background with no filled background layer.
+            Do not simulate transparency with a checkerboard, grid, pattern, paper texture, or colored backdrop.
 
-        Use a truly transparent background with no filled background layer.
-        Do not simulate transparency with a checkerboard, grid, pattern, paper texture, or colored backdrop.
+            Use each reference image only as an identity reference for the corresponding person.
 
-        Use each reference image only as an identity reference for the corresponding person.
+            Preserve each person’s recognizable identity, facial structure, distinguishing features, and overall likeness, but adapt them naturally to the action, pose, and scene being illustrated.
 
-        Preserve each person’s recognizable identity, facial structure, distinguishing features, and overall likeness, but adapt them naturally to the action, pose, and scene being illustrated.
+            Do not force a portrait-like presentation of the face. Do not force front-facing angles, direct eye contact, or unnaturally clear facial visibility just to display identity.
 
-        Do not force a portrait-like presentation of the face. Do not force front-facing angles, direct eye contact, or unnaturally clear facial visibility just to display identity.
+            Allow the person’s pose, body position, movement, and viewing angle to follow the natural requirements of the scene, even when the face is turned, partially obscured, or not fully visible.
 
-        Allow the person’s pose, body position, movement, and viewing angle to follow the natural requirements of the scene, even when the face is turned, partially obscured, or not fully visible.
-
-        Prioritize a natural and believable depiction of the action while keeping the person recognizable as the same individual.
+            Prioritize a natural and believable depiction of the action while keeping the person recognizable as the same individual.
 
 
-        Do not include any notebook page, paper sheet, paper texture, spiral binding, frame, border, panel, page layout, mockup presentation, caption, label, watermark, or decorative surrounding elements.
+            Do not include any notebook page, paper sheet, paper texture, spiral binding, frame, border, panel, page layout, mockup presentation, caption, label, watermark, or decorative surrounding elements.
 
-        Do not include any text in the final image.
-    """
-    result = client.images.edit(
-        model="gpt-image-2",
-        image=image_files,
-        prompt=prompt,
-        background="transparent",
-        output_format="png"
-    )
-    image_bytes = base64.b64decode(result.data[0].b64_json)
-    with open("./generated/output.png", "wb") as f:
-        f.write(image_bytes)
+            Do not include any text in the final image.
+        """
+        print(image_files)
+
+        result = client.images.edit(
+            model="gpt-image-2",
+            image=image_files,
+            prompt=prompt,
+            background="transparent",
+            output_format="png"
+        )
+        image_bytes = base64.b64decode(result.data[0].b64_json)
+        with open("./generated/illustration-output.png", "wb") as f:
+            f.write(image_bytes)
+    finally:
+        for image_file in image_files:
+            image_file.close()
     return {"generated_image": "./generated/illustration-output.png"}
 
 graph = StateGraph(AgentState)
