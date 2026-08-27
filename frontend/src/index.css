@@ -8,6 +8,42 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+@keyframes page-soft-enter {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes item-soft-enter {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes state-soft-enter {
+  from {
+    opacity: 0;
+    transform: scale(0.99);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
 * {
   box-sizing: border-box;
   scrollbar-color: rgba(73, 67, 58, 0.42) rgba(244, 237, 226, 0.72);

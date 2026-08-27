@@ -34,6 +34,7 @@
   flex-direction: column;
   margin: auto 0;
   padding: 26px 6% 24px;
+  animation: page-soft-enter 340ms ease both;
 }
 
 .shelf-intro {
@@ -86,10 +87,12 @@
   line-height: 1;
   transition:
     background 160ms ease,
+    box-shadow 160ms ease,
     transform 160ms ease;
 }
 
 .shelf-create:hover {
+  box-shadow: 0 10px 22px rgba(36, 34, 30, 0.12);
   transform: translateY(-1px);
 }
 
@@ -107,6 +110,9 @@
   cursor: pointer;
   font-size: 16px;
   line-height: 1.2;
+  transition:
+    color 160ms ease,
+    opacity 160ms ease;
 }
 
 .shelf-export:hover {
@@ -143,13 +149,16 @@
   color: #24221e;
   cursor: pointer;
   font-size: 24px;
+  animation: state-soft-enter 220ms ease both;
   transition:
     background 160ms ease,
+    box-shadow 160ms ease,
     transform 160ms ease;
 }
 
 .shelf-arrow:hover {
   background: rgba(255, 250, 242, 0.95);
+  box-shadow: 0 10px 22px rgba(36, 34, 30, 0.1);
   transform: scale(1.06);
 }
 
@@ -177,6 +186,7 @@
   min-width: 0;
   align-items: center;
   flex-direction: column;
+  animation: item-soft-enter 360ms ease both;
 }
 
 .shelf-diary {
@@ -224,14 +234,83 @@
   line-height: 1.08;
   text-align: center;
   transform: translateY(-50%);
+  transition:
+    color 180ms ease,
+    opacity 180ms ease,
+    text-shadow 180ms ease;
   pointer-events: none;
 }
 
-.title-with-cover3,
-.title-with-cover6,
-.title-with-cover7,
+.title-with-cover0 {
+  color: #f4e7d9;
+  font-family: "Bodoni 72", "Didot", "Cormorant Garamond", Georgia, serif;
+  font-style: normal;
+  font-weight: 400;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.58);
+}
+
+.title-with-cover1 {
+  color: #77634e;
+  font-family: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+  font-style: italic;
+  font-weight: 400;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.68);
+}
+
+.title-with-cover2 {
+  color: #282622;
+  font-family: "Bodoni 72", "Didot", "Cormorant Garamond", Georgia, serif;
+  font-style: normal;
+  font-weight: 400;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+.title-with-cover3 {
+  color: #d7b0b7;
+  font-family: "Bodoni 72", "Didot", "Cormorant Garamond", Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+  text-shadow: 0 2px 7px rgba(0, 0, 0, 0.64);
+}
+
+.title-with-cover4 {
+  color: #d1bd93;
+  font-family: "Bodoni 72", "Didot", "Cormorant Garamond", Georgia, serif;
+  font-style: normal;
+  font-weight: 400;
+  text-shadow: 0 2px 7px rgba(0, 0, 0, 0.7);
+}
+
+.title-with-cover5 {
+  color: #c9b48d;
+  font-family: "Cormorant Garamond", "Bodoni 72", Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+  text-shadow: 0 2px 7px rgba(0, 0, 0, 0.68);
+}
+
+.title-with-cover6 {
+  color: #7a454f;
+  font-family: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+  font-style: italic;
+  font-weight: 400;
+  text-shadow: 0 1px 0 rgba(255, 238, 241, 0.78);
+}
+
+.title-with-cover7 {
+  color: #5f516f;
+  font-family: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+  font-style: italic;
+  font-weight: 400;
+  text-shadow: 0 1px 0 rgba(249, 243, 255, 0.8);
+}
+
 .title-with-cover8 {
-  color: rgba(255, 250, 242, 0.88);
+  color: #765c47;
+  font-family: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+  font-style: italic;
+  font-weight: 400;
+  text-shadow: 0 1px 0 rgba(255, 248, 235, 0.82);
 }
 
 .shelf-diary-actions {
@@ -242,7 +321,9 @@
   gap: 22px;
   margin-top: 14px;
   transform-origin: top center;
-  transition: transform 180ms ease;
+  transition:
+    opacity 180ms ease,
+    transform 180ms ease;
 }
 
 .shelf-diary-actions--hovered {
@@ -259,11 +340,14 @@
   font: inherit;
   font-size: 16px;
   line-height: 1.2;
-  transition: color 160ms ease;
+  transition:
+    color 160ms ease,
+    transform 160ms ease;
 }
 
 .shelf-diary-link:hover {
   color: #5e574c;
+  transform: translateY(-1px);
 }
 
 .shelf-diary-delete {

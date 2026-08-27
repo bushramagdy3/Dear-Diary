@@ -31,6 +31,7 @@
   gap: 48px;
   margin: auto 0;
   padding: 34px 5% 40px;
+  animation: page-soft-enter 340ms ease both;
 }
 
 .create-form-panel {
@@ -49,6 +50,7 @@
   font: inherit;
   font-size: 16px;
   font-style: italic;
+  transition: color 160ms ease;
 }
 
 .create-back-button:hover {
@@ -96,8 +98,11 @@
   border-radius: 4px;
   background: rgba(255, 250, 242, 0.55);
   cursor: pointer;
+  animation: item-soft-enter 320ms ease both;
   transition:
+    background 160ms ease,
     border-color 160ms ease,
+    box-shadow 160ms ease,
     transform 160ms ease;
 }
 
@@ -132,6 +137,7 @@
   background: rgba(255, 250, 242, 0.9);
   color: #24221e;
   font-size: 14px;
+  animation: state-soft-enter 180ms ease both;
 }
 
 .create-name-label {
@@ -153,6 +159,17 @@
   color: #24221e;
   font: inherit;
   font-size: 17px;
+  transition:
+    background 160ms ease,
+    border-color 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.create-name-input:focus {
+  border-color: rgba(36, 34, 30, 0.68);
+  background: rgba(255, 250, 242, 0.9);
+  box-shadow: 0 8px 18px rgba(36, 34, 30, 0.06);
+  outline: 0;
 }
 
 .create-actions {
@@ -172,10 +189,14 @@
   cursor: pointer;
   font: inherit;
   font-size: 17px;
-  transition: transform 160ms ease;
+  transition:
+    background 160ms ease,
+    box-shadow 160ms ease,
+    transform 160ms ease;
 }
 
 .create-action:hover {
+  box-shadow: 0 10px 22px rgba(36, 34, 30, 0.1);
   transform: translateY(-1px);
 }
 
@@ -203,6 +224,7 @@
   z-index: 1;
   display: block;
   width: 410px;
+  animation: state-soft-enter 280ms ease both;
 }
 
 .create-preview-cover img {
@@ -227,13 +249,82 @@
   font-style: italic;
   line-height: 1.05;
   text-align: center;
+  transition:
+    color 180ms ease,
+    opacity 180ms ease,
+    text-shadow 180ms ease;
 }
 
-.preview-title-with-cover3,
-.preview-title-with-cover6,
-.preview-title-with-cover7,
+.preview-title-with-cover0 {
+  color: #f4e7d9;
+  font-family: "Bodoni 72", "Didot", "Cormorant Garamond", Georgia, serif;
+  font-style: normal;
+  font-weight: 400;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.62);
+}
+
+.preview-title-with-cover1 {
+  color: #77634e;
+  font-family: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+  font-style: italic;
+  font-weight: 400;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.7);
+}
+
+.preview-title-with-cover2 {
+  color: #282622;
+  font-family: "Bodoni 72", "Didot", "Cormorant Garamond", Georgia, serif;
+  font-style: normal;
+  font-weight: 400;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.62);
+}
+
+.preview-title-with-cover3 {
+  color: #d7b0b7;
+  font-family: "Bodoni 72", "Didot", "Cormorant Garamond", Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.68);
+}
+
+.preview-title-with-cover4 {
+  color: #d1bd93;
+  font-family: "Bodoni 72", "Didot", "Cormorant Garamond", Georgia, serif;
+  font-style: normal;
+  font-weight: 400;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.72);
+}
+
+.preview-title-with-cover5 {
+  color: #c9b48d;
+  font-family: "Cormorant Garamond", "Bodoni 72", Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
+}
+
+.preview-title-with-cover6 {
+  color: #7a454f;
+  font-family: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+  font-style: italic;
+  font-weight: 400;
+  text-shadow: 0 1px 0 rgba(255, 238, 241, 0.82);
+}
+
+.preview-title-with-cover7 {
+  color: #5f516f;
+  font-family: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+  font-style: italic;
+  font-weight: 400;
+  text-shadow: 0 1px 0 rgba(249, 243, 255, 0.82);
+}
+
 .preview-title-with-cover8 {
-  color: rgba(255, 250, 242, 0.9);
+  color: #765c47;
+  font-family: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+  font-style: italic;
+  font-weight: 400;
+  text-shadow: 0 1px 0 rgba(255, 248, 235, 0.84);
 }
 
 @media (min-height: 980px) and (min-width: 1200px) {

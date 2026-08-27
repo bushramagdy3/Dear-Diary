@@ -8,6 +8,7 @@
   gap: 24px;
   padding: 12px 28px;
   border-bottom: 1px solid rgba(39, 36, 31, 0.15);
+  animation: page-soft-enter 260ms ease both;
 }
 
 .site-header__brand,
@@ -22,6 +23,7 @@
   font-size: 40px;
   font-weight: 400;
   line-height: 1;
+  transition: color 180ms ease;
   white-space: nowrap;
 }
 
@@ -44,6 +46,7 @@
   letter-spacing: 3px;
   line-height: 1.2;
   text-transform: uppercase;
+  transition: color 180ms ease;
   white-space: nowrap;
 }
 
@@ -75,6 +78,10 @@
   opacity: 1;
 }
 
+.site-header__link:disabled:hover {
+  color: #24221e;
+}
+
 .site-header__backup {
   justify-self: end;
   font-size: 17px;
@@ -82,7 +89,16 @@
   line-height: 1.2;
   text-decoration: underline;
   text-underline-offset: 4px;
+  transition:
+    color 180ms ease,
+    opacity 180ms ease;
   white-space: nowrap;
+}
+
+.site-header__brand:hover,
+.site-header__backup:hover,
+.site-header__link:hover {
+  color: #5e574c;
 }
 
 @media (max-width: 1180px) {

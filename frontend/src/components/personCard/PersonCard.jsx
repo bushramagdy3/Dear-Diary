@@ -31,7 +31,7 @@ function PersonCard({card, setEditingPersonId, deleteCurrentPerson, setCurrentPa
             />
             <h2 className="person-card__name">{formatText(card.name)}</h2>
             <p className="person-card__relationship">{formatRelationship(card.relationship)}</p>
-            <p className="person-card__description">{formatText(card.description)}</p>
+            <p className="person-card__description">{formatText(card.relationshipDescription)}</p>
             <div className="person-card__actions">
             <button
                 className="person-card__edit"

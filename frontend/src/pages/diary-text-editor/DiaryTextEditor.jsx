@@ -153,9 +153,6 @@ function DiaryTextEditor({ appData, diaries, diaryId, setAppData, setCurrentPage
         <aside className="diary-editor-sidebar">
           <div className="diary-editor-sidebar__header">
             <h2>Entries</h2>
-            <button className="diary-editor-collapse" type="button">
-              <FiChevronLeft />
-            </button>
           </div>
 
           <button 

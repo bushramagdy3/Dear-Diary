@@ -53,6 +53,7 @@
   flex-direction: column;
   margin: auto 0;
   padding: 30px 6% 24px;
+  animation: page-soft-enter 340ms ease both;
 }
 
 .people-intro {
@@ -92,10 +93,14 @@
   font: inherit;
   font-size: 16px;
   line-height: 1;
-  transition: transform 160ms ease;
+  transition:
+    background 160ms ease,
+    box-shadow 160ms ease,
+    transform 160ms ease;
 }
 
 .people-add-button:hover {
+  box-shadow: 0 10px 22px rgba(36, 34, 30, 0.12);
   transform: translateY(-1px);
 }
 
@@ -133,13 +138,16 @@
   color: #24221e;
   cursor: pointer;
   font-size: 24px;
+  animation: state-soft-enter 220ms ease both;
   transition:
     background 160ms ease,
+    box-shadow 160ms ease,
     transform 160ms ease;
 }
 
 .people-arrow:hover {
   background: rgba(255, 250, 242, 0.95);
+  box-shadow: 0 10px 22px rgba(36, 34, 30, 0.1);
   transform: scale(1.06);
 }
 
@@ -172,13 +180,16 @@
   cursor: pointer;
   font-family: Georgia, "Times New Roman", serif;
   text-align: center;
+  animation: item-soft-enter 360ms ease both;
   transition:
     filter 180ms ease,
+    box-shadow 180ms ease,
     transform 180ms ease;
 }
 
 .person-card:hover {
   filter: brightness(1.01);
+  box-shadow: 0 18px 32px rgba(78, 51, 50, 0.05);
   transform: scale(1.04);
 }
 
@@ -187,6 +198,10 @@
   width: 190px;
   height: 180px;
   object-fit: contain;
+  animation: state-soft-enter 260ms ease both;
+  transition:
+    opacity 180ms ease,
+    transform 180ms ease;
 }
 
 .person-card__name,
@@ -242,11 +257,15 @@
   font: inherit;
   font-size: 15px;
   line-height: 1.2;
+  transition:
+    color 160ms ease,
+    transform 160ms ease;
 }
 
 .person-card__edit:hover,
 .person-card__delete:hover {
   color: #5e574c;
+  transform: translateY(-1px);
 }
 
 .person-card__delete {

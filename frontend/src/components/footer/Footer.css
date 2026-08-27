@@ -11,6 +11,7 @@
   color: #4f4a42;
   font-size: 16px;
   text-align: center;
+  animation: page-soft-enter 300ms ease both;
 }
 
 .site-footer__credit {
@@ -27,6 +28,13 @@
   color: inherit;
   text-decoration: underline;
   text-underline-offset: 4px;
+  transition:
+    color 180ms ease,
+    opacity 180ms ease;
+}
+
+.site-footer__link:hover {
+  color: #24221e;
 }
 
 @media (max-width: 700px) {

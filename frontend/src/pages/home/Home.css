@@ -47,6 +47,7 @@
 .home-hero__content {
   width: 520px;
   max-width: 48%;
+  animation: page-soft-enter 360ms ease both;
 }
 
 .home-hero__title {
@@ -124,6 +125,7 @@
   margin: 52px 0 0;
   color: #767066;
   font-size: 16px;
+  animation: item-soft-enter 420ms ease both;
 }
 
 .home-hero__lock {

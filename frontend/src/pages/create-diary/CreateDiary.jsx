@@ -139,7 +139,7 @@ function CreateDiary({ appData, currentPage, setAppData, setCurrentPage }) {
         </section>
 
         <section className="create-preview-panel">
-          <div className="create-preview-cover">
+          <div className="create-preview-cover" key={selectedCover.id}>
             <img src={selectedCover.image} alt="Selected diary cover preview" />
             <p className={`create-preview-title preview-title-with-cover${selectedCoverId}`}>
               {diaryTitle || 'My diary'}

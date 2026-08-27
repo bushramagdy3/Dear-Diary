@@ -14,6 +14,7 @@
   flex-wrap: wrap;
   gap: 10px;
   margin: 24px 0 30px;
+  animation: item-soft-enter 300ms ease both;
 }
 
 .toolbar-button-group {
@@ -23,6 +24,13 @@
   border-radius: 4px;
   background: rgba(255, 250, 244, 0.78);
   box-shadow: 0 8px 18px rgba(60, 49, 39, 0.05);
+  transition:
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+.toolbar-button-group:hover {
+  box-shadow: 0 10px 22px rgba(60, 49, 39, 0.08);
 }
 
 .toolbar-button {
@@ -123,6 +131,7 @@
   flex: 1;
   overflow-y: auto;
   padding-right: 12px;
+  animation: page-soft-enter 320ms ease both;
 }
 
 .diary-writing-paper {
@@ -198,6 +207,7 @@
   text-align: center;
   padding: 28px 30px;
   box-shadow: 0 14px 32px rgba(78, 51, 50, 0.07);
+  animation: state-soft-enter 260ms ease both;
 }
 
 .diary-image-spinner {
@@ -220,6 +230,7 @@
   justify-content: center;
   margin-bottom: 18px;
   border-radius: 50%;
+  animation: state-soft-enter 220ms ease both;
 }
 
 .diary-image-icon svg {

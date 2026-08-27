@@ -51,6 +51,7 @@
   gap: 42px;
   margin: auto 0;
   padding: 38px 5% 48px;
+  animation: page-soft-enter 340ms ease both;
 }
 
 .add-person-form {
@@ -69,6 +70,14 @@
   font: inherit;
   font-size: 17px;
   font-style: italic;
+  transition:
+    color 160ms ease,
+    transform 160ms ease;
+}
+
+.add-person-back:hover {
+  color: #5e574c;
+  transform: translateX(-2px);
 }
 
 .add-person-title {
@@ -118,6 +127,19 @@
   color: #24221e;
   font: inherit;
   font-size: 17px;
+  transition:
+    background 160ms ease,
+    border-color 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.add-person-input:focus,
+.add-person-description:focus,
+.portrait-words-box:focus {
+  border-color: rgba(36, 34, 30, 0.72);
+  background: rgba(255, 250, 242, 0.88);
+  box-shadow: 0 8px 18px rgba(36, 34, 30, 0.06);
+  outline: 0;
 }
 
 .add-person-input {
@@ -158,13 +180,18 @@
   border-radius: 5px;
   cursor: pointer;
   font: inherit;
-  transition: transform 160ms ease;
+  transition:
+    background 160ms ease,
+    box-shadow 160ms ease,
+    color 160ms ease,
+    transform 160ms ease;
 }
 
 .add-person-cancel:hover,
 .add-person-save:hover,
 .portrait-generate-button:hover,
 .portrait-choose-button:hover {
+  box-shadow: 0 10px 22px rgba(36, 34, 30, 0.1);
   transform: translateY(-1px);
 }
 
@@ -215,6 +242,9 @@
   cursor: pointer;
   font: inherit;
   font-size: 18px;
+  transition:
+    background 180ms ease,
+    color 180ms ease;
 }
 
 .portrait-tab + .portrait-tab {
@@ -232,6 +262,7 @@
   gap: 38px;
   align-items: start;
   margin-top: 42px;
+  animation: item-soft-enter 360ms ease both;
 }
 
 .portrait-workspace > * {
@@ -253,6 +284,15 @@
   border-radius: 14px;
   background: rgba(255, 250, 242, 0.22);
   text-align: center;
+  transition:
+    background 180ms ease,
+    border-color 180ms ease,
+    transform 180ms ease;
+}
+
+.portrait-upload-box:hover {
+  border-color: rgba(36, 34, 30, 0.86);
+  background: rgba(255, 250, 242, 0.34);
 }
 
 .portrait-upload-icon {
@@ -322,6 +362,7 @@
   background: transparent;
   color: #3f3a33;
   text-align: center;
+  animation: state-soft-enter 280ms ease both;
 }
 
 .portrait-empty-card-image {
@@ -354,6 +395,7 @@
   height: 155px;
   object-fit: contain;
   opacity: 0.24;
+  animation: state-soft-enter 260ms ease both;
   pointer-events: none;
 }
 
@@ -361,6 +403,10 @@
   width: 250px;
   height: 250px;
   object-fit: contain;
+  animation: state-soft-enter 280ms ease both;
+  transition:
+    opacity 180ms ease,
+    transform 180ms ease;
 }
 
 .portrait-placeholder-card p {
@@ -379,6 +425,7 @@
   flex-direction: column;
   color: #3f3a33;
   text-align: center;
+  animation: state-soft-enter 260ms ease both;
 }
 
 .portrait-status-spinner {
