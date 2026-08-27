@@ -160,8 +160,7 @@
   position: relative;
   display: flex;
   justify-content: center;
-  max-width: 500px;
-  max-height: 300px;
+  max-width: 680px;
   width: 82%;
   margin: 24px auto 34px;
   animation: diary-image-show 280ms ease both;
@@ -184,44 +183,121 @@
     transform 190ms ease;
 }
 
-.diary-image-error {
+.diary-image-block {
   width: 100%;
-  min-height: 230px;
+  box-sizing: border-box;
+  min-height: 310px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 18px;
-  border: 1px solid rgba(78, 51, 50, 0.12);
+  border: 1px solid rgba(78, 51, 50, 0.16);
   border-radius: 8px;
-  background: rgba(255, 249, 242, 0.82);
+  background: rgba(255, 252, 247, 0.82);
   color: #24221e;
   text-align: center;
-  box-shadow: 0 14px 32px rgba(78, 51, 50, 0.08);
+  padding: 36px 34px;
+  box-shadow: 0 14px 32px rgba(78, 51, 50, 0.07);
 }
 
-.diary-image-error p {
-  max-width: 82%;
+.diary-image-spinner {
+  width: 42px;
+  height: 42px;
+  flex: 0 0 42px;
+  margin-bottom: 24px;
+  border: 4px solid rgba(139, 130, 116, 0.22);
+  border-top: 4px solid rgba(91, 84, 73, 0.9);
+  border-radius: 50%;
+  animation: diary-image-spin 820ms linear infinite;
+}
+
+.diary-image-icon {
+  width: 60px;
+  height: 60px;
+  flex: 0 0 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  border-radius: 50%;
+}
+
+.diary-image-icon svg {
+  width: 31px;
+  height: 31px;
+}
+
+.diary-image-error-icon {
+  background: #f4ded9;
+  color: #6f603e;
+}
+
+.diary-image-missing-icon {
+  background: #eee9df;
+  color: #756642;
+}
+
+.diary-image-block p {
+  max-width: 440px;
   margin: 0;
-  font-size: 22px;
-  line-height: 1.35;
+  font-size: 27px;
+  line-height: 1.2;
 }
 
-.diary-image-error button {
-  min-width: 150px;
+.diary-image-block span {
+  display: block;
+  max-width: 440px;
+  margin-top: 20px;
+  color: rgba(36, 34, 30, 0.68);
+  font-size: 20px;
+  line-height: 1.3;
+}
+
+.diary-image-block-actions {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: nowrap;
+  margin-top: 24px;
+}
+
+.diary-image-main-button,
+.diary-image-light-button {
+  width: 170px;
   min-height: 42px;
   border: 1px solid #24221e;
   border-radius: 4px;
-  background: #1e1c19;
-  color: #fffaf4;
   cursor: pointer;
+  font-family: "Bodoni 72", "Didot", "Cormorant Garamond", Georgia, serif;
+  font-size: 18px;
+  padding: 0 22px;
+  white-space: nowrap;
   transition:
     background 160ms ease,
     transform 160ms ease;
 }
 
-.diary-image-error button:hover {
+.diary-image-light-button {
+  width: 230px;
+}
+
+.diary-image-main-button {
+  background: #1e1c19;
+  color: #fffaf4;
+}
+
+.diary-image-light-button {
+  background: rgba(255, 250, 244, 0.76);
+  color: #24221e;
+}
+
+.diary-image-main-button:hover {
   background: #2f2b25;
+  transform: translateY(-1px);
+}
+
+.diary-image-light-button:hover {
+  background: rgba(239, 218, 215, 0.76);
   transform: translateY(-1px);
 }
 
@@ -237,6 +313,11 @@
   transition:
     opacity 160ms ease,
     transform 160ms ease;
+}
+
+.diary-image-actions-corner {
+  top: 14px;
+  bottom: auto;
 }
 
 .diary-image-wrapper:hover .diary-illustration,
@@ -353,6 +434,16 @@
   }
 }
 
+@keyframes diary-image-spin {
+  from {
+    transform: rotate(0);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 @media (max-width: 900px) {
   .editor-toolbar {
     margin-bottom: 34px;
@@ -362,9 +453,30 @@
     font-size: 20px;
   }
 
-  .diary-image-wrapper,
   .diary-image-wrapper .diary-illustration {
     max-height: 260px;
+  }
+
+  .diary-image-block {
+    min-height: 300px;
+    padding: 32px 24px;
+  }
+
+  .diary-image-block p {
+    font-size: 23px;
+  }
+
+  .diary-image-block span {
+    font-size: 18px;
+    margin-top: 14px;
+  }
+
+  .diary-image-main-button {
+    width: 150px;
+  }
+
+  .diary-image-light-button {
+    width: 190px;
   }
 }
 
@@ -388,8 +500,34 @@
     line-height: 1.65;
   }
 
-  .diary-image-wrapper,
   .diary-image-wrapper .diary-illustration {
     max-height: 220px;
+  }
+
+  .diary-image-block {
+    min-height: 330px;
+    padding: 32px 18px;
+  }
+
+  .diary-image-block p {
+    font-size: 19px;
+  }
+
+  .diary-image-block span {
+    font-size: 16px;
+    margin-top: 10px;
+  }
+
+  .diary-image-main-button,
+  .diary-image-light-button {
+    width: 210px;
+    min-height: 36px;
+    font-size: 16px;
+  }
+
+  .diary-image-block-actions {
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
   }
 }
