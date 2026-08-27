@@ -184,6 +184,47 @@
     transform 190ms ease;
 }
 
+.diary-image-error {
+  width: 100%;
+  min-height: 230px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  border: 1px solid rgba(78, 51, 50, 0.12);
+  border-radius: 8px;
+  background: rgba(255, 249, 242, 0.82);
+  color: #24221e;
+  text-align: center;
+  box-shadow: 0 14px 32px rgba(78, 51, 50, 0.08);
+}
+
+.diary-image-error p {
+  max-width: 82%;
+  margin: 0;
+  font-size: 22px;
+  line-height: 1.35;
+}
+
+.diary-image-error button {
+  min-width: 150px;
+  min-height: 42px;
+  border: 1px solid #24221e;
+  border-radius: 4px;
+  background: #1e1c19;
+  color: #fffaf4;
+  cursor: pointer;
+  transition:
+    background 160ms ease,
+    transform 160ms ease;
+}
+
+.diary-image-error button:hover {
+  background: #2f2b25;
+  transform: translateY(-1px);
+}
+
 .diary-image-actions {
   position: absolute;
   right: 14px;

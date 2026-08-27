@@ -147,7 +147,7 @@ function shouldShow({editor, from, to}){
   return from !== to && selectedText.length > 0
 }
 
-function Tiptap({ diaryId, entry, appData, setAppData }) {
+function Tiptap({ diaryId, entry, appData, setAppData, setCurrentPage }) {
   const peopleForRequest = formatPeopleForRequest(appData.people)
 
   const editor = useEditor({
@@ -156,7 +156,8 @@ function Tiptap({ diaryId, entry, appData, setAppData }) {
       StarterKit,
       TextAlign.configure({ types: ['heading', 'paragraph'] }),
       DiaryImage.configure({
-        people: peopleForRequest
+        people: peopleForRequest,
+        setCurrentPage: setCurrentPage
       })
     ],
     content: entry.content,

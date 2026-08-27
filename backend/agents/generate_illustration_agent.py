@@ -103,9 +103,6 @@ def should_interrupt(state :AgentState) -> str:
         return "don't interrupt"
     return "interrupt"
 
-def interrupt(state :AgentState) -> AgentState:
-    return None
-
 def plan_illustration(state :AgentState) -> AgentState:
     owner = getOwner(state["people"])
     system_prompt = SystemMessage(content = """
@@ -229,7 +226,6 @@ def generate_image(state :AgentState) -> AgentState:
 graph = StateGraph(AgentState)
 
 graph.add_node("people_identification", people_identification)
-graph.add_node("interrupt", interrupt)
 graph.add_node("plan_illustration", plan_illustration)
 graph.add_node("generate_image", generate_image)
 
@@ -239,10 +235,10 @@ graph.add_conditional_edges(
     should_interrupt,
     {
         "don't interrupt": "plan_illustration",
-        "interrupt": "interrupt"
+        "interrupt": END
     }
 )
-graph.add_edge("interrupt", "people_identification")
+
 graph.add_edge("plan_illustration", "generate_image")
 graph.add_edge("generate_image", END)
 

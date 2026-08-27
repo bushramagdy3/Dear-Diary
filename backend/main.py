@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, JSONResponse
 from schemas import illustrationsGenrateRequest, portraitGenrateRequest
 from agents import generate_illustration_agent, generate_portrait_agent
 import os
@@ -48,37 +48,14 @@ def illustrate(request :illustrationsGenrateRequest):
         for path in tmpPaths:
             if os.path.exists(path):
                 os.remove(path)
-    return FileResponse(
-        result["generated_image"],
-        media_type="image/png"
-    )
-
-@app.post("/illustrations/regenerate")
-def regenerateIllustration(request :illustrationsGenrateRequest):
-    peopleForAgent = []
-    tmpPaths = []
-    try:
-        for person in request.people:
-            base64String = person.portraitBlob.split(",")[1]
-            image_bytes = base64.b64decode(base64String)
-            with open(f'./portraits/{person.id}.png', "wb") as f:
-                f.write(image_bytes)
-                tmpPaths.append(f'./portraits/{person.id}.png')
-            peopleForAgent.append({
-                "id": person.id,
-                "name": person.name,
-                "relationship": person.relationship,
-                "is_user": person.is_user,
-                "imagePath": f"./portraits/{person.id}.png"
-            })
-        result = generate_illustration_agent.app.invoke({
-            "snippet": request.prompt,
-            "people": peopleForAgent
-        })
-    finally:
-        for path in tmpPaths:
-            if os.path.exists(path):
-                os.remove(path)
+    if result["people_missing_names"]:
+        return JSONResponse(
+            status_code= 409,
+            content={
+                "type": "missing_people",
+                "people": result["people_missing_names"]
+            }
+        )
     return FileResponse(
         result["generated_image"],
         media_type="image/png"

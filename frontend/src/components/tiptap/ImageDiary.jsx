@@ -12,53 +12,12 @@ import { blobToBase64 } from '../../utils'
 function DiaryImageView({ node, updateAttributes, deleteNode, extension }) {
   const [isDeleting, setIsDeleting] = useState(false)
   const [currentBlob, setCurrentBlob] = useState(node.attrs.blob)
+  const [missingPeople, setMissingPeople] = useState(null)
   const people = extension.options.people || []
+  const setCurrentPage = extension.options.setCurrentPage
   const hasGenerated = useRef(false)
 
-  useEffect(() => {
-    if (hasGenerated.current || node.attrs.blob != null)
-      return
-    async function handleGenerateImage(){
-      const peopleForRequest = []
-      for(let i=0; i<people.length; i++){
-        peopleForRequest.push({
-          ...people[i],
-          portraitBlob: await blobToBase64(people[i].portraitBlob)
-        })
-      }
-      setCurrentBlob(null)
-      console.log("Generate", node.attrs.alt)
-      fetch('http://127.0.0.1:8000/illustrations/generate', {
-        headers: {
-          "Content-Type": "application/json"
-        },
-        method: 'POST',
-        body: JSON.stringify({
-          prompt: node.attrs.alt,
-          people: peopleForRequest
-        })
-      })
-        .then((response) => {
-          if(!response.ok)
-            throw new Error("cannot fetch")
-          return response.blob()
-        })
-        .then((data) => {
-          setCurrentBlob(data)
-
-          updateAttributes({
-            src: '',
-            blob: data
-          })
-        })
-        .catch((message) => console.error(message))
-    }
-    handleGenerateImage()
-  }, [])
-
-
-
-  async function handleRegenerateImage() {
+  async function handleGenerateImage() {
     const peopleForRequest = []
     for(let i=0; i<people.length; i++){
       peopleForRequest.push({
@@ -67,8 +26,9 @@ function DiaryImageView({ node, updateAttributes, deleteNode, extension }) {
       })
     }
     setCurrentBlob(null)
-    console.log("Regenerate", node.attrs.alt)
-    fetch('http://127.0.0.1:8000/illustrations/regenerate', {
+    setMissingPeople(null)
+    console.log("Generate", node.attrs.alt)
+    fetch('http://127.0.0.1:8000/illustrations/generate', {
       headers: {
         "Content-Type": "application/json"
       },
@@ -78,12 +38,20 @@ function DiaryImageView({ node, updateAttributes, deleteNode, extension }) {
         people: peopleForRequest
       })
     })
-      .then((response) => {
+      .then(async function(response){
+        if(response.status === 409){
+          const error = await response.json()
+          setMissingPeople(error.people || [])
+          return null
+        }
         if(!response.ok)
           throw new Error("cannot fetch")
         return response.blob()
       })
       .then((data) => {
+        if(data == null)
+          return
+
         setCurrentBlob(data)
 
         updateAttributes({
@@ -92,6 +60,19 @@ function DiaryImageView({ node, updateAttributes, deleteNode, extension }) {
         })
       })
       .catch((message) => console.error(message))
+  }
+
+  useEffect(() => {
+    if (hasGenerated.current || node.attrs.blob != null)
+      return
+    hasGenerated.current = true
+    handleGenerateImage()
+  }, [])
+
+  function openAddPeoplePage() {
+    if(setCurrentPage){
+      setCurrentPage('add-person')
+    }
   }
 
   function deleteImage() {
@@ -105,11 +86,22 @@ function DiaryImageView({ node, updateAttributes, deleteNode, extension }) {
 
   return (
     <NodeViewWrapper className={wrapperClass}>
-      <img
-        className="diary-illustration"
-        src={currentBlob ? URL.createObjectURL(currentBlob) : loadingImageSrc}
-        alt={node.attrs.alt || ''}
-      />
+      {missingPeople == null && (
+        <img
+          className="diary-illustration"
+          src={currentBlob ? URL.createObjectURL(currentBlob) : loadingImageSrc}
+          alt={node.attrs.alt || ''}
+        />
+      )}
+
+      {missingPeople != null && (
+        <div className="diary-image-error">
+          <p>Missing people: {missingPeople.join(', ')}</p>
+          <button type="button" onClick={openAddPeoplePage}>
+            Add people
+          </button>
+        </div>
+      )}
 
       <div className="diary-image-actions">
         <button
@@ -117,7 +109,7 @@ function DiaryImageView({ node, updateAttributes, deleteNode, extension }) {
           title="Regenerate image"
           disabled={currentBlob == null}
           type="button"
-          onClick={handleRegenerateImage}
+          onClick={handleGenerateImage}
         >
           <FiRefreshCw />
         </button>

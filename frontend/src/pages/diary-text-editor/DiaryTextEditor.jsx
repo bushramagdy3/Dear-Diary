@@ -289,6 +289,7 @@ function DiaryTextEditor({ appData, diaries, diaryId, setAppData, setCurrentPage
                   diaryId={diary.id} 
                   entry={selectedEntry}
                   setAppData={setAppData}
+                  setCurrentPage={setCurrentPage}
                 />
               </>
             )}
