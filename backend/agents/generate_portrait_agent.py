@@ -29,67 +29,116 @@ def route_input_type(state :PortraitState) -> str:
 
 def generate_from_description(state :PortraitState) -> PortraitState:
     prompt = f"""
-        Create a standalone monochrome black-and-white graphite pencil sketch portrait of the following person:
+    Create a standalone hand-drawn graphite pencil portrait of the following person:
 
-        {state["person_description"]}
+    {state["person_description"]}
 
-        The portrait must look like an actual hand-drawn pencil sketch, with visible graphite linework, sketch lines, and soft gray pencil shading.
+    REFERENCE ROLE:
+    Reference image 1 is a STYLE REFERENCE ONLY.
 
-        Use only black, white, and gray tones. Do not use any color.
+    The final portrait must look as though it was physically drawn by the same artist who drew Reference image 1.
 
-        The result should be a clean head-and-shoulders portrait showing only the person, suitable for later use as an identity reference in diary-scene illustration generation.
+    Do NOT copy the person, facial features, pose, clothing, composition, or subject from Reference image 1.
+    Copy only its drawing technique and visual language.
 
-        Keep the portrait natural and visually clean.
+    DRAWING TECHNIQUE:
+    Reproduce the actual graphite technique visible in Reference image 1:
 
-        Use a truly transparent background.
+    - visible individual pencil strokes
+    - rough, irregular hand-drawn contours
+    - broken and overlapping sketch lines
+    - clearly varied pencil pressure
+    - expressive graphite buildup in darker areas
+    - visible hatching and cross-hatching
+    - rough directional strokes following the form
+    - natural graphite smudging
+    - imperfect handmade transitions
+    - construction marks and unfinished lines where natural
+    - strong contrast created through graphite marks rather than smooth digital gradients
+    - raw sketchbook-quality texture
 
-        Do not simulate transparency with a checkerboard, grid, pattern, paper texture, or colored backdrop.
+    The face, hair, skin, and clothing must be constructed primarily from visible pencil marks.
 
-        Do not include any background scenery, notebook page, paper sheet, paper texture, spiral binding, frame, border, panel, mockup, caption, label, watermark, decorative surrounding elements, or text.
+    IMPORTANT:
+    Do NOT render the face using smooth continuous grayscale shading.
+    Do NOT make the skin look airbrushed or digitally blended.
+    Do NOT create a photorealistic black-and-white portrait.
+    Do NOT create a 3D-rendered face.
+    Do NOT create soft CGI-like volume.
+    Do NOT create glossy eyes or polished AI beauty rendering.
+    Do NOT use perfectly clean contours.
+    Do NOT create a digital painting with a pencil filter applied over it.
+    Do NOT make the result look like a grayscale photograph.
 
-        Do not render the image as a digital painting, colored illustration, painterly artwork, glossy 3D art, or anime-style portrait.
+    If an area needs darker value, build that value using visible graphite strokes, hatching, cross-hatching, pencil pressure, and smudging rather than smooth digital gradients.
 
-        Output only the portrait illustration itself.
+    The result should immediately read as:
+    REAL GRAPHITE DRAWING,
+    not a grayscale rendered portrait.
 
+    POSE:
+    Choose a natural portrait pose.
+
+    Do NOT automatically place the person directly facing the viewer.
+    Do NOT force eye contact with the camera.
+
+    The head may naturally be:
+    - turned
+    - tilted
+    - in three-quarter view
+    - in side view
+    - looking downward
+    - looking away
+
+    The pose should feel like something an artist naturally chose to sketch.
+
+    TRANSPARENCY:
+    The graphite drawing must exist directly on a transparent canvas.
+
+    There must be:
+    - no white paper
+    - no white background
+    - no opaque white face fill
+    - no opaque white body fill
+    - no solid canvas
+    - no rectangle
+    - no frame
+    - no colored background
+
+    Only actual graphite marks should contain visible pixels.
+
+    Untouched areas of the drawing must remain transparent.
+
+    For example, if part of the face is not shaded, do NOT fill that skin area with white.
+    Represent the face through graphite contours, hatching, shadows, and pencil marks while leaving untouched negative space transparent.
+
+    The same rule applies to:
+    - skin
+    - hair highlights
+    - clothing highlights
+    - gaps between strokes
+    - surrounding empty space
+
+    EDGES:
+    Do NOT make the portrait look like a rectangular image that was cropped.
+
+    Do not abruptly stop the shoulders, hair, clothing, or shading at an invisible boundary.
+
+    Toward the outer edges of the portrait, gradually reduce the density and darkness of the graphite.
+
+    Let the drawing naturally dissolve into:
+    - lighter strokes
+    - incomplete lines
+    - sparse hatching
+    - unfinished pencil marks
+
+    so the portrait appears to organically fade into a diary page.
+
+    Do not include scenery, text, captions, notebook lines, borders, frames, paper texture, decorative elements, or watermarks.
+
+    Output only the graphite portrait on transparency.
     """
-    result = client.images.generate(
-        model="gpt-image-2",
-        prompt=prompt,
-        background="transparent",
-        output_format="png"
-    )
-    image_bytes = base64.b64decode(result.data[0].b64_json)
-    output_path = "./generated/portrait-output.png"
-    with open(output_path, "wb") as f:
-        f.write(image_bytes)
-
-    return {"generated_portrait_path": output_path}
-
-def generate_from_image(state :PortraitState) -> PortraitState:
-    prompt = f"""
-        Create a standalone monochrome black-and-white graphite pencil sketch portrait of the same person shown in the provided reference image.
-
-        Preserve the person's recognizable identity, facial structure, facial features, and overall likeness.
-
-        Use the reference image only as an identity reference. Do not simply copy the original photo, and do not copy the exact pose, clothing, framing, lighting, or background unless needed for recognizable identity.
-
-        The result must look like an actual hand-drawn pencil sketch, with visible graphite linework, sketch lines, and soft gray pencil shading.
-
-        Use only black, white, and gray tones. Do not use any color.
-
-        Show only the person in a clean portrait composition suitable for later use as an identity reference in diary-scene illustration generation.
-
-        Use a truly transparent background.
-
-        Do not simulate transparency with a checkerboard, grid, pattern, paper texture, or colored backdrop.
-
-        Do not include any background scenery, notebook page, paper sheet, paper texture, spiral binding, frame, border, panel, mockup, caption, label, watermark, decorative surrounding elements, or text.
-
-        Do not render the image as a digital painting, colored illustration, painterly artwork, glossy 3D art, or anime-style portrait.
-
-        Output only the portrait illustration itself.
-    """
-    image_file = open(state["reference_image_path"], "rb")
+    image_file = open('./agents/inspo.jpeg', "rb") 
     try:
         result = client.images.edit(
             model="gpt-image-2",
@@ -105,6 +154,145 @@ def generate_from_image(state :PortraitState) -> PortraitState:
             f.write(image_bytes)
     finally:
         image_file.close()
+
+    return {"generated_portrait_path": output_path}
+
+def generate_from_image(state :PortraitState) -> PortraitState:
+    prompt = """
+    Create a standalone hand-drawn graphite pencil portrait of the person shown in Reference image 1.
+
+    REFERENCE ROLES:
+
+    Reference image 1 is the IDENTITY REFERENCE.
+    Preserve the person's recognizable identity, facial structure, distinctive facial features, hairstyle, and overall likeness.
+
+    Reference image 2 is the STYLE REFERENCE ONLY.
+
+    The final portrait must look as though it was physically drawn by the same artist who drew Reference image 2.
+
+    Do NOT copy the person, pose, clothing, composition, or subject from Reference image 2.
+    Copy only its graphite drawing technique and visual language.
+
+    DRAWING TECHNIQUE:
+    Reproduce the actual graphite technique visible in Reference image 2:
+
+    - visible individual pencil strokes
+    - rough, irregular hand-drawn contours
+    - broken and overlapping sketch lines
+    - clearly varied pencil pressure
+    - expressive graphite buildup in darker areas
+    - visible hatching and cross-hatching
+    - rough directional strokes following facial and body form
+    - natural graphite smudging
+    - imperfect handmade transitions
+    - construction marks and unfinished lines where natural
+    - strong contrast created through graphite marks rather than smooth gradients
+    - raw sketchbook-quality texture
+
+    The face, hair, skin, and clothing must be constructed primarily through visible graphite marks.
+
+    IMPORTANT:
+    Do NOT render the face using smooth continuous grayscale shading.
+    Do NOT make the skin look airbrushed or digitally blended.
+    Do NOT create a photorealistic black-and-white portrait.
+    Do NOT create a 3D-rendered face.
+    Do NOT create soft CGI-like facial volume.
+    Do NOT create glossy or polished AI beauty rendering.
+    Do NOT use perfectly clean digital contours.
+    Do NOT create a normal digital portrait and apply a pencil effect afterward.
+    Do NOT make the result look like a grayscale photograph.
+
+    If an area needs darker value, build the darkness using visible pencil strokes, hatching, cross-hatching, pressure changes, graphite buildup, and smudging.
+
+    The result must immediately look like:
+    REAL GRAPHITE DRAWING,
+    not a digitally rendered grayscale portrait.
+
+    IDENTITY AND POSE:
+    Reference image 1 determines WHO the person is.
+    It does NOT determine how they must pose.
+
+    Do NOT copy the exact pose, expression, camera angle, framing, clothing, or background from Reference image 1 unless necessary for recognizable identity.
+
+    Do NOT force the person to face the viewer.
+    Do NOT force direct eye contact.
+    Do NOT force the whole face to remain clearly visible.
+
+    Choose a natural artistic pose.
+
+    The person may naturally appear:
+    - in three-quarter view
+    - from the side
+    - looking downward
+    - looking away
+    - with the head tilted
+    - with the head naturally turned
+    - with part of the face less visible
+
+    while remaining recognizable as the person in Reference image 1.
+
+    TRANSPARENCY:
+    The graphite drawing must exist directly on a transparent canvas.
+
+    There must be:
+    - no white paper
+    - no white background
+    - no opaque white face fill
+    - no opaque white body fill
+    - no solid canvas
+    - no rectangle
+    - no frame
+    - no colored backdrop
+
+    Only actual graphite marks should contain visible pixels.
+
+    Untouched areas must remain transparent.
+
+    Do not fill unshaded skin with white.
+    Skin should be suggested through contours, graphite shading, hatching, shadows, and pencil marks while untouched regions remain transparent.
+
+    The same applies to:
+    - hair highlights
+    - clothing highlights
+    - gaps between strokes
+    - empty surrounding space
+
+    EDGES:
+    Do NOT create a hard rectangular crop.
+
+    Do not abruptly stop the shoulders, clothing, hair, or graphite shading at the sides or bottom.
+
+    Toward the outer edges, gradually reduce graphite density.
+
+    Let the drawing dissolve into:
+    - lighter pencil strokes
+    - broken contours
+    - incomplete marks
+    - sparse hatching
+    - unfinished graphite
+
+    so it feels like a sketch naturally fading into a diary page.
+
+    Do not include scenery, text, captions, notebook lines, paper texture, borders, frames, decorative elements, or watermarks.
+
+    Output only the graphite portrait on transparency.
+    """
+    image_files = [open(state["reference_image_path"], "rb"), open('./agents/inspo.jpeg', "rb")] 
+    try:
+        result = client.images.edit(
+            model="gpt-image-2",
+            image=image_files,
+            prompt=prompt,
+            background="transparent",
+            output_format="png"
+        )
+        result.data[0].b64_json
+        image_bytes = base64.b64decode(result.data[0].b64_json)
+        output_path = "./generated/portrait-output.png"
+        with open(output_path, "wb") as f:
+            f.write(image_bytes)
+    finally:
+        [image_file.close() for image_file in image_files]
 
     return {"generated_portrait_path": output_path}
 

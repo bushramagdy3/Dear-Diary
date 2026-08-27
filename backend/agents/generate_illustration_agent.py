@@ -167,52 +167,184 @@ def generate_image(state :AgentState) -> AgentState:
             reference_lines.append(f"Reference image {i} represents {person.name}.")
             image_files.append(open(person.image, "rb"))
 
+        image_files.append(open('./agents/inspo.jpeg', "rb"))
         reference_mapping = "\n".join(reference_lines)
 
         prompt = f"""
-            Create a standalone hand-drawn diary-style sketch illustration of the following scene:
+        Create a hand-drawn graphite pencil diary illustration of the following scene:
 
-            {state["image_request"].illustration}
+        {state["image_request"].illustration}
 
-            Reference images are provided for the named people in the scene.
+        IDENTITY REFERENCES:
+        {reference_mapping}
 
-            {reference_mapping}
+        Every reference image listed in the identity mapping above represents that specific person's identity.
 
-            Use each reference image only to preserve the corresponding person's recognizable identity, facial features, and overall likeness. Do not copy the exact pose, outfit, hairstyle, background, framing, or other incidental details from the reference portraits unless they are directly required by the scene.
+        The FINAL reference image is a STYLE REFERENCE ONLY.
 
-            Illustrate only the people who are explicitly part of the scene description. Do not add extra people, and do not include people who are only mentioned but not present.
+        The completed illustration must look as though it was physically drawn by the same artist who drew the final style reference image.
 
-            Use only scene details that are clearly supported by the provided scene description. Do not invent or embellish additional objects, actions, gestures, props, environmental details, or interactions that are not necessary to depict the described scene.
+        Do NOT copy the style reference's person, pose, subject, clothing, scene, or composition.
+        Copy only its graphite drawing technique and visual language.
 
-            Keep the composition natural, clean, and visually coherent.
+        DRAWING TECHNIQUE:
+        Reproduce the actual graphite technique of the final style reference:
 
-            Render the result as a simple sketch with a diary-like aesthetic, but output only the illustration itself.
+        - clearly visible individual pencil strokes
+        - irregular hand-drawn contours
+        - broken and overlapping sketch lines
+        - varied pencil pressure
+        - expressive graphite buildup
+        - strong dark areas built with actual graphite marks
+        - visible hatching and cross-hatching
+        - directional pencil strokes following form
+        - natural graphite smudging
+        - imperfect handmade shading
+        - rough transitions
+        - construction marks where natural
+        - unfinished sketch lines
+        - raw sketchbook-quality texture
 
-            Use a truly transparent background with no filled background layer.
-            Do not simulate transparency with a checkerboard, grid, pattern, paper texture, or colored backdrop.
+        Faces, hair, clothing, objects, and environmental elements must be created primarily through visible graphite linework and pencil marks.
 
-            Use each reference image only as an identity reference for the corresponding person.
+        IMPORTANT:
+        Do NOT create smooth grayscale-rendered people.
+        Do NOT render skin with continuous digital gradients.
+        Do NOT make faces look airbrushed.
+        Do NOT create 3D-rendered facial volume.
+        Do NOT create glossy AI-generated faces.
+        Do NOT create polished beauty illustrations.
+        Do NOT create clean vector-like outlines.
+        Do NOT make the scene look like a digital painting.
+        Do NOT make the result look like a normal image with a black-and-white or pencil filter applied.
 
-            Preserve each person’s recognizable identity, facial structure, distinguishing features, and overall likeness, but adapt them naturally to the action, pose, and scene being illustrated.
+        If an area needs darker value, construct that darkness through:
+        - pencil pressure
+        - visible graphite strokes
+        - hatching
+        - cross-hatching
+        - overlapping marks
+        - graphite buildup
+        - smudging
 
-            Do not force a portrait-like presentation of the face. Do not force front-facing angles, direct eye contact, or unnaturally clear facial visibility just to display identity.
+        rather than smooth digital shading.
 
-            Allow the person’s pose, body position, movement, and viewing angle to follow the natural requirements of the scene, even when the face is turned, partially obscured, or not fully visible.
+        The entire illustration must immediately read as:
+        A REAL HAND-DRAWN GRAPHITE SKETCH.
 
-            Prioritize a natural and believable depiction of the action while keeping the person recognizable as the same individual.
+        PEOPLE AND NATURAL POSES:
+        Preserve the recognizable identity of every referenced person.
 
+        The identity references determine WHO each person is.
+        They do NOT determine their pose.
 
-            Do not include any notebook page, paper sheet, paper texture, spiral binding, frame, border, panel, page layout, mockup presentation, caption, label, watermark, or decorative surrounding elements.
+        Do NOT force referenced people to:
+        - face the camera
+        - look toward the viewer
+        - maintain direct eye contact
+        - keep their entire face visible
+        - copy their portrait reference pose
 
-            Do not include any text in the final image.
+        Their body orientation, head angle, gaze, pose, movement, and expression must naturally follow the diary scene.
+
+        People may naturally appear:
+        - from the side
+        - in three-quarter view
+        - looking downward
+        - looking away
+        - turned partially away
+        - interacting with another person
+        - moving naturally
+        - partially obscured
+        - with only part of the face visible
+
+        as long as their recognizable identity remains consistent with their reference.
+
+        SCENE AND ENVIRONMENT:
+        This must be a complete SCENE ILLUSTRATION, not an isolated portrait or character cutout.
+
+        The people must appear naturally inside an environment that visually supports the described moment.
+
+        Use the diary scene to infer an appropriate surrounding environment when necessary.
+
+        If the exact environment is not explicitly stated, infer a simple, plausible, generic setting that naturally fits the visible action and context.
+
+        Do not invent unusual, story-changing, highly specific, or distracting environmental details.
+
+        Include enough surrounding context, furniture, objects, surfaces, architecture, or other environmental elements to make the moment visually understandable and grounded in a real place.
+
+        The environment should support the main action rather than overpower it.
+
+        Do NOT isolate the person against empty space when the moment naturally belongs inside a setting.
+
+        The people, objects, and environment should feel like one connected illustrated composition.
+
+        TRANSPARENCY:
+        The illustration must be generated on a transparent canvas, but transparency should apply primarily OUTSIDE the overall scene.
+
+        Do NOT treat every empty gap inside the scene as transparent cutout space.
+
+        Do NOT create transparent holes between:
+        - people
+        - objects
+        - furniture
+        - environmental elements
+        - background sketch elements
+
+        The interior of the illustrated scene should remain visually connected.
+
+        Use faint graphite shading, loose environmental strokes, light hatching, or soft tonal sketch marks where needed to keep interior scene space coherent.
+
+        There must still be:
+        - no solid white rectangular page
+        - no solid colored background
+        - no hard rectangular canvas
+        - no frame
+        - no opaque page surrounding the illustration
+
+        The overall scene should exist as one irregular graphite composition floating on transparency.
+
+        The transparent area should primarily surround the OUTER boundary of the complete scene.
+
+        EDGES:
+        The illustration must NOT look like a rectangular image that was cut out and pasted into the diary.
+
+        Do not abruptly crop:
+        - bodies
+        - furniture
+        - objects
+        - hair
+        - clothing
+        - graphite shadows
+        - environmental sketch marks
+
+        against an invisible image boundary.
+
+        Toward the OUTER edges of the complete scene, gradually reduce the density of the drawing.
+
+        Allow the environment and outermost scene elements to dissolve naturally through:
+        - increasingly light strokes
+        - broken contours
+        - sparse hatching
+        - unfinished pencil marks
+        - fading graphite buildup
+        - soft graphite smudging
+
+        The center and interior of the scene should remain coherent and readable.
+
+        Only the outer boundary should gradually fade into transparent space.
+
+        The final result should feel like a complete scene sketched directly into a diary, with the environment softly disappearing around its edges rather than being enclosed inside a rectangular background.
+
+        Do not include text, captions, notebook lines, frames, borders, watermarks, checkerboards, or simulated transparency.
+
+        Output only the complete graphite diary illustration on transparency.
         """
-        print(image_files)
 
         result = client.images.edit(
             model="gpt-image-2",
             image=image_files,
             prompt=prompt,
-            background="transparent",
             output_format="png"
         )
         image_bytes = base64.b64decode(result.data[0].b64_json)

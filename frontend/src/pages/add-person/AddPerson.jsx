@@ -16,6 +16,8 @@ function AddPerson({ appData, currentPage, setAppData, setCurrentPage }) {
   const [personDescription, setPersonDescription] = useState('')
   const [uploadedImageBlob, setUploadedImageBlob] = useState(null)
   const [portraitBlob, setPortraitBlob] = useState(null)
+  const [isGeneratingPortrait, setIsGeneratingPortrait] = useState(false)
+  const [portraitError, setPortraitError] = useState('')
   const [isUser, setIsUser] = useState(false)
   const [isGenerate, setIsGenerate] = useState(true)
 
@@ -107,38 +109,65 @@ function AddPerson({ appData, currentPage, setAppData, setCurrentPage }) {
       return
     }
 
-    let description = null
-    let referenceImagePath = null
+    setIsGeneratingPortrait(true)
+    setPortraitError('')
 
-    if(portraitMode === 'describe'){
-      description = personDescription
+    try {
+      let description = null
+      let referenceImagePath = null
+
+      if(portraitMode === 'describe'){
+        description = personDescription
+      }
+
+      if(portraitMode === 'upload'){
+        referenceImagePath = await blobToBase64(uploadedImageBlob)
+      }
+
+      fetch('http://127.0.0.1:8000/portraits/generate', {
+        headers: {
+          "Content-Type": "application/json"
+        },
+        method: 'POST',
+        body: JSON.stringify({
+          description: description,
+          reference_image_path: referenceImagePath
+        })
+      })
+        .then(async function(response){
+          if(!response.ok)
+            throw new Error("cannot fetch")
+          return response.blob()
+        })
+        .then((data) => {
+          setPortraitBlob(data)
+          setPortraitError('')
+          setIsGenerate(false)
+        })
+        .catch((message) => {
+          setPortraitError('Something went wrong while generating this portrait.')
+          console.error(message)
+        })
+        .finally(() => {
+          setIsGeneratingPortrait(false)
+        })
+    } catch (message) {
+      setPortraitError('Something went wrong while generating this portrait.')
+      setIsGeneratingPortrait(false)
+      console.error(message)
     }
-
-    if(portraitMode === 'upload'){
-      referenceImagePath = await blobToBase64(uploadedImageBlob)
-    }
-
-    fetch('http://127.0.0.1:8000/portraits/generate', {
-      headers: {
-        "Content-Type": "application/json"
-      },
-      method: 'POST',
-      body: JSON.stringify({
-        description: description,
-        reference_image_path: referenceImagePath
-      })
-    })
-      .then((response) => {
-        if(!response.ok)
-          throw new Error("cannot fetch")
-        return response.blob()
-      })
-      .then((data) => {
-        setPortraitBlob(data)
-        setIsGenerate(false)
-      })
-      .catch((message) => console.error(message))
   }
+
+  const showPortraitLoading = isGeneratingPortrait
+  const showPortraitError = portraitError !== '' && isGeneratingPortrait == false
+  const showPortraitImage = portraitBlob != null && showPortraitLoading == false && showPortraitError == false
+  const showPortraitPlaceholder = portraitBlob == null && showPortraitLoading == false && showPortraitError == false
+  const portraitCardClass = showPortraitLoading || showPortraitError
+    ? 'portrait-placeholder-card portrait-placeholder-card--status'
+    : 'portrait-placeholder-card'
+  const portraitContentClass = showPortraitLoading || showPortraitError
+    ? 'portrait-card-content portrait-card-content--status'
+    : 'portrait-card-content'
 
   return (
     <div className="add-person-page">
@@ -271,17 +300,35 @@ function AddPerson({ appData, currentPage, setAppData, setCurrentPage }) {
             )}
 
             <div className="portrait-preview-area">
-              <div className="portrait-placeholder-card">
+              <div className={portraitCardClass}>
                 <img className="portrait-empty-card-image" src={emptyCard} alt="" />
 
-                <div className="portrait-card-content">
-                  {portraitBlob ? (
+                <div className={portraitContentClass}>
+                  {showPortraitLoading && (
+                    <div className="portrait-status-card">
+                      <div className="portrait-status-spinner"></div>
+                      <p>Creating their portrait...</p>
+                      <span>This may take a moment.</span>
+                    </div>
+                  )}
+
+                  {showPortraitError && (
+                    <div className="portrait-status-card">
+                      <div className="portrait-status-icon">!</div>
+                      <p>{portraitError}</p>
+                      <span>Please try again in a moment.</span>
+                    </div>
+                  )}
+
+                  {showPortraitImage && (
                     <img
                       className="portrait-result-image"
                       src={URL.createObjectURL(portraitBlob)}
                       alt="Generated portrait"
                     />
-                  ) : (
+                  )}
+
+                  {showPortraitPlaceholder && (
                     <>
                       <img className="portrait-placeholder-figure" src={anonymousFigure} alt=""/>
                       <p>Your generated portrait will appear here</p>
@@ -292,7 +339,7 @@ function AddPerson({ appData, currentPage, setAppData, setCurrentPage }) {
 
               <button
                 className="portrait-generate-button"
-                disabled={canGeneratePortrait == false}
+                disabled={canGeneratePortrait == false || isGeneratingPortrait}
                 type="button"
                 onClick={handleGenerateButton}
               >
