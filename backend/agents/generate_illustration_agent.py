@@ -391,6 +391,5 @@ graph.add_edge("remove_background", END)
 
 app = graph.compile()
 
-# with open("graph.png", "wb") as f:
-#     f.write(app.get_graph().draw_mermaid_png())
+
 
