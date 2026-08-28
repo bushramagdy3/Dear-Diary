@@ -122,6 +122,48 @@
   display: none;
 }
 
+.home-import-popup {
+  position: fixed;
+  z-index: 20;
+  top: 96px;
+  left: 50%;
+  width: 330px;
+  max-width: calc(100% - 36px);
+  padding: 14px 18px;
+  border: 1px solid rgba(36, 34, 30, 0.16);
+  border-radius: 6px;
+  background: rgba(255, 250, 242, 0.92);
+  box-shadow: 0 14px 32px rgba(78, 51, 50, 0.1);
+  color: #24221e;
+  font-size: 16px;
+  line-height: 1.35;
+  text-align: center;
+  pointer-events: none;
+  animation: home-popup-show 220ms ease both;
+}
+
+@keyframes home-popup-show {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+.home-import-popup--success {
+  border-color: rgba(71, 98, 73, 0.22);
+  color: #3e553f;
+}
+
+.home-import-popup--error {
+  border-color: rgba(122, 61, 68, 0.24);
+  color: #7a3d44;
+}
+
 .home-hero__privacy {
   display: flex;
   align-items: center;
@@ -184,6 +226,10 @@
   .home-hero__title {
     font-size: 56px;
   }
+
+  .home-import-popup {
+    top: 120px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -208,5 +254,10 @@
   .home-button {
     width: 100%;
     min-height: 50px;
+  }
+
+  .home-import-popup {
+    top: 132px;
+    width: calc(100% - 36px);
   }
 }

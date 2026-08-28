@@ -3,15 +3,55 @@ import Header from '../../components/header/Header'
 import { FiLock } from 'react-icons/fi'
 import './Home.css'
 import { deserializeBackup } from '../../utils'
+import { useState } from 'react'
 
 function Home({ currentPage, setCurrentPage, appData, setAppData}) {
-  async function handleImport(event){
-    const file = event.target.files[0]
-    if(!file)
-      return
-    const data = deserializeBackup(JSON.parse(await file.text()))
-    setAppData(data)
+  const [importPopup, setImportPopup] = useState(null)
+
+  function showImportPopup(type, message) {
+    setImportPopup({
+      type: type,
+      message: message
+    })
+
+    setTimeout(() => {
+      setImportPopup(null)
+    }, 3200)
   }
+
+  function validateImportedData(data) {
+    if (!data || typeof data !== 'object') {
+      throw new Error('This file is not a valid Dear Diary backup.')
+    }
+
+    if (data.name !== 'appData') {
+      throw new Error('This backup does not belong to Dear Diary.')
+    }
+
+    if (!Array.isArray(data.diaries) || !Array.isArray(data.people)) {
+      throw new Error('This backup is missing diaries or people.')
+    }
+  }
+
+  async function handleImport(event){
+    try {
+      const file = event.target.files[0]
+      if(!file)
+        return
+
+      const parsedData = JSON.parse(await file.text())
+      validateImportedData(parsedData)
+
+      const data = deserializeBackup(parsedData)
+      setAppData(data)
+      showImportPopup('success', 'Backup imported successfully.')
+    } catch (error) {
+      showImportPopup('error', error.message || 'Could not import this backup.')
+    }
+
+    event.target.value = ''
+  }
+
   return (
     <div className="home-page" id="home">
       <Header currentPage={currentPage} setCurrentPage={setCurrentPage} appData={appData}/>
@@ -55,6 +95,12 @@ function Home({ currentPage, setCurrentPage, appData, setAppData}) {
           </p>
         </section>
       </main>
+
+      {importPopup && (
+        <div className={`home-import-popup home-import-popup--${importPopup.type}`}>
+          {importPopup.message}
+        </div>
+      )}
 
       <Footer />
     </div>

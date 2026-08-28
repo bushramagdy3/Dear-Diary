@@ -3,7 +3,7 @@ import {
   ReactNodeViewRenderer,
 } from '@tiptap/react'
 
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState } from 'react'
 import Image from '@tiptap/extension-image'
 import { FiTrash2, FiRefreshCw, FiAlertTriangle, FiUsers } from 'react-icons/fi'
 import { blobToBase64, API_URL } from '../../utils'
@@ -21,15 +21,16 @@ function DiaryImageView({ node, updateAttributes, deleteNode, extension }) {
   const [missingPeople, setMissingPeople] = useState(node.attrs.missingPeople)
   const people = extension.options.people || []
   const setCurrentPage = extension.options.setCurrentPage
-  const hasGenerated = useRef(false)
+  const [isGenerating, setIsGenerating] = useState(false)
 
   async function handleGenerateImage() {
     try {
+      setIsGenerating(true)
       setCurrentBlob(null)
       setErrorMessage(null)
       setMissingPeople(null)
       updateAttributes({
-        src: '',
+        src: 'generating',
         blob: null,
         errorMessage: null,
         missingPeople: null
@@ -80,6 +81,7 @@ function DiaryImageView({ node, updateAttributes, deleteNode, extension }) {
           if(data == null)
             return
 
+          setIsGenerating(false)
           setCurrentBlob(data)
 
           updateAttributes({
@@ -120,9 +122,14 @@ function DiaryImageView({ node, updateAttributes, deleteNode, extension }) {
   }
 
   useEffect(() => {
-    if (hasGenerated.current || node.attrs.blob != null || errorMessage != null || node.attrs.src === 'generation-error')
+    if (
+      isGenerating || 
+      node.attrs.blob != null || 
+      errorMessage != null || 
+      node.attrs.src === 'generation-error' || 
+      node.attrs.src === 'generating' 
+    )
       return
-    hasGenerated.current = true
     handleGenerateImage()
   }, [])
 
@@ -142,7 +149,7 @@ function DiaryImageView({ node, updateAttributes, deleteNode, extension }) {
     : 'diary-image-wrapper'
 
   const hasImage = currentBlob != null
-  const hasError = errorMessage != null
+  const hasError = errorMessage != null || (node.attrs.src === 'generating' &&  !isGenerating)|| node.attrs.src === 'generation-error' 
   const isLoading = hasImage == false && hasError == false
   const hasMissingPeople = missingPeople != null && missingPeople.length > 0
 
@@ -168,7 +175,7 @@ function DiaryImageView({ node, updateAttributes, deleteNode, extension }) {
         <div className="diary-image-block">
           <div className="diary-image-spinner"></div>
           <p>Turning this moment into a little sketch...</p>
-          <span>This can take a few seconds.</span>
+          <span>Don't leave the page</span>
         </div>
       )}
 
