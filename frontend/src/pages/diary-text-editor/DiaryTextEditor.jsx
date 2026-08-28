@@ -216,20 +216,22 @@ function DiaryTextEditor({ appData, diaries, diaryId, setAppData, setCurrentPage
                       className="diary-editor-entry-name diary-editor-new-entry-input"
                       onKeyDown={(event) =>{ 
                         if(event.key == "Enter"){
-                          const updatedAppData = {... appData}
-                          updatedAppData.diaries.forEach(element => {
-                            if(element.id == diaryId){
-                              element.entries.forEach((item, index) => {
-                                if(index == editingEntryIndex){
-                                  if(editedEntryName === "")
-                                    item.name = "Untitled Entry"
-                                  else
-                                    item.name = editedEntryName
-                                }
-                              });
+                          const updatedEntries = [... entries]
+                          updatedEntries.forEach((item, index) => {
+                            if(index == editingEntryIndex){
+                              if(editedEntryName === "")
+                                item.name = "Untitled Entry"
+                              else
+                                item.name = editedEntryName
                             }
-                          });
+                          })
+                          const updatedAppData = {... appData}
+                          updatedAppData.diaries.forEach((item) => {
+                            if(item.id == diaryId)
+                              item.entries = updatedEntries
+                          })
                           setAppData(updatedAppData)
+                          setEntries(updatedEntries)
                           setEditingEntryIndex(null)
                           setEditedEntryName('')
                         }
