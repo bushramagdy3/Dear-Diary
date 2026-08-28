@@ -3,10 +3,10 @@ import Header from '../../components/header/Header'
 import { FiLock } from 'react-icons/fi'
 import './Home.css'
 
-function Home({ currentPage, setCurrentPage }) {
+function Home({ currentPage, setCurrentPage, appData }) {
   return (
     <div className="home-page" id="home">
-      <Header currentPage={currentPage} setCurrentPage={setCurrentPage} />
+      <Header currentPage={currentPage} setCurrentPage={setCurrentPage} appData={appData}/>
 
       <main className="home-hero">
         <section className="home-hero__content">

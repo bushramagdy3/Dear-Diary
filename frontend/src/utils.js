@@ -48,3 +48,33 @@ export function formatPeopleForRequest(people) {
 
   return requestPeople
 }
+
+export async function serializeForBackup(value) {
+    if (value instanceof Blob) {
+        const base64 = await blobToBase64(value)
+
+        return {
+            __type: "Blob",
+            mimeType: value.type,
+            data: base64
+        }
+    }
+
+    if (Array.isArray(value)) {
+        return Promise.all(
+            value.map(item => serializeForBackup(item))
+        )
+    }
+
+    if (value && typeof value === "object") {
+        const result = {}
+
+        for (const [key, item] of Object.entries(value)) {
+            result[key] = await serializeForBackup(item)
+        }
+
+        return result
+    }
+
+    return value
+}

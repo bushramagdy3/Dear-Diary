@@ -55,7 +55,7 @@ function People({ appData, currentPage, people, setAppData, setCurrentPage, setE
 
   return (
     <div className="people-page" id="people">
-      <Header currentPage={currentPage} setCurrentPage={setCurrentPage} />
+      <Header currentPage={currentPage} setCurrentPage={setCurrentPage} appData={appData}/>
 
       <main className="people-main">
         <section className="people-intro">

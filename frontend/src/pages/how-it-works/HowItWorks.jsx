@@ -36,10 +36,10 @@ const steps = [
   },
 ]
 
-function HowItWorks({ currentPage, setCurrentPage }) {
+function HowItWorks({ currentPage, setCurrentPage, appData}) {
   return (
     <div className="how-page" id="how-it-works">
-      <Header currentPage={currentPage} setCurrentPage={setCurrentPage} />
+      <Header currentPage={currentPage} setCurrentPage={setCurrentPage} appData={appData}/>
 
       <main className="how-main">
         <section className="how-intro">

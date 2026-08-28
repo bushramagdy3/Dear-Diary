@@ -39,7 +39,7 @@ function App() {
   return (
     <>
       {currentPage === "home" && (
-        <Home currentPage={currentPage} setCurrentPage={setCurrentPage} />
+        <Home currentPage={currentPage} setCurrentPage={setCurrentPage} appData={appData}/>
       )}
       {currentPage === "create-diary" && (
         <CreateDiary 
@@ -97,7 +97,7 @@ function App() {
         />
       )}
       {currentPage === "how-it-works" && (
-        <HowItWorks currentPage={currentPage} setCurrentPage={setCurrentPage} />
+        <HowItWorks currentPage={currentPage} setCurrentPage={setCurrentPage} appData={appData}/>
       )}
       {currentPage === "diary-text-editor" && (
         <DiaryTextEditor

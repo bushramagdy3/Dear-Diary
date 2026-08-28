@@ -1,4 +1,5 @@
 import './Header.css'
+import { serializeForBackup } from '../../utils'
 
 const navItems = [
   { label: 'Home', page: 'home' },
@@ -7,7 +8,21 @@ const navItems = [
   { label: 'How It Works', page: 'how-it-works' },
 ]
 
-function Header({ currentPage, setCurrentPage }) {
+function Header({ currentPage, setCurrentPage, appData}) {
+  async function handleExport(){
+    const backup = {
+      people: await serializeForBackup(appData.people),
+      diaries: await serializeForBackup(appData.diaries)
+    }
+    const json = JSON.stringify(backup)
+    const fileBlob = new Blob([json], {type: "application/json"})
+    const url = URL.createObjectURL(fileBlob)
+    const link = document.createElement("a")
+    link.href = url
+    link.download = "dear-diary-backup.json"
+    link.click()
+    URL.revokeObjectURL(url)
+  }
   return (
     <header className="site-header">
       <a className="site-header__brand" href="#home">
@@ -32,9 +47,9 @@ function Header({ currentPage, setCurrentPage }) {
         })}
       </nav>
 
-      <a className="site-header__backup" href="#import-backup">
-        Import backup
-      </a>
+      <button className="site-header__backup" onClick={handleExport}>
+        Export Data
+      </button>
     </header>
   )
 }

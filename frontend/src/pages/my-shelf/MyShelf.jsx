@@ -94,7 +94,7 @@ function MyShelf({ appData, currentPage, diaries, setAppData, setCurrentPage, se
 
   return (
     <div className="shelf-page" id="my-shelf">
-      <Header currentPage={currentPage} setCurrentPage={setCurrentPage} />
+      <Header currentPage={currentPage} setCurrentPage={setCurrentPage} appData={appData}/>
 
       <main className="shelf-main">
         <section className="shelf-intro">
