@@ -41,7 +41,7 @@ This keeps the diary usable without an account while still giving the user a way
 
 ## AI Workflows
 
-The AI backend is built with **Python and FastAPI**, with **Pydantic** models validating the API data. The AI logic is organized as two separate **LangGraph** workflows.
+The AI backend is built with **Python and FastAPI**, with **Pydantic** models validating the API data. The AI logic is organized as two separate **LangGraph** workflows. The FastAPI endpoints were tested independently with **Postman** during development to verify request payloads, response handling, status codes, and error cases before integrating them with the React frontend.
 
 ### Illustration Workflow
 
@@ -69,7 +69,7 @@ The portrait LangGraph workflow identifies which input type was provided, routes
 
 The demo below shows the full flow, including how the illustration workflow identifies people from the diary text and uses their saved identities when generating the scene.
 
-<!-- Drag docs/media/demo.mp4 into this spot using GitHub's README web editor. -->
+https://github.com/user-attachments/assets/1f941a84-91bc-4cb4-9e59-64931ea588be
 
 ## Deployment
 
