@@ -147,7 +147,7 @@ function shouldShow({editor, from, to}){
   return from !== to && selectedText.length > 0
 }
 
-function Tiptap({ diaryId, entry, appData, setAppData, setCurrentPage }) {
+function Tiptap({ diaryId, entry, appData, setAppData, setCurrentPage, setEntries}) {
   const peopleForRequest = formatPeopleForRequest(appData.people)
 
   const editor = useEditor({
@@ -172,25 +172,24 @@ function Tiptap({ diaryId, entry, appData, setAppData, setCurrentPage }) {
         ...appData,
         diaries: appData.diaries.map((diary) => {
           if (diary.id === diaryId) {
+            const updatedEntries = diary.entries.map((currentEntry) => {
+              if (currentEntry.id === entry.id) {
+                return {
+                  ...currentEntry,
+                  content: diaryContent,
+                }
+              }
+              return currentEntry
+            })
+            setEntries(updatedEntries)
             return {
               ...diary,
-              entries: diary.entries.map((currentEntry) => {
-                if (currentEntry.id === entry.id) {
-                  return {
-                    ...currentEntry,
-                    content: diaryContent,
-                  }
-                }
-
-                return currentEntry
-              }),
+              entries: updatedEntries,
             }
           }
-
           return diary
         }),
       }
-
       setAppData(updatedAppData)
     },
   })
