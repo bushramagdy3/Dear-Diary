@@ -1,0 +1,11 @@
+fastapi
+uvicorn[standard]
+pydantic
+pydantic-settings
+openai
+langgraph
+langchain-openai
+langchain-core
+pillow
+numpy
+opencv-python-headless
