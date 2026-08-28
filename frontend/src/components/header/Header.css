@@ -23,12 +23,23 @@
 }
 
 .site-header__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
   font-family: "Bodoni 72", "Didot", "Cormorant Garamond", Georgia, serif;
   font-size: 40px;
   font-weight: 400;
   line-height: 1;
   transition: color 180ms ease;
   white-space: nowrap;
+}
+
+.site-header__logo {
+  display: block;
+  width: 34px;
+  height: 34px;
+  object-fit: contain;
 }
 
 .site-header__nav {
@@ -115,7 +126,11 @@
 
   .site-header__brand {
     font-size: 34px;
-    cursor: none;
+  }
+
+  .site-header__logo {
+    width: 30px;
+    height: 30px;
   }
 
   .site-header__nav {
@@ -137,6 +152,11 @@
 
   .site-header__brand {
     font-size: 32px;
+  }
+
+  .site-header__logo {
+    width: 28px;
+    height: 28px;
   }
 
   .site-header__backup {
@@ -169,6 +189,11 @@
 
   .site-header__brand {
     font-size: 30px;
+  }
+
+  .site-header__logo {
+    width: 27px;
+    height: 27px;
   }
 
   .site-header__nav {

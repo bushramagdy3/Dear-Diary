@@ -9,6 +9,10 @@ const navItems = [
 ]
 
 function Header({ currentPage, setCurrentPage, appData}) {
+  function goToHome() {
+    setCurrentPage('home')
+  }
+
   async function handleExport(){
     const backup = await serializeForBackup(appData)
     const json = JSON.stringify(backup)
@@ -22,8 +26,9 @@ function Header({ currentPage, setCurrentPage, appData}) {
   }
   return (
     <header className="site-header">
-      <a className="site-header__brand" href="#home">
-        Dear Diary
+      <a className="site-header__brand" href="#home" onClick={goToHome}>
+        <img className="site-header__logo" src="/logoBlack.png" alt="" />
+        <span>Dear Diary</span>
       </a>
 
       <nav className="site-header__nav">
