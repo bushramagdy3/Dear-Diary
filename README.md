@@ -65,15 +65,9 @@ People profiles can be given a generated portrait in two ways: by describing the
 
 The portrait LangGraph workflow identifies which input type was provided, routes to the correct generation branch, generates the portrait with **GPT Image 2**, and runs the same image post-processing stage before returning the result to the frontend.
 
-## Identity-Aware Illustration
-
-People are not treated as anonymous prompt text. Each saved person has a persistent profile and portrait that can be used as an identity reference during illustration generation.
-
-One profile can also represent the **user themself**. This allows the AI to resolve first-person references such as **“I,” “me,” and “my”** to the correct saved identity when the diary owner is actually part of the selected scene.
+## Demo
 
 The demo below shows the full flow, including how the illustration workflow identifies people from the diary text and uses their saved identities when generating the scene.
-
-## Demo
 
 <!-- Drag docs/media/demo.mp4 into this spot using GitHub's README web editor. -->
 
