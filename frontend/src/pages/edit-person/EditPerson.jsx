@@ -259,7 +259,7 @@ function EditPerson({ appData, people, personId, setAppData, setCurrentPage }) {
             <button className="add-person-cancel" onClick={goToPeople} type="button">
               Cancel
             </button>
-            <button className="add-person-save" onClick={savePerson} type="button">
+            <button className="add-person-save" onClick={savePerson} type="button" disabled={personName === ''}>
               Save changes
             </button>
           </div>

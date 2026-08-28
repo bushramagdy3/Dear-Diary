@@ -481,14 +481,16 @@
   font-size: 20px;
 }
 
-.portrait-generate-button:disabled {
+.portrait-generate-button:disabled,
+.add-person-save:disabled{
   border-color: rgba(36, 34, 30, 0.18);
   background: rgba(36, 34, 30, 0.18);
   color: rgba(36, 34, 30, 0.42);
   cursor: default;
 }
 
-.portrait-generate-button:disabled:hover {
+.portrait-generate-button:disabled:hover,
+.add-person-save:disabled {
   transform: none;
 }
 

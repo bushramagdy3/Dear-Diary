@@ -78,3 +78,47 @@ export async function serializeForBackup(value) {
 
     return value
 }
+
+function base64ToBlob(dataUrl, mimeType) {
+    const base64 = dataUrl.split(",")[1]
+
+    const binary = atob(base64)
+    const bytes = new Uint8Array(binary.length)
+
+    for (let i = 0; i < binary.length; i++) {
+        bytes[i] = binary.charCodeAt(i)
+    }
+
+    return new Blob([bytes], {
+        type: mimeType
+    })
+}
+
+export function deserializeBackup(value) {
+    if (
+        value &&
+        typeof value === "object" &&
+        value.__type === "Blob"
+    ) {
+        return base64ToBlob(
+            value.data,
+            value.mimeType
+        )
+    }
+
+    if (Array.isArray(value)) {
+        return value.map(item => deserializeBackup(item))
+    }
+
+    if (value && typeof value === "object") {
+        const result = {}
+
+        for (const [key, item] of Object.entries(value)) {
+            result[key] = deserializeBackup(item)
+        }
+
+        return result
+    }
+
+    return value
+}

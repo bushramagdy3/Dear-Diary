@@ -2,8 +2,16 @@ import Footer from '../../components/footer/Footer'
 import Header from '../../components/header/Header'
 import { FiLock } from 'react-icons/fi'
 import './Home.css'
+import { deserializeBackup } from '../../utils'
 
-function Home({ currentPage, setCurrentPage, appData }) {
+function Home({ currentPage, setCurrentPage, appData, setAppData}) {
+  async function handleImport(event){
+    const file = event.target.files[0]
+    if(!file)
+      return
+    const data = deserializeBackup(JSON.parse(await file.text()))
+    setAppData(data)
+  }
   return (
     <div className="home-page" id="home">
       <Header currentPage={currentPage} setCurrentPage={setCurrentPage} appData={appData}/>
@@ -30,9 +38,15 @@ function Home({ currentPage, setCurrentPage, appData }) {
             >
               Create diary
             </button>
-            <a className="home-button home-button--secondary" href="#import-backup">
-              Import backup
-            </a>
+            <label className="home-button home-button--secondary">
+              Import Backup
+              <input   
+                onChange={handleImport}
+                type="file"
+                accept=".json,application/json"
+              />
+            </label>
+            
           </div>
 
           <p className="home-hero__privacy">

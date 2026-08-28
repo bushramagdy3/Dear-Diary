@@ -241,7 +241,12 @@ function AddPerson({ appData, currentPage, setAppData, setCurrentPage }) {
             <button className="add-person-cancel" onClick={goToPeople} type="button">
               Cancel
             </button>
-            <button className="add-person-save" onClick={savePerson} type="button">
+            <button 
+              className="add-person-save" 
+              onClick={savePerson} 
+              type="button" 
+              disabled={portraitBlob == null || personName === ''} 
+            >
               Save person
             </button>
           </div>

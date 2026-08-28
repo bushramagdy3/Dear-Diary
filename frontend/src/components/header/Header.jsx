@@ -10,10 +10,7 @@ const navItems = [
 
 function Header({ currentPage, setCurrentPage, appData}) {
   async function handleExport(){
-    const backup = {
-      people: await serializeForBackup(appData.people),
-      diaries: await serializeForBackup(appData.diaries)
-    }
+    const backup = await serializeForBackup(appData)
     const json = JSON.stringify(backup)
     const fileBlob = new Blob([json], {type: "application/json"})
     const url = URL.createObjectURL(fileBlob)
@@ -47,9 +44,9 @@ function Header({ currentPage, setCurrentPage, appData}) {
         })}
       </nav>
 
-      <button className="site-header__backup" onClick={handleExport}>
+      <a className="site-header__backup" onClick={handleExport}>
         Export Data
-      </button>
+      </a>
     </header>
   )
 }

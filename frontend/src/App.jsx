@@ -39,7 +39,12 @@ function App() {
   return (
     <>
       {currentPage === "home" && (
-        <Home currentPage={currentPage} setCurrentPage={setCurrentPage} appData={appData}/>
+        <Home 
+          currentPage={currentPage} 
+          setCurrentPage={setCurrentPage} 
+          appData={appData} 
+          setAppData={setAppData}
+        />
       )}
       {currentPage === "create-diary" && (
         <CreateDiary 

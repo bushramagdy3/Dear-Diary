@@ -18,6 +18,10 @@
   text-decoration: none;
 }
 
+.site-header__backup{
+  cursor: pointer;
+}
+
 .site-header__brand {
   font-family: "Bodoni 72", "Didot", "Cormorant Garamond", Georgia, serif;
   font-size: 40px;
@@ -111,6 +115,7 @@
 
   .site-header__brand {
     font-size: 34px;
+    cursor: none;
   }
 
   .site-header__nav {

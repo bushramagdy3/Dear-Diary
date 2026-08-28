@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { FiChevronLeft, FiChevronRight, FiPlus } from 'react-icons/fi'
+import { FiBookOpen, FiChevronLeft, FiChevronRight, FiEdit2, FiPlus, FiTrash2 } from 'react-icons/fi'
 import Footer from '../../components/footer/Footer'
 import Header from '../../components/header/Header'
 import cover0 from '../../assets/journal-covers/0.png'
@@ -106,10 +106,6 @@ function MyShelf({ appData, currentPage, diaries, setAppData, setCurrentPage, se
               <FiPlus className="shelf-create__icon" />
               <span>Create new diary</span>
             </button>
-
-            <button className="shelf-export" type="button">
-              Export all data
-            </button>
           </div>
         </section>
 
@@ -157,7 +153,8 @@ function MyShelf({ appData, currentPage, diaries, setAppData, setCurrentPage, se
                       onFocus={() => setHoveredDiaryId(diary.id)}
                       type="button"
                     >
-                      Open
+                      <FiBookOpen />
+                      <span>Open</span>
                     </button>
                     <button
                       className="shelf-diary-link"
@@ -166,7 +163,8 @@ function MyShelf({ appData, currentPage, diaries, setAppData, setCurrentPage, se
                       onFocus={() => setHoveredDiaryId(diary.id)}
                       type="button"
                     >
-                      Edit
+                      <FiEdit2 />
+                      <span>Edit</span>
                     </button>
                     <button
                       className="shelf-diary-link shelf-diary-delete"
@@ -175,7 +173,8 @@ function MyShelf({ appData, currentPage, diaries, setAppData, setCurrentPage, se
                       onFocus={() => setHoveredDiaryId(diary.id)}
                       type="button"
                     >
-                      Delete
+                      <FiTrash2 />
+                      <span>Delete</span>
                     </button>
                   </div>
                 </div>

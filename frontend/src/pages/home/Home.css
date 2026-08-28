@@ -118,6 +118,10 @@
   color: #24221e;
 }
 
+.home-button--secondary input {
+  display: none;
+}
+
 .home-hero__privacy {
   display: flex;
   align-items: center;

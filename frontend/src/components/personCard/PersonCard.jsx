@@ -1,4 +1,5 @@
 import anonymousFigure from '../../assets/add-person/portrait-anonymous-figure.png'
+import { FiEdit2, FiTrash2 } from 'react-icons/fi'
 
 function formatText(text) {
     if (!text) {
@@ -38,14 +39,16 @@ function PersonCard({card, setEditingPersonId, deleteCurrentPerson, setCurrentPa
                 onClick={() => openEditPersonPage(card.id)}
                 type="button"
             >
-                Edit
+                <FiEdit2 />
+                <span>Edit</span>
             </button>
             <button
                 className="person-card__delete"
                 onClick={() => deleteCurrentPerson(card.id)}
                 type="button"
             >
-                Delete
+                <FiTrash2 />
+                <span>Delete</span>
             </button>
             </div>
         </article>
