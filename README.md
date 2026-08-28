@@ -41,7 +41,7 @@ This keeps the diary usable without an account while still giving the user a way
 
 ## AI Workflows
 
-The AI backend is built with **Python and FastAPI**, with **Pydantic** models validating the API data. The AI logic is organized as two separate **LangGraph** workflows.
+The AI backend is built with **Python and FastAPI**, with **Pydantic** models validating the API data. The AI logic is organized as two separate **LangGraph** workflows. The FastAPI endpoints were tested independently with **Postman** during development to verify request payloads, response handling, status codes, and error cases before integrating them with the React frontend.
 
 ### Illustration Workflow
 
