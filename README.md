@@ -69,7 +69,7 @@ The portrait LangGraph workflow identifies which input type was provided, routes
 
 The demo below shows the full flow, including how the illustration workflow identifies people from the diary text and uses their saved identities when generating the scene.
 
-<!-- Drag docs/media/demo.mp4 into this spot using GitHub's README web editor. -->
+https://github.com/user-attachments/assets/1f941a84-91bc-4cb4-9e59-64931ea588be
 
 ## Deployment
 
