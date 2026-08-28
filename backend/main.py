@@ -9,7 +9,7 @@ import uuid
 
 app = FastAPI()
 
-origins = ["http://localhost:5173"]
+origins = ["http://localhost:5173", "https://dear-diary-lemon.vercel.app"]
 
 app.add_middleware(
     CORSMiddleware,
