@@ -76,7 +76,7 @@ The demo below shows the full flow, including how the illustration workflow iden
 The frontend is deployed on **Vercel**, while the **FastAPI** backend and AI workflows are deployed on **Render**.
 
 - **Live app:** https://dear-diary-lemon.vercel.app
-- **Backend API:** https://dear-diary-q3qr.onrender.com
+- **Backend API Doc:** https://dear-diary-q3qr.onrender.com/docs
 
 ## Author
 
