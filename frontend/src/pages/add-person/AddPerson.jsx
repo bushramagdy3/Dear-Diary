@@ -195,6 +195,7 @@ function AddPerson({ appData, currentPage, setAppData, setCurrentPage }) {
             placeholder="Their name"
             type="text"
             value={personName}
+            autoComplete='off'
           />
 
           <label className="add-person-label" htmlFor="person-relationship">

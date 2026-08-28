@@ -126,6 +126,7 @@ function CreateDiary({ appData, currentPage, setAppData, setCurrentPage }) {
             onChange={updateDiaryTitle}
             type="text"
             value={diaryTitle}
+            autoComplete='off'
           />
 
           <div className="create-actions">

@@ -113,6 +113,7 @@ function EditDiary({ appData, diaryId, diaries, setAppData, setCurrentPage }) {
             onChange={updateDiaryTitle}
             type="text"
             value={diaryTitle}
+            autoComplete='off'
           />
 
           <div className="create-actions">
