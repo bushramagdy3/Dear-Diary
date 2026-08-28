@@ -7,6 +7,7 @@ import anonymousFigure from '../../assets/add-person/portrait-anonymous-figure.p
 import emptyCard from '../../assets/add-person/portrait-empty-card.png'
 import { blobToBase64 } from '../../utils'
 import './AddPerson.css'
+import { API_URL } from '../../utils';
 
 function AddPerson({ appData, currentPage, setAppData, setCurrentPage }) {
   const [portraitMode, setPortraitMode] = useState('upload')
@@ -124,7 +125,7 @@ function AddPerson({ appData, currentPage, setAppData, setCurrentPage }) {
         referenceImagePath = await blobToBase64(uploadedImageBlob)
       }
 
-      fetch('http://127.0.0.1:8000/portraits/generate', {
+      fetch(`${API_URL}/portraits/generate`, {
         headers: {
           "Content-Type": "application/json"
         },

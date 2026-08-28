@@ -6,7 +6,7 @@ import {
 import { useEffect, useState, useRef } from 'react'
 import Image from '@tiptap/extension-image'
 import { FiTrash2, FiRefreshCw, FiAlertTriangle, FiUsers } from 'react-icons/fi'
-import { blobToBase64 } from '../../utils'
+import { blobToBase64, API_URL } from '../../utils'
 
 function DiaryImageView({ node, updateAttributes, deleteNode, extension }) {
   let savedErrorMessage = node.attrs.errorMessage
@@ -44,7 +44,7 @@ function DiaryImageView({ node, updateAttributes, deleteNode, extension }) {
       }
 
       console.log("Generate", node.attrs.alt)
-      fetch('http://127.0.0.1:8000/illustrations/generate', {
+      fetch(`${API_URL}/illustrations/generate`, {
         headers: {
           "Content-Type": "application/json"
         },
