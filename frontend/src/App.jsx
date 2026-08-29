@@ -9,6 +9,7 @@ import MyShelf from './pages/my-shelf/MyShelf'
 import People from './pages/people/People'
 import DiaryTextEditor from './pages/diary-text-editor/DiaryTextEditor'
 import { getAppData, saveAppData } from './database'
+import { serializeForBackup, deserializeBackup } from './utils'
 
 function App() {
   const [currentPage, setCurrentPage] = useState("home")
@@ -16,13 +17,16 @@ function App() {
 
   useEffect(() => {
     getAppData()
-    .then(data => setAppData(data))
+    .then(data => setAppData(deserializeBackup(data)))
     .catch(err => console.error(err))
   }, [])
 
   useEffect(() => {
     if(appData){
-      saveAppData(appData).then(message => console.log(message)).then(message => console.log(message))
+        serializeForBackup(appData)
+        .then((data) => saveAppData(data))
+        .then(message => console.log(message))
+        .catch(message => console.log(message))
     }
   }, [appData])
 
