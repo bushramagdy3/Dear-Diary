@@ -35,9 +35,9 @@ The frontend is built with **React, Vite, JavaScript, and TipTap**. Users can cr
 
 Dear Diary is local-first. Diaries, entries, TipTap document JSON, people profiles, uploaded reference photos, generated portraits, and generated illustrations are stored in the browser with **IndexedDB** rather than a server-side application database.
 
-Because IndexedDB can store `Blob` objects directly while JSON cannot, the export system recursively converts stored Blobs into Base64 data before downloading one JSON backup file. Import performs the reverse conversion and restores the saved application data.
+I initially chose to store generated images directly as **Blob** objects because they are more storage-efficient and IndexedDB supports them natively. However, while testing the app across devices, I found that direct Blob persistence could be unreliable on iOS/iPadOS WebKit-based browsers after reopening the app. To keep image persistence consistent across browsers, I serialize image Blobs into Base64 data URLs before saving them to IndexedDB, then reconstruct them back into Blobs when the app loads. This keeps the rest of the application working with normal Blob objects while using a more portable format only at the storage boundary.
 
-This keeps the diary usable without an account while still giving the user a way to move or restore their data.
+The same serialization and deserialization functions are also reused for backup: before export, the in-memory image Blobs are converted into JSON-compatible Base64 data URLs, and on import those representations are reconstructed back into Blobs before restoring the application state. This keeps the diary usable without an account while still giving the user a way to move or restore their data.
 
 ## AI Workflows
 
