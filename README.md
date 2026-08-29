@@ -65,6 +65,8 @@ People profiles can be given a generated portrait in two ways: by describing the
 
 The portrait LangGraph workflow identifies which input type was provided, routes to the correct generation branch, generates the portrait with **GPT Image 2**, and runs the same image post-processing stage before returning the result to the frontend.
 
+**Note:** The AI generation features use a limited API budget, so they may stop working once that budget is exhausted. The rest of the application can still be viewed normally.
+
 ## Demo
 
 The demo below shows the full flow, including how the illustration workflow identifies people from the diary text and uses their saved identities when generating the scene.
