@@ -44,7 +44,9 @@
   z-index: 1;
   display: grid;
   width: 100%;
+  max-width: 1500px;
   flex: 0 0 auto;
+  align-self: center;
   grid-template-columns: minmax(420px, 620px) minmax(520px, 1fr);
   align-content: center;
   align-items: start;
@@ -591,8 +593,42 @@
 
 @media (max-width: 700px) {
   .add-person-main {
+    justify-items: center;
     padding-right: 18px;
     padding-left: 18px;
+    text-align: center;
+  }
+
+  .add-person-form {
+    width: 100%;
+    max-width: 640px;
+    text-align: left;
+  }
+
+  .add-person-back {
+    display: block;
+    width: fit-content;
+    margin-right: auto;
+    text-align: left;
+  }
+
+  .add-person-label {
+    text-align: left;
+  }
+
+  .add-person-checkbox {
+    justify-content: flex-start;
+  }
+
+  .add-person-input,
+  .add-person-description,
+  .portrait-words-box {
+    text-align: left;
+  }
+
+  .add-person-count {
+    margin: -28px 18px 0 0;
+    text-align: right;
   }
 
   .add-person-title {
@@ -609,6 +645,12 @@
     max-width: 360px;
     justify-items: center;
     gap: 28px;
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+  .portrait-title {
+    text-align: center;
   }
 
   .portrait-upload-box,

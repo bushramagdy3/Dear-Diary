@@ -494,6 +494,7 @@
 @media (max-width: 560px) {
   .editor-toolbar {
     gap: 8px;
+    justify-content: center;
   }
 
   .toolbar-button {
@@ -509,6 +510,13 @@
   .diary-writing-paper {
     font-size: 18px;
     line-height: 1.65;
+    text-align: left;
+  }
+
+  .diary-writing-paper ul,
+  .diary-writing-paper ol {
+    margin-left: 30px;
+    list-style-position: outside;
   }
 
   .diary-image-wrapper .diary-illustration {

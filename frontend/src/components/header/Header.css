@@ -145,9 +145,15 @@
 
 @media (max-width: 840px) {
   .site-header {
-    grid-template-columns: 1fr auto;
-    gap: 16px;
-    padding: 14px 18px 12px;
+    grid-template-columns: 1fr;
+    justify-items: center;
+    gap: 12px;
+    padding: 14px clamp(10px, 2.8vw, 18px) 12px;
+  }
+
+  .site-header__brand,
+  .site-header__backup {
+    justify-self: center;
   }
 
   .site-header__brand {
@@ -164,12 +170,18 @@
   }
 
   .site-header__nav {
+    width: 100%;
     grid-column: 1 / -1;
     grid-row: 2;
-    justify-content: flex-start;
-    gap: 24px;
-    overflow-x: auto;
+    justify-content: center;
+    gap: clamp(14px, 4vw, 30px);
+    overflow-x: visible;
     padding: 4px 0 8px;
+  }
+
+  .site-header__link {
+    font-size: 12px;
+    letter-spacing: 2.5px;
   }
 }
 
@@ -178,8 +190,8 @@
     grid-template-columns: 1fr;
     justify-items: center;
     gap: 12px;
-    padding-right: 16px;
-    padding-left: 16px;
+    padding-right: 10px;
+    padding-left: 10px;
   }
 
   .site-header__brand,
@@ -198,11 +210,31 @@
 
   .site-header__nav {
     width: 100%;
-    gap: 20px;
+    gap: clamp(9px, 2.4vw, 18px);
   }
 
   .site-header__link {
-    font-size: 11px;
+    font-size: 12px;
     letter-spacing: 2px;
+  }
+}
+
+@media (max-width: 350px) {
+  .site-header__brand {
+    font-size: 28px;
+  }
+
+  .site-header__logo {
+    width: 25px;
+    height: 25px;
+  }
+
+  .site-header__nav {
+    gap: 8px;
+  }
+
+  .site-header__link {
+    font-size: clamp(10px, 3.2vw, 11.5px);
+    letter-spacing: clamp(1px, 0.36vw, 1.5px);
   }
 }

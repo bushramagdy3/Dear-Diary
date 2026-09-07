@@ -456,8 +456,15 @@
 
 @media (max-width: 560px) {
   .shelf-main {
+    align-items: center;
     padding-right: 18px;
     padding-left: 18px;
+    text-align: center;
+  }
+
+  .shelf-intro {
+    width: 100%;
+    margin: 0 auto;
   }
 
   .shelf-title {
@@ -469,8 +476,9 @@
   }
 
   .shelf-actions {
-    align-items: flex-start;
+    align-items: center;
     flex-direction: column;
+    justify-content: center;
     gap: 14px;
   }
 
@@ -501,9 +509,18 @@
 
   .shelf-diary {
     max-width: 250px;
+    aspect-ratio: 3 / 4;
+  }
+
+  .shelf-diary img {
+    height: 100%;
   }
 
   .shelf-diary-title {
     font-size: 24px;
+  }
+
+  .shelf-is-empty-note {
+    text-align: center;
   }
 }

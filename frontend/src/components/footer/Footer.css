@@ -41,9 +41,18 @@
   .site-footer {
     flex-direction: column;
     gap: 10px;
+    padding-right: 18px;
+    padding-left: 18px;
   }
 
   .site-footer__links {
+    width: 100%;
+    flex-wrap: wrap;
     gap: 28px;
+    row-gap: 8px;
+  }
+
+  .site-footer__credit {
+    flex: 0 0 100%;
   }
 }

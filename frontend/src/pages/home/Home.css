@@ -214,17 +214,30 @@
   }
 
   .home-hero {
-    align-items: flex-start;
+    align-items: center;
+    justify-content: center;
     padding: 52px 6% 64px;
+    text-align: center;
   }
 
   .home-hero__content {
     width: 100%;
     max-width: 520px;
+    margin: 0 auto;
   }
 
   .home-hero__title {
     font-size: 56px;
+  }
+
+  .home-hero__copy {
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+  .home-hero__actions,
+  .home-hero__privacy {
+    justify-content: center;
   }
 
   .home-import-popup {

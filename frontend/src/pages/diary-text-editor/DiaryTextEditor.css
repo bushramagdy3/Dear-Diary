@@ -377,6 +377,7 @@
 
   .diary-editor-topbar {
     align-items: flex-start;
+    flex: 0 0 auto;
     flex-direction: column;
     padding: 18px 22px;
   }
@@ -388,12 +389,14 @@
   }
 
   .diary-editor-main {
+    flex: 0 0 auto;
     height: auto;
     min-height: auto;
     grid-template-columns: 1fr;
   }
 
   .diary-editor-sidebar {
+    flex: 0 0 auto;
     max-height: 300px;
     border-right: 0;
     border-bottom: 1px solid rgba(36, 34, 30, 0.18);
@@ -414,22 +417,88 @@
 }
 
 @media (max-width: 560px) {
+  .diary-editor-topbar {
+    align-items: stretch;
+    min-height: 0;
+    justify-content: flex-start;
+    gap: 8px;
+    padding: 14px 18px 16px;
+    text-align: center;
+  }
+
   .diary-editor-topbar__left,
   .diary-editor-topbar__right {
-    align-items: flex-start;
+    align-items: center;
     flex-direction: column;
-    gap: 14px;
+    justify-content: center;
+    gap: 8px;
+    text-align: center;
+  }
+
+  .diary-editor-back {
+    align-self: flex-start;
   }
 
   .diary-editor-diary-title {
-    font-size: 28px;
+    font-size: 30px;
+    line-height: 1;
+  }
+
+  .diary-editor-saved {
+    justify-content: center;
+    font-size: 15px;
   }
 
   .diary-editor-export {
     width: 100%;
   }
 
+  .diary-editor-sidebar {
+    max-height: none;
+    padding: 20px 18px 22px;
+    text-align: center;
+  }
+
+  .diary-editor-sidebar__header {
+    justify-content: center;
+  }
+
+  .diary-editor-entry-button {
+    align-items: flex-start;
+    min-height: 66px;
+    padding-right: 54px;
+    padding-left: 20px;
+    text-align: left;
+  }
+
+  .diary-editor-new-entry {
+    margin-top: 14px;
+  }
+
+  .diary-editor-entry-list {
+    flex: 0 1 auto;
+    min-height: 0;
+    max-height: 142px;
+    margin-top: 16px;
+    padding-right: 0;
+  }
+
+  .diary-editor-new-entry-input {
+    text-align: left;
+  }
+
+  .diary-editor-workspace {
+    height: 560px;
+    justify-content: center;
+    padding: 34px 18px 44px;
+    text-align: center;
+  }
+
+  .diary-current-entry-header {
+    text-align: left;
+  }
+
   .diary-current-entry-header h2 {
-    font-size: 36px;
+    font-size: 34px;
   }
 }

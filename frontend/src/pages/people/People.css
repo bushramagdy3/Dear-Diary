@@ -371,12 +371,23 @@
     background: rgba(246, 241, 233, 0.68);
   }
 
+  .people-main {
+    align-items: center;
+    text-align: center;
+  }
+
+  .people-intro {
+    width: 100%;
+    margin: 0 auto;
+  }
+
   .people-title {
     font-size: 62px;
   }
 
   .people-gallery {
     grid-template-columns: 42px minmax(0, 1fr) 42px;
+    justify-items: center;
     gap: 12px;
     align-items: start;
   }

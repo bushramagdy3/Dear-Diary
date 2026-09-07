@@ -207,8 +207,14 @@
 
 @media (max-width: 640px) {
   .how-main {
+    align-items: center;
     padding-right: 18px;
     padding-left: 18px;
+    text-align: center;
+  }
+
+  .how-intro {
+    margin: 0 auto;
   }
 
   .how-title {
@@ -221,10 +227,24 @@
 
   .how-steps {
     grid-template-columns: 1fr;
+    justify-items: center;
     gap: 28px;
   }
 
-  .how-step {
+  .how-step,
+  .how-step--one,
+  .how-step--two,
+  .how-step--three,
+  .how-step--four,
+  .how-step--five {
     max-width: none;
+    justify-self: center;
+    text-align: center;
+  }
+
+  .how-privacy {
+    justify-content: center;
+    flex-wrap: wrap;
+    text-align: center;
   }
 }
